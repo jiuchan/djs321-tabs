@@ -1,0 +1,45 @@
+<svg data-brand-asset="app-icon" data-brand-revision="2026-10-10-bounce" width="1024" height="1024" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="surface" x1="80" y1="32" x2="432" y2="472" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.5" stop-color="#EEF6FD"/>
+      <stop offset="1" stop-color="#CDDFEF"/>
+    </linearGradient>
+    <linearGradient id="face" x1="96" y1="64" x2="424" y2="440" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EAF3FC"/>
+    </linearGradient>
+    <linearGradient id="digits" x1="166" y1="328" x2="382" y2="390" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <filter id="shadow" x="8" y="8" width="496" height="496" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="9" stdDeviation="10" flood-color="#334155" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" fill="url(#surface)"/>
+  <g transform="translate(-25.6 -20.8) scale(1.1)">
+    <g filter="url(#shadow)">
+      <rect data-brand-frame="outer" x="36" y="32" width="440" height="440" rx="118" fill="url(#surface)"/>
+      <rect x="37.5" y="33.5" width="437" height="437" rx="116.5" stroke="#FFFFFF" stroke-width="3"/>
+      <rect x="40" y="36" width="432" height="432" rx="114" stroke="#AFC9E3" stroke-opacity="0.35" stroke-width="1"/>
+      <rect data-brand-frame="inner" x="61" y="57" width="390" height="390" rx="94" fill="url(#face)" stroke="#FFFFFF" stroke-opacity="0.95" stroke-width="2"/>
+    </g>
+    <g data-brand-lettering="djs" transform="translate(-52 -70) scale(1.18) skewX(-7)" stroke="#101B3C" stroke-width="25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M162 176V286H198C235 286 247 264 247 231C247 198 235 176 198 176H162Z"/>
+      <path d="M270 176H332M314 176V256C314 279 298 290 278 274"/>
+      <path d="M416 194C398 170 358 170 352 198C346 232 414 220 414 254C414 288 368 294 346 268"/>
+    </g>
+    <g data-brand-lettering="digits" transform="translate(-130 -148) scale(1.4)" stroke="url(#digits)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <g data-brand-digit="3" transform="rotate(-7 192 365)">
+        <path d="M170 334C202 322 218 348 192 362C222 368 216 398 172 392"/>
+      </g>
+      <g data-brand-digit="2" transform="translate(0 -12) rotate(5 272 364)">
+        <path d="M244 348C250 322 294 322 298 350C300 372 266 380 246 398H302"/>
+      </g>
+      <g data-brand-digit="1" transform="translate(0 -4) rotate(-3 372 365)">
+        <path d="M350 348L374 332V398M350 398H396"/>
+      </g>
+    </g>
+  </g>
+</svg>

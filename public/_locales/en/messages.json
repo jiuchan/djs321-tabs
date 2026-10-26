@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "DJS321 Tabs",
+    "description": "Extension name. Brand wordmark without a space; do not translate."
+  },
+  "extDescription": {
+    "message": "Local-first tab manager: archive, search and group tabs, with an optional link to the DJS 321 app.",
+    "description": "Store and extensions-page description, 132 characters max."
+  }
+}

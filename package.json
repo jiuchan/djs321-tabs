@@ -1,0 +1,42 @@
+{
+  "name": "djs321-tabs",
+  "version": "1.0.1",
+  "description": "DJS321 Tabs — local-first browser tab manager with an optional DJS 321 link",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "node scripts/build-policies.mjs && tsc && vite build && vite build --config vite.content.config.ts",
+    "preview": "vite preview",
+    "test": "node --test --experimental-strip-types \"src/**/*.test.ts\"",
+    "lint": "eslint src",
+    "format": "prettier --write src"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "dexie": "^3.2.7",
+    "lucide-react": "^0.451.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "turndown": "^7.2.4",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.7.0",
+    "@types/chrome": "^0.0.278",
+    "@types/dompurify": "^3.0.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/turndown": "^5.0.6",
+    "@vitejs/plugin-react": "^6.0.2",
+    "eslint": "^10.6.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.3",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.62.0",
+    "vite": "^8.0.16"
+  },
+  "overrides": {
+    "rollup": "2.80.0"
+  }
+}
