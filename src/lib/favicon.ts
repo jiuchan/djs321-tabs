@@ -1,33 +1,18 @@
 import { t } from './i18n.ts'
 
-const NOISY_FAVICON_HOSTS = new Set([
-  'www.google.com',
-  'google.com',
-  't0.gstatic.com',
-  't1.gstatic.com',
-  't2.gstatic.com',
-  't3.gstatic.com',
-])
-
-export function isNoisyFaviconServiceUrl(iconUrl?: string | null) {
-  if (!iconUrl) return false
-
+// 站点图标一律取浏览器本地缓存的 _favicon（需 "favicon" 权限）：渲染时不访问网站本身，
+// 也不经过任何第三方图标服务。浏览器没缓存过的站点会得到通用占位图标。
+export function localFaviconUrl(pageUrl?: string | null, size = 32): string | undefined {
+  if (!pageUrl || !/^https?:\/\//i.test(pageUrl)) return undefined
   try {
-    const parsed = new URL(iconUrl)
-    if (!NOISY_FAVICON_HOSTS.has(parsed.hostname.toLowerCase())) return false
-    return parsed.pathname.includes('/s2/favicons') || parsed.pathname.includes('/faviconV2')
+    if (typeof chrome === 'undefined' || !chrome.runtime?.getURL) return undefined
+    const url = new URL(chrome.runtime.getURL('/_favicon/'))
+    url.searchParams.set('pageUrl', pageUrl)
+    url.searchParams.set('size', String(size))
+    return url.toString()
   } catch {
-    return false
+    return undefined
   }
-}
-
-export function getRenderableFaviconUrl(iconUrl?: string | null) {
-  if (!iconUrl || isNoisyFaviconServiceUrl(iconUrl)) return undefined
-  return iconUrl
-}
-
-export function pickPersistableFaviconUrl(iconUrl?: string | null) {
-  return getRenderableFaviconUrl(iconUrl)
 }
 
 export function getQuickLinkFallbackLabel(title?: string, url?: string) {

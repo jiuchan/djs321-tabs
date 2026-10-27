@@ -9,7 +9,6 @@ import { Settings, DEFAULT_SETTINGS, loadSettings, saveSetting, normalizeNavigat
 import { sendToJustDoIt, extractMarkdownFromTab } from '../lib/justdoit'
 import { requestCaptureAccess } from '../lib/site-access'
 import { parseBackup, replaceBackupCollections } from '../lib/backup'
-import { pickPersistableFaviconUrl } from '../lib/favicon'
 import { groupTabs, TabGroup } from './groupers'
 import { GridView } from './views/GridView'
 import { ListView } from './views/ListView'
@@ -721,11 +720,10 @@ export default function NewTab() {
     e.preventDefault()
     if (!quicklinkingTab || !quicklinkingTab.url) return
     const domain = new URL(quicklinkingTab.url).hostname
-    const iconUrl = pickPersistableFaviconUrl(quicklinkingTab.favIconUrl)
     const title = quicklinkingTab.title || domain
     const quickLinks = await db.quickLinks.toArray()
     const order = quickLinks.length > 0 ? Math.max(...quickLinks.map(l => l.order)) + 1 : 0
-    await db.quickLinks.add({ url: quicklinkingTab.url, title, iconUrl, order, category: qlCategory })
+    await db.quickLinks.add({ url: quicklinkingTab.url, title, order, category: qlCategory })
     showToast(t('newtab_addedToQuickLinks', { title }))
     setQuicklinkingTab(null)
   }

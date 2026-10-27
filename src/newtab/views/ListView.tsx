@@ -1,5 +1,5 @@
 import { TabGroup, hostname } from '../groupers'
-import { getRenderableFaviconUrl } from '../../lib/favicon'
+import { localFaviconUrl } from '../../lib/favicon'
 import { t } from '../../lib/i18n'
 
 interface Props {
@@ -20,7 +20,7 @@ export function ListView({ groups, collapsedIds, onToggleCollapse, onSwitch, onC
     <div className="view-list-root">
       {groups.map(group => {
         const isCollapsed = collapsedIds.has(group.id)
-        const favicon = getRenderableFaviconUrl(group.tabs.find(t => getRenderableFaviconUrl(t.favIconUrl))?.favIconUrl)
+        const favicon = localFaviconUrl(group.tabs.find(t => localFaviconUrl(t.url))?.url)
         return (
           <div key={group.id} className="domain-group">
             {!hideGroupHeader && (
@@ -42,8 +42,8 @@ export function ListView({ groups, collapsedIds, onToggleCollapse, onSwitch, onC
                 {group.tabs.map(tab => (
                   <div key={tab.id} data-tab-id={tab.id} className={`list-row ${tab.id && selectedIds.has(tab.id) ? 'selected' : ''}`}>
                     <button className="nt-tab-trigger" onClick={() => onSwitch(tab)} title={tab.title || tab.url}>
-                    {getRenderableFaviconUrl(tab.favIconUrl)
-                      ? <img className="tab-favicon" src={getRenderableFaviconUrl(tab.favIconUrl)} alt=""
+                    {localFaviconUrl(tab.url)
+                      ? <img className="tab-favicon" src={localFaviconUrl(tab.url)} alt=""
                           onError={e => { e.currentTarget.style.display = 'none' }} />
                       : <div className="tab-favicon-ph" />
                     }

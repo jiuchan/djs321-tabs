@@ -10,7 +10,7 @@ Prospective public URL / 拟公开地址：[Chrome privacy page](https://djs321.
 
 ### 1. 适用范围与用途
 
-本政策针对运行于桌面 Google Chrome 的 DJS321 Tabs 扩展，说明其标签整理、归档、撤销、快捷导航、书签和可选发送功能的数据处理。扩展替换新标签页，目前界面为中文；无需安装倒计时321 App 即可使用本地核心功能。本政策不替代 Google Chrome、搜索服务、图片服务或收件 App 自身的政策。
+本政策针对运行于桌面 Google Chrome 的 DJS321 Tabs 扩展，说明其标签整理、归档、撤销、快捷导航、书签和可选发送功能的数据处理。扩展替换新标签页，界面随浏览器语言显示中文或英文；无需安装倒计时321 App 即可使用本地核心功能。本政策不替代 Google Chrome、搜索服务、图片服务或收件 App 自身的政策。
 
 本地优先不等于零数据处理或零网络请求。经检查的源码没有分析、广告或广告追踪 SDK，也没有开发者运营的标签上传/分析接口；用户主动选择的接收端、浏览器同步服务和以下第三方服务仍可能收到数据。
 
@@ -18,9 +18,9 @@ Prospective public URL / 拟公开地址：[Chrome privacy page](https://djs321.
 
 | 数据 | 用途与范围 |
 | --- | --- |
-| 已打开标签的标题、URL、图标地址、窗口/分组标识、可用的最近访问时间 | 在弹窗/新标签页显示、搜索、分类、切换、归档和执行用户选择的单项或批量操作。不是读取浏览器完整历史记录。 |
-| 归档与撤销记录 | 保存标题、URL、图标地址（如有）、归档/关闭时间，以及记录中已有的备注/分组；撤销重新打开对应已保存 URL，不恢复浏览器全局最近关闭会话。 |
-| 快捷链接 | 保存标题、URL、图标地址、排序、分类及用户填写的可选提示词；用于个人导航。 |
+| 已打开标签的标题、URL、窗口/分组标识、可用的最近访问时间 | 在弹窗/新标签页显示、搜索、分类、切换、归档和执行用户选择的单项或批量操作。不是读取浏览器完整历史记录。 |
+| 归档与撤销记录 | 保存标题、URL、归档/关闭时间，以及记录中已有的备注/分组；撤销重新打开对应已保存 URL，不恢复浏览器全局最近关闭会话。 |
+| 快捷链接 | 保存标题、URL、排序、分类及用户填写的可选提示词；用于个人导航。 |
 | Chrome 书签 | 读取书签树、标题、URL、文件夹以展示和搜索；用户操作可新建书签/文件夹、修改或移动书签。书签仍归 Chrome 管理。 |
 | 用户选择页面的文章正文 | 仅在明确的提取/发送操作中，用随包的 Readability 与 Turndown 在浏览器内转成 Markdown，供该次发送使用；普通浏览不自动抓取所有页面正文。 |
 | 偏好、操作记录与站点规则 | 保存主题、布局、入口顺序、搜索引擎、壁纸、语录开关、App 地址、操作后关闭偏好、最近操作及站点对应的书签文件夹/导航分类。 |
@@ -43,7 +43,7 @@ URL、页面标题、正文、备注或提示词可能包含个人信息或带�
 | Hitokoto，一言：`v1.hitokoto.cn` | `enableRemoteQuotes` 默认 `false`。用户开启后，新标签页的每日一言功能请求语录及固定分类参数；标签列表和文章正文不作为该请求的参数。关闭语录开关可停止后续语录请求；“每日”不是每天仅请求一次的保证。 |
 | Unsplash：`images.unsplash.com`；Picsum：`picsum.photos` 及其图片/CDN 重定向接收方 | 用户选择在线壁纸后显示图片；打开皮肤对话框即可能加载 Unsplash 预设缩略图，无需先选中壁纸。在线图库、主题分类、翻页或悬停预览可请求 Picsum 列表/图片。默认无壁纸。选择“无壁纸”或本地图片可停止所选远程背景的后续加载，但再次打开皮肤对话框仍可能请求缩略图。 |
 | 用户配置的图片地址及其托管方 | 应用自定义图片 URL 后由浏览器加载该图片；本地上传的图片以 data URL 保存在本地，不为该功能上传。改为无壁纸/本地图片可避免后续自定义远程背景请求。 |
-| 原网站及其图标托管方 | 展示浏览器提供的图标地址或已保存快捷链接的图标时，浏览器可能发出图片请求；图标地址可由原网站使用的 CDN 提供。源码过滤部分 Google/gstatic 图标聚合地址，但不保证其他图标来源全部同域。没有独立的图标联网关闭开关；禁用扩展可停止其后续加载。 |
+| 网站图标 | 不产生网络请求。图标通过 `favicon` 权限从 Chrome 本地图标缓存（`_favicon`）读取，不访问原网站、CDN 或任何第三方图标服务；浏览器未缓存过的站点显示通用占位图标。旧版本保存的远程图标地址不再用于显示。 |
 | 用户选择的搜索服务 | 在新标签页提交搜索后，查询交给所选 Google、Bing、Baidu、GitHub 或 Perplexity；直接输入网址会导航到该地址。仅在本地过滤标签/书签而不提交外部搜索时，不会为此把搜索词发给搜索引擎。扩展不改 Chrome 地址栏的默认搜索引擎。 |
 | 本机 App 或用户配置且授权的 HTTPS 接收端 | 仅在用户执行发送/收集/工作区保存等含发送的操作时，向配置地址的 `/api/inbox` POST 标题、URL、可选备注及成功提取的 Markdown（如该操作包含提取），另含来源 `tab-butler`、时间戳及领域分类。部分批量/书签操作只发送标题与 URL。接收端按自身设置保存、同步或进一步处理；需向接收端删除已发送副本。 |
 
@@ -83,15 +83,15 @@ The App public key and actual endpoint are also local-only, outside settings syn
 
 ### 1. Scope and purpose
 
-This policy covers DJS321 Tabs for desktop Google Chrome: organizing tabs, archives, saved-URL undo, quick links, bookmarks, and optional sending. It replaces the new-tab page and currently has a Chinese interface. Local core features do not require the DJS 321 App. This policy does not replace the policies of Google Chrome, image/search providers, or a receiving App.
+This policy covers DJS321 Tabs for desktop Google Chrome: organizing tabs, archives, saved-URL undo, quick links, bookmarks, and optional sending. It replaces the new-tab page and shows a Chinese or English interface following the browser language. Local core features do not require the DJS 321 App. This policy does not replace the policies of Google Chrome, image/search providers, or a receiving App.
 
 Local-first does not mean zero data handling or zero network requests. The inspected source has no analytics, advertising, or ad-tracking SDK and no developer-operated tab-upload/analytics endpoint. User-selected recipients, browser sync, and the services below may nevertheless receive information.
 
 ### 2. Data accessed and used
 
-The extension reads open-tab titles, URLs, favicon URLs, window/group identifiers and available last-access times for display, local search, grouping, switching and selected actions. It does not read the browser's full history database. Archives hold titles, URLs, available favicon URLs, archive times and any existing note/group fields; undo holds titles, URLs and close times. Undo reopens the corresponding saved URL, not the browser-global recently closed session.
+The extension reads open-tab titles, URLs, window/group identifiers and available last-access times for display, local search, grouping, switching and selected actions. It does not read the browser's full history database. Archives hold titles, URLs, archive times and any existing note/group fields; undo holds titles, URLs and close times. Undo reopens the corresponding saved URL, not the browser-global recently closed session.
 
-Quick links store titles, URLs, icon URLs, order, categories and optional user-entered prompts. Chrome bookmarks are read for browsing/search; user actions can create bookmarks/folders, edit or move bookmarks. They remain browser-managed bookmarks. Preferences and local action/rule records support layout, theme, navigation, search, wallpaper, quotes, App configuration, close-after-action and preferred site destinations.
+Quick links store titles, URLs, order, categories and optional user-entered prompts. Chrome bookmarks are read for browsing/search; user actions can create bookmarks/folders, edit or move bookmarks. They remain browser-managed bookmarks. Preferences and local action/rule records support layout, theme, navigation, search, wallpaper, quotes, App configuration, close-after-action and preferred site destinations.
 
 Only an explicit extraction/send action processes a selected page with bundled Readability and Turndown to produce Markdown for that send. Normal browsing does not automatically extract every page. URLs, titles, articles, notes and prompts can contain personal information or token-bearing links. The inspected source does not specifically collect passwords, payment forms or cookies, but user-selected content may itself contain sensitive information.
 
@@ -109,7 +109,7 @@ Permission does not itself start extraction or sending. Deny optional access or 
 - Hitokoto (`v1.hitokoto.cn`): `enableRemoteQuotes` defaults to `false`. Enabling it allows new-tab quote requests with fixed category parameters, not tab lists or article bodies. Disable the switch to stop future requests. “Daily quote” does not promise only one request per day.
 - Unsplash (`images.unsplash.com`) and Picsum (`picsum.photos`, including image/CDN redirect recipients): selected remote wallpapers load images; simply opening the skin dialog may load Unsplash preset thumbnails before any selection. Online gallery, theme, pagination and hover previews can load Picsum lists/images. The default has no wallpaper. Choosing no wallpaper or a local image stops future selected remote-background loads, but reopening the skin dialog may still load thumbnails.
 - Custom image hosts: applying a remote image URL loads it from its host. A local image is stored as a local data URL, not uploaded for this feature. Switch to no wallpaper/a local image to avoid future custom remote-background loads.
-- Original websites and their icon hosts/CDNs: rendering browser-provided or saved quick-link favicon URLs may request images. Some Google/gstatic aggregator URLs are filtered, not every possible third-party icon host. There is no separate favicon-network switch; disabling the extension stops its future loads.
+- Site icons: no network requests. Icons are read from Chrome's local favicon cache (`_favicon`, via the `favicon` permission), never from the original website, a CDN or a third-party icon service. Sites the browser has not cached show a generic placeholder. Remote icon URLs saved by older versions are no longer displayed.
 - Chosen search provider: submitting new-tab search sends the query to Google, Bing, Baidu, GitHub or Perplexity as selected; an address navigates directly to that site. Local tab/bookmark filtering without external submission does not send the query to a search engine. Chrome's address-bar default search provider is not changed.
 - Local App or authorized configured HTTPS recipient: an explicit send/collect/workspace action that includes sending POSTs to the configured `/api/inbox`. The payload has title, URL, an optional note when supplied, and successfully extracted Markdown when included by that action, plus `tab-butler` source, timestamp and area/category. Some batch/bookmark actions send title/URL only. The recipient's own storage/sync/processing rules apply.
 

@@ -1,5 +1,5 @@
 import { TabGroup, hostname } from '../groupers'
-import { getRenderableFaviconUrl } from '../../lib/favicon'
+import { localFaviconUrl } from '../../lib/favicon'
 import { t } from '../../lib/i18n'
 
 interface Props {
@@ -28,8 +28,8 @@ export function KanbanView({ groups, onSwitch, onClose, onSend, selectedIds, onA
             {group.tabs.map(tab => (
               <div key={tab.id} data-tab-id={tab.id} className={`kanban-card ${tab.id && selectedIds.has(tab.id) ? 'selected' : ''}`} onClick={() => onSwitch(tab)}>
                 <div className="kanban-card-top">
-                  {getRenderableFaviconUrl(tab.favIconUrl)
-                    ? <img className="tab-favicon" src={getRenderableFaviconUrl(tab.favIconUrl)} alt=""
+                  {localFaviconUrl(tab.url)
+                    ? <img className="tab-favicon" src={localFaviconUrl(tab.url)} alt=""
                         onError={e => { e.currentTarget.style.display = 'none' }} />
                     : <div className="tab-favicon-ph" />
                   }

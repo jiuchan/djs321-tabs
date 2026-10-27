@@ -18,7 +18,6 @@ included in settings sync or JSON backups.
 
 | What | When | Where it goes |
 |---|---|---|
-| Site icons | When tabs or quick links are shown | The icon URL the browser reports for that page, usually the website itself. Google's favicon service is filtered out. *Planned:* read icons from the browser's local `_favicon` API instead. |
 | Preset wallpapers | When you open the skin panel, or when a preset wallpaper is selected | `images.unsplash.com`. The default is no wallpaper. *Planned:* bundle a few CC0 images and make the online source opt-in with attribution. |
 | Online wallpaper gallery | Only when you open the gallery tab in the skin panel | `picsum.photos` |
 | Daily quote | Off by default; only when you enable it | `v1.hitokoto.cn`, without cookies or tab data |
@@ -27,13 +26,16 @@ included in settings sync or JSON backups.
 | Custom HTTPS endpoint | Only when you configure one and click send | The tabs you choose to send, to the exact HTTPS address you configured; the browser asks for permission for that site first |
 | Capture page text | Only when you trigger it | Runs locally with bundled Readability and Turndown; nothing leaves the browser unless you also send it |
 
+Site icons are read from the browser's local favicon cache (`_favicon`) and cause no network
+requests, neither to the website itself nor to an icon service.
+
 Any website or service you contact this way receives your IP address and normal request headers, as
 with any web request.
 
 ## Permissions
 
 Requested at install: `tabs`, `tabGroups`, `storage`, `notifications`, `downloads`, `bookmarks`,
-`activeTab`, `scripting`, and `http://localhost/*` for the desktop app connection. Access to other
+`activeTab`, `scripting`, `favicon` (site icons from the browser's local cache, no network request), and `http://localhost/*` for the desktop app connection. Access to other
 websites is optional and requested per site when you capture or send; revoke it in the extension
 settings or the browser's extension page. *Planned:* move `notifications`, `downloads` and the
 localhost permission to optional permissions requested on first use.

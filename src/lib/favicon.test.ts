@@ -1,25 +1,51 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-import {
-  getRenderableFaviconUrl,
-  isNoisyFaviconServiceUrl,
-  pickPersistableFaviconUrl,
-} from './favicon.ts'
+import { getQuickLinkFallbackLabel, localFaviconUrl } from './favicon.ts'
 
-test('isNoisyFaviconServiceUrl detects Google favicon service URLs that can spam 404s', () => {
-  assert.equal(isNoisyFaviconServiceUrl('https://www.google.com/s2/favicons?sz=64&domain_url=example.com'), true)
-  assert.equal(isNoisyFaviconServiceUrl('https://t1.gstatic.com/faviconV2?client=SOCIAL&url=http://example.com&size=64'), true)
-  assert.equal(isNoisyFaviconServiceUrl('https://example.com/favicon.ico'), false)
+const root = fileURLToPath(new URL('../../', import.meta.url))
+
+test('localFaviconUrl is unavailable outside the extension', () => {
+  assert.equal(localFaviconUrl('https://example.com/'), undefined)
 })
 
-test('getRenderableFaviconUrl hides noisy favicon service URLs but keeps normal icons', () => {
-  assert.equal(getRenderableFaviconUrl('https://www.google.com/s2/favicons?sz=64&domain_url=example.com'), undefined)
-  assert.equal(getRenderableFaviconUrl('https://example.com/favicon.ico'), 'https://example.com/favicon.ico')
+test('localFaviconUrl builds a _favicon URL for web pages only', () => {
+  const g = globalThis as { chrome?: unknown }
+  const previous = g.chrome
+  g.chrome = { runtime: { getURL: (path: string) => `chrome-extension://abc${path}` } }
+  try {
+    const url = new URL(localFaviconUrl('https://example.com/a?b=1#c', 64)!)
+    assert.ok(url.href.startsWith('chrome-extension://abc/_favicon/?'))
+    assert.equal(url.searchParams.get('pageUrl'), 'https://example.com/a?b=1#c')
+    assert.equal(url.searchParams.get('size'), '64')
+    assert.equal(localFaviconUrl('chrome://settings'), undefined)
+    assert.equal(localFaviconUrl('javascript:alert(1)'), undefined)
+    assert.equal(localFaviconUrl(undefined), undefined)
+  } finally {
+    g.chrome = previous
+  }
 })
 
-test('pickPersistableFaviconUrl avoids creating Google fallback icon URLs', () => {
-  assert.equal(pickPersistableFaviconUrl('https://example.com/favicon.ico'), 'https://example.com/favicon.ico')
-  assert.equal(pickPersistableFaviconUrl('https://t3.gstatic.com/faviconV2?url=http://example.com'), undefined)
-  assert.equal(pickPersistableFaviconUrl(undefined), undefined)
+test('quick link fallback label uses the first letter or digit', () => {
+  assert.equal(getQuickLinkFallbackLabel('github', ''), 'G')
+  assert.equal(getQuickLinkFallbackLabel('', 'https://9gag.com'), 'H')
+})
+
+test('manifest requests the favicon permission', () => {
+  const manifest = JSON.parse(readFileSync(join(root, 'public/manifest.json'), 'utf8'))
+  assert.ok(manifest.permissions.includes('favicon'))
+})
+
+// 渲染图标不得再使用浏览器上报的远程地址或第三方图标服务
+test('UI never renders remote favicon URLs', () => {
+  const files = (dir: string): string[] => readdirSync(dir).flatMap(name => {
+    const path = join(dir, name)
+    return statSync(path).isDirectory() ? files(path) : /\.tsx?$/.test(name) && !name.endsWith('.test.ts') ? [path] : []
+  })
+  for (const file of files(join(root, 'src'))) {
+    assert.doesNotMatch(readFileSync(file, 'utf8'), /favIconUrl|s2\/favicons|gstatic\.com/, file)
+  }
 })

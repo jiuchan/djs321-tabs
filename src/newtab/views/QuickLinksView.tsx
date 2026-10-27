@@ -4,7 +4,7 @@ import { QuickLink } from '../../types'
 import { hostname } from '../groupers'
 import { CATEGORY_RULES, DEFAULT_CATEGORY_ID, categoryLabel, inferPageCategory } from '../../lib/page-category'
 import { t, plural } from '../../lib/i18n'
-import { getQuickLinkFallbackLabel, getRenderableFaviconUrl, pickPersistableFaviconUrl } from '../../lib/favicon'
+import { getQuickLinkFallbackLabel, localFaviconUrl } from '../../lib/favicon'
 import { Dialog } from './Dialog'
 
 // ─── 布局模式类型 ───────────────────────────────────────────────
@@ -12,7 +12,7 @@ type LayoutMode = 'grid' | 'list2'
 
 function QuickLinkIcon({ link, size }: { link: QuickLink; size: number }) {
   const [failed, setFailed] = useState(false)
-  const iconUrl = failed ? undefined : getRenderableFaviconUrl(link.iconUrl)
+  const iconUrl = failed ? undefined : localFaviconUrl(link.url, Math.max(32, size * 2))
 
   if (!iconUrl) {
     return (
@@ -132,8 +132,6 @@ export function QuickLinksView() {
     let url = newLinkUrl
     if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url
     const domain = new URL(url).hostname
-    const existingLink = editingLinkId ? quickLinks.find(link => link.id === editingLinkId) : undefined
-    const iconUrl = pickPersistableFaviconUrl(existingLink?.iconUrl)
     let category = newLinkCategory.trim() || undefined
     if (!category) {
       const inferred = inferPageCategory(url, newLinkTitle)
@@ -141,11 +139,12 @@ export function QuickLinksView() {
     }
     const prompt = newLinkPrompt.trim() || undefined
     if (editingLinkId) {
-      const updated = { url, title: newLinkTitle || domain, iconUrl, category, prompt }
+      // 旧版保存的远程图标地址不再使用，编辑时一并清掉
+      const updated = { url, title: newLinkTitle || domain, iconUrl: undefined, category, prompt }
       await db.quickLinks.update(editingLinkId, updated)
     } else {
       const order = quickLinks.length > 0 ? Math.max(...quickLinks.map(l => l.order)) + 1 : 0
-      await db.quickLinks.add({ url, title: newLinkTitle || domain, iconUrl, order, category, prompt })
+      await db.quickLinks.add({ url, title: newLinkTitle || domain, order, category, prompt })
     }
     setIsAddingLink(false); setEditingLinkId(null)
     setNewLinkUrl(''); setNewLinkTitle(''); setNewLinkCategory(''); setNewLinkPrompt('')

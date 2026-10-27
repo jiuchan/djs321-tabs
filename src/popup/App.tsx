@@ -7,7 +7,7 @@ import { db } from '../lib/db'
 import { ArchivedTab, QuickLink } from '../types'
 import { sendToJustDoIt, extractMarkdownFromTab } from '../lib/justdoit'
 import { requestTabAction } from '../lib/tab-actions'
-import { getRenderableFaviconUrl, pickPersistableFaviconUrl } from '../lib/favicon'
+import { localFaviconUrl } from '../lib/favicon'
 import {
   buildBookmarkRuleSummaries,
   buildQuickLinkCategoryOptions,
@@ -559,13 +559,11 @@ export default function App() {
       }
     }
 
-    const iconUrl = pickPersistableFaviconUrl(tab.favIconUrl)
     const order = quickLinks.length > 0 ? Math.max(...quickLinks.map(link => link.order)) + 1 : 0
 
     const rawId = await db.quickLinks.add({
       url: tab.url || '',
       title,
-      iconUrl,
       order,
       category,
     })
@@ -575,7 +573,6 @@ export default function App() {
       id,
       url: tab.url || '',
       title,
-      iconUrl,
       order,
       category,
     }
@@ -1033,7 +1030,6 @@ export default function App() {
             return {
               url: tab.url || '',
               title: getTabTitle(tab),
-              iconUrl: pickPersistableFaviconUrl(tab.favIconUrl),
               order: baseOrder + index,
               category: resolvePreferredQuickLinkCategoryForUrl(
                 tab.url || '',
@@ -1085,7 +1081,6 @@ export default function App() {
           return {
             url: tab.url || '',
             title: getTabTitle(tab),
-            iconUrl: pickPersistableFaviconUrl(tab.favIconUrl),
             order: baseOrder + index,
             category: resolvePreferredQuickLinkCategoryForUrl(
               tab.url || '',
@@ -1133,7 +1128,6 @@ export default function App() {
           creatableTabs.map((tab, index) => ({
             url: tab.url || '',
             title: getTabTitle(tab),
-            iconUrl: pickPersistableFaviconUrl(tab.favIconUrl),
             order: baseOrder + index,
             category: resolvePreferredQuickLinkCategoryForUrl(tab.url || '', quickLinkCategoryPrefsRef.current, inferQuickLinkCategory(tab, quickLinks)),
           })),
@@ -1190,7 +1184,7 @@ export default function App() {
     )
   }
 
-  const curFavicon = getRenderableFaviconUrl(currentTab?.favIconUrl)
+  const curFavicon = localFaviconUrl(currentTab?.url)
   // 计数要单独加粗，按 {count} 把文案切成前后两段
   const [selectedCountBefore = '', selectedCountAfter = ''] = t('popup_selectedCount').split('{count}')
 
@@ -1477,7 +1471,7 @@ export default function App() {
                 <div className="pop-empty"><div className="pop-empty-icon">{query.trim() ? <SearchX size={26} strokeWidth={1.6} aria-hidden="true" /> : <PanelsTopLeft size={26} strokeWidth={1.6} aria-hidden="true" />}</div>{query.trim() ? t('popup_noMatchingTabs') : t('popup_noTabsInWindow')}</div>
               ) : filteredOpen.map(tab => {
                 const selected = typeof tab.id === 'number' && selectedTabIds.includes(tab.id)
-                const favicon = getRenderableFaviconUrl(tab.favIconUrl)
+                const favicon = localFaviconUrl(tab.url)
                 return (
                   <div key={tab.id} className={`pop-tab-row${selected ? ' selected' : ''}`}>
                     <input type="checkbox" className="pop-tab-checkbox" aria-label={t('popup_selectTab', { title: getTabTitle(tab) })}

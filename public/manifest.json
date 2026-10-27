@@ -35,7 +35,8 @@
     "downloads",
     "bookmarks",
     "activeTab",
-    "scripting"
+    "scripting",
+    "favicon"
   ],
   "host_permissions": [
     "http://localhost/*"

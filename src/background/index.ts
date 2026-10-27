@@ -24,7 +24,7 @@ async function archiveTab(tab: chrome.tabs.Tab, close = false) {
   const url = tab.url!
   let undoId: number | undefined
   await db.transaction('rw', db.archived, db.undo, async () => {
-    await db.archived.add({ title: tab.title || url, url, favicon: tab.favIconUrl, archivedAt: new Date() })
+    await db.archived.add({ title: tab.title || url, url, archivedAt: new Date() })
     if (close) {
       const id = await db.undo.add({ title: tab.title || url, url, closedAt: new Date() })
       if (typeof id !== 'number') throw new Error(t('bg_undoSaveFailed'))
