@@ -1727,5 +1727,17 @@
   },
   "bookmarks_bookmarks": {
     "message": "Bookmarks"
+  },
+  "cmdArchiveTab": {
+    "message": "Archive the current tab (keep it open)",
+    "description": "Keyboard shortcut description"
+  },
+  "cmdCloseAndArchive": {
+    "message": "Close and archive the current tab",
+    "description": "Keyboard shortcut description"
+  },
+  "cmdSendToApp": {
+    "message": "Send the current tab to the DJS 321 inbox",
+    "description": "Keyboard shortcut description"
   }
 }

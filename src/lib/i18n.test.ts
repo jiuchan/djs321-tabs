@@ -76,3 +76,14 @@ test('UI sources contain no hard-coded Chinese', () => {
   }
   assert.deepEqual(offenders, [])
 })
+
+test('manifest text fields come from _locales', () => {
+  const manifest = JSON.parse(readFileSync(join(root, 'public/manifest.json'), 'utf8'))
+  const en = messages('en')
+  const fields = [manifest.name, manifest.description, ...Object.values(manifest.commands ?? {}).map(c => (c as { description?: string }).description)]
+  for (const value of fields.filter(Boolean)) {
+    const match = /^__MSG_(\w+)__$/.exec(value)
+    assert.ok(match, `manifest text "${value}" is not localized`)
+    assert.ok(en[match[1]], `missing message ${match[1]}`)
+  }
+})

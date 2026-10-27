@@ -1727,5 +1727,17 @@
   },
   "bookmarks_bookmarks": {
     "message": "书签"
+  },
+  "cmdArchiveTab": {
+    "message": "归档当前 Tab（不关闭）",
+    "description": "快捷键说明"
+  },
+  "cmdCloseAndArchive": {
+    "message": "关闭并归档当前 Tab",
+    "description": "快捷键说明"
+  },
+  "cmdSendToApp": {
+    "message": "将当前 Tab 发送到倒计时321收件箱",
+    "description": "快捷键说明"
   }
 }

@@ -48,15 +48,15 @@
   "commands": {
     "archive-tab": {
       "suggested_key": { "default": "Alt+Shift+W" },
-      "description": "归档当前 Tab（不关闭）"
+      "description": "__MSG_cmdArchiveTab__"
     },
     "close-and-archive": {
       "suggested_key": { "default": "Alt+Shift+X" },
-      "description": "关闭并归档当前 Tab"
+      "description": "__MSG_cmdCloseAndArchive__"
     },
     "send-to-justdoit": {
       "suggested_key": { "default": "Alt+Shift+J" },
-      "description": "将当前 Tab 发送到倒计时321收件箱"
+      "description": "__MSG_cmdSendToApp__"
     }
   }
 }
