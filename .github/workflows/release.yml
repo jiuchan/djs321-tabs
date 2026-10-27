@@ -1,0 +1,60 @@
+name: Release
+
+# Push a tag like v1.1.0 to build, package and publish a GitHub release.
+# Release notes come from docs/releases/<tag>.md.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Package and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Tag matches package and manifest version
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          test "$(node -p "require('./package.json').version")" = "$VERSION"
+          test "$(node -p "require('./public/manifest.json').version")" = "$VERSION"
+          test -f "docs/releases/${GITHUB_REF_NAME}.md"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Package
+        run: |
+          ZIP="djs321-tabs-${VERSION}.zip"
+          node scripts/package-preview.mjs "$PWD/release/$ZIP"
+          (cd release && sha256sum "$ZIP" > "$ZIP.sha256")
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" release/* \
+            --title "DJS321 Tabs ${VERSION}" \
+            --notes-file "docs/releases/${GITHUB_REF_NAME}.md" \
+            --prerelease --verify-tag

@@ -6,7 +6,7 @@ DJS 321 desktop app is optional.
 
 中文说明见 [README.zh-CN.md](README.zh-CN.md)。
 
-> **Status: pre-release.** Version 1.0.1 is not yet in the Chrome Web Store or Edge Add-ons. The interface
+> **Status: pre-release.** Version 1.1.0 is not yet in the Chrome Web Store or Edge Add-ons. The interface
 > follows the browser language (English or Simplified Chinese). See [PRIVACY.md](PRIVACY.md)
 > for the network requests the current version makes.
 

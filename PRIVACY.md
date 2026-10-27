@@ -1,6 +1,6 @@
 # Privacy
 
-> **Pre-release (1.0.1).** This page describes what the current code does. The goal for the first
+> **Pre-release (1.1.0).** This page describes what the current code does. The goal for the first
 > store release is **zero third-party requests with default settings**; the items marked *planned*
 > below track the remaining work.
 
