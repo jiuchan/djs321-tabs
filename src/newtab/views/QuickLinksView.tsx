@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { db } from '../../lib/db'
 import { QuickLink } from '../../types'
 import { hostname } from '../groupers'
-import { CATEGORY_RULES, inferPageCategory } from '../../lib/page-category'
+import { CATEGORY_RULES, DEFAULT_CATEGORY_ID, categoryLabel, inferPageCategory } from '../../lib/page-category'
+import { t, plural } from '../../lib/i18n'
 import { getQuickLinkFallbackLabel, getRenderableFaviconUrl, pickPersistableFaviconUrl } from '../../lib/favicon'
 import { Dialog } from './Dialog'
 
@@ -101,11 +102,13 @@ export function QuickLinksView() {
     localStorage.setItem('ql_layout', mode)
   }
 
-  const builtinCategories = CATEGORY_RULES.map(([label]) => label)
+  // 未分类链接的分组键：沿用本地化的「默认」标签，中文环境与旧版 ql_category_order 保持一致
+  const defaultCategory = categoryLabel(DEFAULT_CATEGORY_ID)
+  const builtinCategories = CATEGORY_RULES.map(([id]) => categoryLabel(id))
   const userCategories = quickLinks.map(l => l.category).filter(Boolean) as string[]
   const categories = Array.from(new Set([...builtinCategories, ...userCategories]))
 
-  const displayCategories = Array.from(new Set(quickLinks.map(l => l.category || '默认')))
+  const displayCategories = Array.from(new Set(quickLinks.map(l => l.category || defaultCategory)))
   
   // 对 displayCategories 进行排序
   const sortedDisplayCategories = [...displayCategories].sort((a, b) => {
@@ -118,7 +121,7 @@ export function QuickLinksView() {
   })
 
   const groupedLinks = displayCategories.reduce((acc, cat) => {
-    acc[cat] = quickLinks.filter(l => (l.category || '默认') === cat)
+    acc[cat] = quickLinks.filter(l => (l.category || defaultCategory) === cat)
     return acc
   }, {} as Record<string, QuickLink[]>)
 
@@ -134,7 +137,7 @@ export function QuickLinksView() {
     let category = newLinkCategory.trim() || undefined
     if (!category) {
       const inferred = inferPageCategory(url, newLinkTitle)
-      category = inferred === '默认' ? undefined : inferred
+      category = inferred === defaultCategory ? undefined : inferred
     }
     const prompt = newLinkPrompt.trim() || undefined
     if (editingLinkId) {
@@ -295,11 +298,11 @@ export function QuickLinksView() {
             <span className="ql-link-label">{link.title}</span>
             {layoutMode === 'list2' && <span className="ql-link-url">{hostname(link.url)}</span>}
           </div>
-          {link.prompt && <div className="ql-tooltip"><span>提示词</span>{link.prompt}</div>}
+          {link.prompt && <div className="ql-tooltip"><span>{t('quicklinks_promptLabel')}</span>{link.prompt}</div>}
         </a>
         <div className="ql-entry-actions">
-          <button onClick={e => handleEditQuickLink(e, link)} className="ql-edit-btn" aria-label={`编辑 ${link.title}`} title="编辑导航">✎</button>
-          <button onClick={e => handleRemoveQuickLink(e, link.id)} className="ql-delete-btn" aria-label={`删除 ${link.title}`} title="删除导航">×</button>
+          <button onClick={e => handleEditQuickLink(e, link)} className="ql-edit-btn" aria-label={t('quicklinks_editNamed', { title: link.title })} title={t('quicklinks_editLink')}>✎</button>
+          <button onClick={e => handleRemoveQuickLink(e, link.id)} className="ql-delete-btn" aria-label={t('quicklinks_deleteNamed', { title: link.title })} title={t('quicklinks_deleteLink')}>×</button>
         </div>
       </div>
     )
@@ -311,11 +314,11 @@ export function QuickLinksView() {
 
       {/* ─── 顶部工具栏：布局切换 ─── */}
       <div className="ql-toolbar">
-        <span className="ql-summary">{quickLinks.length} 个网站 · {displayCategories.length} 个分类</span>
-        <div className="ql-layout-controls" role="group" aria-label="导航布局">
+        <span className="ql-summary">{plural('quicklinks_siteCount_one', 'quicklinks_siteCount_other', quickLinks.length)} · {plural('quicklinks_categoryCount_one', 'quicklinks_categoryCount_other', displayCategories.length)}</span>
+        <div className="ql-layout-controls" role="group" aria-label={t('quicklinks_layout')}>
         <button
           onClick={() => switchLayout('grid')}
-          title="宫格模式"
+          title={t('quicklinks_gridMode')}
           aria-pressed={layoutMode === 'grid'}
           style={{
             padding: '4px 10px', borderRadius: 'var(--lg-radius-sm)', border: 'none', cursor: 'pointer', fontSize: '12px',
@@ -323,10 +326,10 @@ export function QuickLinksView() {
             color: layoutMode === 'grid' ? 'var(--text-on-accent, #fff)' : 'var(--workspace-muted)',
             transition: 'background 0.15s',
           }}
-        >⊕ 宫格</button>
+        >⊕ {t('quicklinks_grid')}</button>
         <button
           onClick={() => switchLayout('list2')}
-          title="双列模式"
+          title={t('quicklinks_listMode')}
           aria-pressed={layoutMode === 'list2'}
           style={{
             padding: '4px 10px', borderRadius: 'var(--lg-radius-sm)', border: 'none', cursor: 'pointer', fontSize: '12px',
@@ -334,9 +337,9 @@ export function QuickLinksView() {
             color: layoutMode === 'list2' ? 'var(--text-on-accent, #fff)' : 'var(--workspace-muted)',
             transition: 'background 0.15s',
           }}
-        >⊟ 双列</button>
+        >⊟ {t('quicklinks_list')}</button>
         </div>
-        <button className="nt-batch-btn" onClick={() => setIsAddingLink(true)}>＋ 添加网站</button>
+        <button className="nt-batch-btn" onClick={() => setIsAddingLink(true)}>＋ {t('quicklinks_addSite')}</button>
       </div>
 
       {/* ─── 分类分组 ─── */}
@@ -356,7 +359,7 @@ export function QuickLinksView() {
             onDrop={(e) => onGroupDrop(e, cat)}
             onDragEnd={onGroupDragEnd}
           >
-            {(sortedDisplayCategories.length > 1 || cat !== '默认') && (
+            {(sortedDisplayCategories.length > 1 || cat !== defaultCategory) && (
               <h4
                 style={{
                   margin: '0 0 12px 0', fontSize: '13px', color: 'var(--workspace-muted)',
@@ -371,7 +374,7 @@ export function QuickLinksView() {
                   <span style={{ fontSize: '10px' }}>{collapsedCategories.has(cat) ? '▶' : '▼'}</span> {cat}
                 </button>
                 <span className="ql-category-count">{groupedLinks[cat].length}</span>
-                <span style={{ marginInlineStart: 'auto', fontSize: '12px', color: 'var(--workspace-muted)', cursor: 'grab', opacity: 0.5, padding: '0 4px' }} title="拖动以排序">⠿</span>
+                <span style={{ marginInlineStart: 'auto', fontSize: '12px', color: 'var(--workspace-muted)', cursor: 'grab', opacity: 0.5, padding: '0 4px' }} title={t('quicklinks_dragToSort')}>⠿</span>
               </h4>
             )}
 
@@ -388,7 +391,7 @@ export function QuickLinksView() {
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
         <button
           onClick={() => setIsAddingLink(true)}
-          title="添加常用网站"
+          title={t('quicklinks_addFavoriteSite')}
           style={{
             width: '56px', height: '56px', borderRadius: 'var(--lg-radius-md)',
             background: 'var(--lg-fill)', border: '1px dashed var(--lg-stroke)',
@@ -404,25 +407,26 @@ export function QuickLinksView() {
         {quickLinks.length === 0 && (
           <button
             onClick={async () => {
+              const geekCategory = t('quicklinks_geekCommunity')
               await db.quickLinks.clear()
               await db.quickLinks.bulkAdd([
-                { title: 'NodeSeek', url: 'https://www.nodeseek.com/', iconUrl: 'https://www.nodeseek.com/favicon.ico', category: '🔥 极客社区', order: 0 },
-                { title: 'LINUX DO', url: 'https://linux.do/', iconUrl: 'https://linux.do/favicon.ico', category: '🔥 极客社区', order: 1 },
-                { title: 'V2EX',     url: 'https://v2ex.com/', iconUrl: 'https://v2ex.com/static/favicon.ico', category: '🔥 极客社区', order: 2 },
+                { title: 'NodeSeek', url: 'https://www.nodeseek.com/', iconUrl: 'https://www.nodeseek.com/favicon.ico', category: geekCategory, order: 0 },
+                { title: 'LINUX DO', url: 'https://linux.do/', iconUrl: 'https://linux.do/favicon.ico', category: geekCategory, order: 1 },
+                { title: 'V2EX',     url: 'https://v2ex.com/', iconUrl: 'https://v2ex.com/static/favicon.ico', category: geekCategory, order: 2 },
               ])
               loadLinks()
             }}
             className="nt-batch-btn"
             style={{ padding: '0 16px', height: '36px', borderRadius: '18px', background: 'var(--bg-hover)', color: 'var(--text-primary)' }}
           >
-            🪄 一键填充极客社区
+            {t('quicklinks_fillGeekCommunity')}
           </button>
         )}
       </div>
 
       {/* ─── 模态窗：添加/编辑表单 ─── */}
       {isAddingLink && (
-        <Dialog label={editingLinkId ? '编辑导航' : '添加导航'}
+        <Dialog label={editingLinkId ? t('quicklinks_editLink') : t('quicklinks_addLink')}
           onClose={() => { setIsAddingLink(false); setEditingLinkId(null); setNewLinkUrl(''); setNewLinkTitle(''); setNewLinkCategory(''); setNewLinkPrompt(''); setShowNewCatInput(false) }}
         >
           <form
@@ -436,21 +440,21 @@ export function QuickLinksView() {
             }}
           >
             <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>
-              {editingLinkId ? '编辑导航' : '添加导航'}
+              {editingLinkId ? t('quicklinks_editLink') : t('quicklinks_addLink')}
             </h3>
             
-            <input autoFocus aria-label="网址" required placeholder="网址 (如 github.com)" value={newLinkUrl}
+            <input autoFocus aria-label={t('quicklinks_url')} required placeholder={t('quicklinks_urlPlaceholder')} value={newLinkUrl}
               onChange={e => setNewLinkUrl(e.target.value)}
               style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--lg-stroke)', background: 'transparent', color: 'var(--text-primary)' }} />
             
-            <input aria-label="标题" placeholder="标题 (可选)" value={newLinkTitle}
+            <input aria-label={t('quicklinks_titleLabel')} placeholder={t('quicklinks_titlePlaceholder')} value={newLinkTitle}
               onChange={e => setNewLinkTitle(e.target.value)}
               style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--lg-stroke)', background: 'transparent', color: 'var(--text-primary)' }} />
             
             {/* 分类选择：已有分类时显示 select，选"新建"后切换到 input */}
             {categories.length > 0 && !showNewCatInput ? (
               <select
-                aria-label="导航分类"
+                aria-label={t('quicklinks_category')}
                 value={categories.includes(newLinkCategory) ? newLinkCategory : categories[0]}
                 onChange={e => {
                   if (e.target.value === '__new__') {
@@ -463,13 +467,13 @@ export function QuickLinksView() {
                 style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--lg-stroke)', background: 'var(--bg-card-solid)', color: 'var(--text-primary)', width: '100%', cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none', backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center', paddingRight: '32px' }}
               >
                 {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                <option value="__new__">＋ 新建分类...</option>
+                <option value="__new__">＋ {t('quicklinks_newCategoryOption')}</option>
               </select>
             ) : (
               <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                 <input
-                  aria-label="新分类名称"
-                  placeholder="输入新分类名称..."
+                  aria-label={t('quicklinks_newCategoryName')}
+                  placeholder={t('quicklinks_newCategoryPlaceholder')}
                   value={newLinkCategory}
                   onChange={e => setNewLinkCategory(e.target.value)}
                   style={{ flex: 1, padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-primary)' }}
@@ -479,23 +483,23 @@ export function QuickLinksView() {
                 {categories.length > 0 && (
                   <button type="button" onClick={() => { setShowNewCatInput(false); setNewLinkCategory(categories[0]) }}
                     style={{ padding: '6px 10px', borderRadius: '8px', border: '1px solid var(--lg-stroke)', background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '12px', whiteSpace: 'nowrap' }}
-                  >返回选择</button>
+                  >{t('quicklinks_backToSelect')}</button>
                 )}
               </div>
             )}
             
-            <textarea aria-label="提示词" placeholder="输入提示词（鼠标悬浮时展示）..." value={newLinkPrompt}
+            <textarea aria-label={t('quicklinks_promptLabel')} placeholder={t('quicklinks_promptPlaceholder')} value={newLinkPrompt}
               onChange={e => setNewLinkPrompt(e.target.value)}
               rows={3}
               style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'transparent', color: 'var(--text-primary)', resize: 'vertical' }} />
             
             <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
               <button type="submit" className="nt-batch-btn primary" style={{ flex: 1, height: '36px' }}>
-                {editingLinkId ? '保存更改' : '确认添加'}
+                {editingLinkId ? t('quicklinks_saveChanges') : t('quicklinks_confirmAdd')}
               </button>
               <button type="button" className="nt-batch-btn" style={{ flex: 1, height: '36px' }}
                 onClick={() => { setIsAddingLink(false); setEditingLinkId(null); setNewLinkUrl(''); setNewLinkTitle(''); setNewLinkCategory(''); setNewLinkPrompt(''); setShowNewCatInput(false) }}>
-                取消
+                {t('common_cancel')}
               </button>
             </div>
           </form>

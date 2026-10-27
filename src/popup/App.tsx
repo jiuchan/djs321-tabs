@@ -36,7 +36,8 @@ import {
   uniqueTabsByUrl,
   urlsMatch,
 } from './helpers'
-import { inferPageCategory } from '../lib/page-category'
+import { categoryLabel, DEFAULT_CATEGORY_ID, inferPageCategory, inferPageCategoryId } from '../lib/page-category'
+import { plural, t, uiLocale } from '../lib/i18n'
 import { bookmarkRecommendationLabel, collectBookmarkMatches, recommendBookmarkFolder } from './bookmark-recommendation'
 
 type ViewMode = 'open' | 'archived'
@@ -54,7 +55,7 @@ function isSupportedTab(tab?: chrome.tabs.Tab | null): tab is chrome.tabs.Tab {
 }
 
 function getTabTitle(tab?: chrome.tabs.Tab | null) {
-  return tab?.title?.trim() || tab?.url || '未命名页面'
+  return tab?.title?.trim() || tab?.url || t('popup_untitledPage')
 }
 
 function inferQuickLinkCategory(tab: chrome.tabs.Tab, quickLinks: QuickLink[]) {
@@ -104,7 +105,7 @@ export default function App() {
   })
   const [currentQuickLink, setCurrentQuickLink] = useState<QuickLink | null>(null)
   const [currentBookmark, setCurrentBookmark] = useState<{ id: string; title: string; folderId: string; folderPath: string } | null>(null)
-  const [suggestedQuickLinkCategory, setSuggestedQuickLinkCategory] = useState('默认')
+  const [suggestedQuickLinkCategory, setSuggestedQuickLinkCategory] = useState(() => categoryLabel(DEFAULT_CATEGORY_ID))
   const [closeAfterAction, setCloseAfterAction] = useState(false)
   const [recentActions, setRecentActions] = useState<RecentAction[]>([])
   const [recentFolderPath, setRecentFolderPath] = useState('')
@@ -126,9 +127,9 @@ export default function App() {
   const [newFolderName, setNewFolderName] = useState('')
   const [recentFolderId, setRecentFolderId] = useState<string | null>(null)
   const [showQuickLinkPanel, setShowQuickLinkPanel] = useState(false)
-  const [quickLinkCategoryOptions, setQuickLinkCategoryOptions] = useState<string[]>(['默认'])
+  const [quickLinkCategoryOptions, setQuickLinkCategoryOptions] = useState<string[]>(() => [categoryLabel(DEFAULT_CATEGORY_ID)])
   const [quickLinkCategoryQuery, setQuickLinkCategoryQuery] = useState('')
-  const [selectedQuickLinkCategory, setSelectedQuickLinkCategory] = useState('默认')
+  const [selectedQuickLinkCategory, setSelectedQuickLinkCategory] = useState(() => categoryLabel(DEFAULT_CATEGORY_ID))
   const [newQuickLinkCategory, setNewQuickLinkCategory] = useState('')
   const [quickLinkTitle, setQuickLinkTitle] = useState('')
 
@@ -249,7 +250,7 @@ export default function App() {
     bookmarks: knownBookmarks,
     preferences: bookmarkFolderPrefs,
     recentFolderId,
-    category: inferPageCategory(currentTab?.url || '', currentTab?.title || ''),
+    category: inferPageCategoryId(currentTab?.url || '', currentTab?.title || ''),
   })
   const preferredBookmarkFolderId = bookmarkRecommendation.folderId
 
@@ -380,7 +381,7 @@ export default function App() {
   }
 
   function formatRecentTime(date: string) {
-    return new Date(date).toLocaleTimeString('zh-CN', {
+    return new Date(date).toLocaleTimeString(uiLocale(), {
       hour: '2-digit',
       minute: '2-digit',
     })
@@ -388,7 +389,7 @@ export default function App() {
 
   function getRecentFolderShortLabel(path: string) {
     const parts = path.split(' / ').filter(Boolean)
-    return parts[parts.length - 1] || '最近文件夹'
+    return parts[parts.length - 1] || t('popup_recentFolder')
   }
 
   async function setCloseAfterActionPreference(nextValue: boolean) {
@@ -425,9 +426,9 @@ export default function App() {
       await requestTabAction({ type: 'ARCHIVE_TAB', tabId: tab.id })
       const records = await db.archived.orderBy('archivedAt').reverse().limit(200).toArray()
       setArchived(records)
-      showToast('success', '已归档，原标签保留')
+      showToast('success', t('popup_toastArchivedKept'))
     } catch (error) {
-      showToast('error', errMsg(error) || '归档失败')
+      showToast('error', errMsg(error) || t('popup_errArchive'))
     }
   }
 
@@ -458,14 +459,14 @@ export default function App() {
 
   async function exportMarkdown() {
     const all = await db.archived.orderBy('archivedAt').reverse().toArray()
-    const lines = [`# ${brandName()} 归档`, '', ...all.map(t => `- [${t.title}](${t.url})`)]
+    const lines = [t('popup_markdownHeading', { brand: brandName() }), '', ...all.map(item => `- [${item.title}](${item.url})`)]
     const blob = new Blob([lines.join('\n')], { type: 'text/markdown' })
     const url = URL.createObjectURL(blob)
     chrome.downloads.download({ url, filename: 'djs321-tabs-export.md' })
   }
 
   function formatDate(date: Date) {
-    return new Date(date).toLocaleDateString('zh-CN', {
+    return new Date(date).toLocaleDateString(uiLocale(), {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
@@ -478,7 +479,7 @@ export default function App() {
     const recommendation = recommendBookmarkFolder({
       url: currentTab?.url || '', folders: rawFolders, bookmarks: collectBookmarkMatches(tree),
       preferences: bookmarkFolderPrefsRef.current, recentFolderId: targetRecent,
-      category: inferPageCategory(currentTab?.url || '', currentTab?.title || ''),
+      category: inferPageCategoryId(currentTab?.url || '', currentTab?.title || ''),
     })
     const folders = prioritizeRecentFolder(rawFolders, recommendation.folderId)
     setBookmarkFolders(folders)
@@ -538,7 +539,7 @@ export default function App() {
       tab.url || '',
       quickLinkCategoryPrefsRef.current,
       inferQuickLinkCategory(tab, quickLinks),
-    )).trim() || '默认'
+    )).trim() || categoryLabel(DEFAULT_CATEGORY_ID)
     const title = titleOverride?.trim() || getTabTitle(tab)
     const existing = findMatchingQuickLink(quickLinks, tab.url || '')
     if (existing) {
@@ -674,7 +675,7 @@ export default function App() {
     )
     await saveBookmarkFolderPrefs(nextPrefs)
     await refreshCurrentPageState(currentTab, currentBookmark.folderId)
-    showToast('success', '已记住这个站点的收藏规则')
+    showToast('success', t('popup_toastBookmarkRuleSaved'))
   }
 
   async function handleClearCurrentBookmarkRule() {
@@ -682,7 +683,7 @@ export default function App() {
     const nextPrefs = clearFolderPreferenceForUrl(bookmarkFolderPrefsRef.current, currentTab.url || '')
     await saveBookmarkFolderPrefs(nextPrefs)
     await refreshCurrentPageState(currentTab, recentFolderId)
-    showToast('success', '已清除这个站点的收藏规则')
+    showToast('success', t('popup_toastBookmarkRuleCleared'))
   }
 
   async function handleRememberCurrentQuickLinkRule() {
@@ -694,7 +695,7 @@ export default function App() {
     )
     await saveQuickLinkCategoryPrefs(nextPrefs)
     await refreshCurrentPageState(currentTab, preferredBookmarkFolderId)
-    showToast('success', '已记住这个站点的导航分类规则')
+    showToast('success', t('popup_toastQuickLinkRuleSaved'))
   }
 
   async function handleClearCurrentQuickLinkRule() {
@@ -702,7 +703,7 @@ export default function App() {
     const nextPrefs = clearQuickLinkCategoryPreferenceForUrl(quickLinkCategoryPrefsRef.current, currentTab.url || '')
     await saveQuickLinkCategoryPrefs(nextPrefs)
     await refreshCurrentPageState(currentTab, preferredBookmarkFolderId)
-    showToast('success', '已清除这个站点的导航分类规则')
+    showToast('success', t('popup_toastQuickLinkRuleCleared'))
   }
 
   async function handleApplyRuleFolderToCurrentSite(folderId: string) {
@@ -710,7 +711,7 @@ export default function App() {
     const nextPrefs = rememberFolderPreferenceForUrl(bookmarkFolderPrefsRef.current, currentTab.url || '', folderId)
     await saveBookmarkFolderPrefs(nextPrefs)
     await refreshCurrentPageState(currentTab, folderId)
-    showToast('success', '已把这条规则应用到当前站点')
+    showToast('success', t('popup_toastRuleApplied'))
   }
 
   async function handleRemoveRuleForHostname(hostname: string) {
@@ -719,7 +720,7 @@ export default function App() {
     if (currentHostname === hostname && isSupportedTab(currentTab)) {
       await refreshCurrentPageState(currentTab, recentFolderId)
     }
-    showToast('success', '规则已删除')
+    showToast('success', t('popup_toastRuleDeleted'))
   }
 
   async function handleApplyQuickLinkCategoryToCurrentSite(category: string) {
@@ -731,7 +732,7 @@ export default function App() {
     )
     await saveQuickLinkCategoryPrefs(nextPrefs)
     await refreshCurrentPageState(currentTab, preferredBookmarkFolderId)
-    showToast('success', '已把这条导航分类规则应用到当前站点')
+    showToast('success', t('popup_toastQuickLinkRuleApplied'))
   }
 
   async function handleRemoveQuickLinkRuleForHostname(hostname: string) {
@@ -743,7 +744,7 @@ export default function App() {
     if (currentHostname === hostname && isSupportedTab(currentTab)) {
       await refreshCurrentPageState(currentTab, preferredBookmarkFolderId)
     }
-    showToast('success', '导航分类规则已删除')
+    showToast('success', t('popup_toastQuickLinkRuleDeleted'))
   }
 
   async function handleExportRules() {
@@ -755,9 +756,9 @@ export default function App() {
         url,
         filename: `djs321-tabs-rules-${new Date().toISOString().slice(0, 10)}.json`,
       })
-      showToast('success', '规则已导出')
+      showToast('success', t('popup_toastRulesExported'))
     } catch (error) {
-      showToast('error', errMsg(error) || '导出规则失败')
+      showToast('error', errMsg(error) || t('popup_errExportRules'))
     }
   }
 
@@ -783,10 +784,13 @@ export default function App() {
       }
       showToast(
         'success',
-        `已导入 ${Object.keys(snapshot.bookmarkFolderPrefs).length} 条书签规则和 ${Object.keys(snapshot.quickLinkCategoryPrefs).length} 条导航规则`,
+        t('popup_toastRulesImported', {
+          bookmarkCount: Object.keys(snapshot.bookmarkFolderPrefs).length,
+          quickLinkCount: Object.keys(snapshot.quickLinkCategoryPrefs).length,
+        }),
       )
     } catch (error) {
-      showToast('error', errMsg(error) || '导入规则失败')
+      showToast('error', errMsg(error) || t('popup_errImportRules'))
     }
   }
 
@@ -800,13 +804,13 @@ export default function App() {
         type: 'workspace',
         title: getTabTitle(currentTab),
         url: currentTab.url || '',
-        detail: created ? '收件箱 + 导航' : '收件箱',
+        detail: created ? t('popup_detailInboxAndQuickLink') : t('popup_detailInbox'),
         at: new Date().toISOString(),
       })
-      showToast('success', created ? '已发到收件箱，并加入导航' : '已发到收件箱')
+      showToast('success', created ? t('popup_toastSentToInboxAndQuickLink') : t('popup_toastSentToInbox'))
       closePopupSoon()
     } catch (error) {
-      showToast('error', errMsg(error) || '操作失败')
+      showToast('error', errMsg(error) || t('popup_errAction'))
     } finally {
       setActionLoading(prev => ({ ...prev, workspace: false }))
     }
@@ -821,13 +825,13 @@ export default function App() {
         type: 'inbox',
         title: getTabTitle(currentTab),
         url: currentTab.url || '',
-        detail: '发到收件箱',
+        detail: t('popup_detailSendToInbox'),
         at: new Date().toISOString(),
       })
-      showToast('success', '已发送到倒计时321收件箱')
+      showToast('success', t('popup_toastSentToAppInbox'))
       closePopupSoon()
     } catch (error) {
-      showToast('error', errMsg(error) || '发送失败')
+      showToast('error', errMsg(error) || t('popup_errSend'))
     } finally {
       setActionLoading(prev => ({ ...prev, inbox: false }))
     }
@@ -836,7 +840,7 @@ export default function App() {
   async function handleOpenQuickLinkPanel() {
     if (!isSupportedTab(currentTab)) return
     const quickLinks = await db.quickLinks.toArray()
-    const category = currentQuickLink?.category || suggestedQuickLinkCategory || '默认'
+    const category = currentQuickLink?.category || suggestedQuickLinkCategory || categoryLabel(DEFAULT_CATEGORY_ID)
     setQuickLinkTitle(currentQuickLink?.title || getTabTitle(currentTab))
     setSelectedQuickLinkCategory(category)
     setQuickLinkCategoryOptions(
@@ -854,7 +858,7 @@ export default function App() {
 
   async function handleAddCurrentToQuickLinks() {
     if (!isSupportedTab(currentTab)) return
-    const category = (newQuickLinkCategory.trim() || selectedQuickLinkCategory || suggestedQuickLinkCategory || '默认').trim()
+    const category = (newQuickLinkCategory.trim() || selectedQuickLinkCategory || suggestedQuickLinkCategory || categoryLabel(DEFAULT_CATEGORY_ID)).trim()
     setActionLoading(prev => ({ ...prev, quicklink: true }))
     try {
       const { created, updated, quickLink } = await ensureQuickLinkForTab(currentTab, category, quickLinkTitle)
@@ -871,20 +875,21 @@ export default function App() {
         type: 'quicklink',
         title: quickLink.title || getTabTitle(currentTab),
         url: currentTab.url || '',
-        detail: quickLink.category || '默认',
+        detail: quickLink.category || categoryLabel(DEFAULT_CATEGORY_ID),
         at: new Date().toISOString(),
       })
+      const categoryText = quickLink.category || categoryLabel(DEFAULT_CATEGORY_ID)
       showToast(
         'success',
         created
-          ? `已添加到导航 · ${quickLink.category || '默认'}`
+          ? t('popup_toastQuickLinkAdded', { category: categoryText })
           : updated
-            ? `导航分类已更新 · ${quickLink.category || '默认'}`
-            : `导航已保持在 · ${quickLink.category || '默认'}`,
+            ? t('popup_toastQuickLinkCategoryUpdated', { category: categoryText })
+            : t('popup_toastQuickLinkKept', { category: categoryText }),
       )
       closePopupSoon()
     } catch (error) {
-      showToast('error', errMsg(error) || '添加导航失败')
+      showToast('error', errMsg(error) || t('popup_errAddQuickLink'))
     } finally {
       setActionLoading(prev => ({ ...prev, quicklink: false }))
     }
@@ -912,13 +917,13 @@ export default function App() {
         type: 'bookmark',
         title: bookmarkTitle.trim() || getTabTitle(currentTab),
         url: currentTab.url || '',
-        detail: result.folderPath || '书签',
+        detail: result.folderPath || t('popup_detailBookmark'),
         at: new Date().toISOString(),
       })
-      showToast('success', result.updated ? '书签已更新' : '已加入书签')
+      showToast('success', result.updated ? t('popup_toastBookmarkUpdated') : t('popup_toastBookmarkAdded'))
       closePopupSoon()
     } catch (error) {
-      showToast('error', errMsg(error) || '收藏失败')
+      showToast('error', errMsg(error) || t('popup_errBookmark'))
     } finally {
       setActionLoading(prev => ({ ...prev, bookmark: false }))
     }
@@ -938,13 +943,13 @@ export default function App() {
         type: 'bookmark',
         title: getTabTitle(currentTab),
         url: currentTab.url || '',
-        detail: result.folderPath || '书签',
+        detail: result.folderPath || t('popup_detailBookmark'),
         at: new Date().toISOString(),
       })
-      showToast('success', result.updated ? '默认收藏已更新' : '已收藏到默认文件夹')
+      showToast('success', result.updated ? t('popup_toastDefaultBookmarkUpdated') : t('popup_toastSavedToDefaultFolder'))
       closePopupSoon()
     } catch (error) {
-      showToast('error', errMsg(error) || '快速收藏失败')
+      showToast('error', errMsg(error) || t('popup_errQuickSave'))
     } finally {
       setActionLoading(prev => ({ ...prev, bookmark: false }))
     }
@@ -961,7 +966,7 @@ export default function App() {
       )
 
       if (groups.length === 0) {
-        showToast('info', '还没有可用的默认收藏文件夹')
+        showToast('info', t('popup_toastNoDefaultFolder'))
         return
       }
 
@@ -987,19 +992,21 @@ export default function App() {
 
       await recordRecentAction({
         type: 'bookmark',
-        title: `${processed} 个页面`,
+        title: plural('popup_pageCount_one', 'popup_pageCount_other', processed),
         url: groups[0]?.tabs[0]?.url || currentTab?.url || 'https://localhost.invalid/tab-butler-batch',
         detail:
           skippedCount > 0 || duplicateCount > 0
-            ? `批量收藏，跳过 ${skippedCount + duplicateCount} 个未匹配或重复页面`
-            : '批量收藏',
+            ? plural('popup_detailBatchBookmarkSkipped_one', 'popup_detailBatchBookmarkSkipped_other', skippedCount + duplicateCount)
+            : t('popup_detailBatchBookmark'),
         at: new Date().toISOString(),
       })
       clearSelection()
-      showToast('success', updatedCount > 0 ? `已处理 ${processed} 个收藏，更新 ${updatedCount} 个` : `已收藏 ${processed} 个页面`)
+      showToast('success', updatedCount > 0
+        ? t('popup_toastBatchBookmarkUpdated', { processed, updated: updatedCount })
+        : plural('popup_toastBatchBookmarked_one', 'popup_toastBatchBookmarked_other', processed))
       closePopupSoon()
     } catch (error) {
-      showToast('error', errMsg(error) || '批量收藏失败')
+      showToast('error', errMsg(error) || t('popup_errBatchBookmark'))
     } finally {
       setActionLoading(prev => ({ ...prev, batchBookmark: false }))
     }
@@ -1044,16 +1051,18 @@ export default function App() {
 
       await recordRecentAction({
         type: 'workspace',
-        title: `${uniqueTabs.length} 个页面`,
+        title: plural('popup_pageCount_one', 'popup_pageCount_other', uniqueTabs.length),
         url: uniqueTabs[0]?.url || currentTab?.url || 'https://localhost.invalid/tab-butler-batch',
-        detail: creatableTabs.length > 0 ? `批量收进工作台，新增 ${creatableTabs.length} 个导航` : '批量发到收件箱',
+        detail: creatableTabs.length > 0
+          ? plural('popup_detailBatchWorkspaceAdded_one', 'popup_detailBatchWorkspaceAdded_other', creatableTabs.length)
+          : t('popup_detailBatchInbox'),
         at: new Date().toISOString(),
       })
-      showToast('success', `已处理 ${uniqueTabs.length} 个页面`)
+      showToast('success', plural('popup_toastProcessedPages_one', 'popup_toastProcessedPages_other', uniqueTabs.length))
       clearSelection()
       closePopupSoon()
     } catch (error) {
-      showToast('error', errMsg(error) || '批量收进工作台失败')
+      showToast('error', errMsg(error) || t('popup_errBatchWorkspace'))
     } finally {
       setActionLoading(prev => ({ ...prev, batchWorkspace: false }))
     }
@@ -1066,7 +1075,7 @@ export default function App() {
       const quickLinks = await db.quickLinks.toArray()
       const { creatableTabs, existingCount, duplicateCount } = partitionTabsForQuickLinks(selectedOpenTabs, quickLinks)
       if (creatableTabs.length === 0) {
-        showToast('info', existingCount > 0 || duplicateCount > 0 ? '选中的页面都已经在导航里了' : '没有可添加的页面')
+        showToast('info', existingCount > 0 || duplicateCount > 0 ? t('popup_toastAllAlreadyQuickLinks') : t('popup_toastNothingToAdd'))
         return
       }
 
@@ -1093,16 +1102,18 @@ export default function App() {
 
       await recordRecentAction({
         type: 'quicklink',
-        title: `${creatableTabs.length} 个页面`,
+        title: plural('popup_pageCount_one', 'popup_pageCount_other', creatableTabs.length),
         url: creatableTabs[0]?.url || currentTab?.url || 'https://localhost.invalid/tab-butler-batch',
-        detail: existingCount > 0 ? `批量加入导航，跳过 ${existingCount + duplicateCount} 个重复项` : '批量加入导航',
+        detail: existingCount > 0
+          ? plural('popup_detailBatchQuickLinkSkipped_one', 'popup_detailBatchQuickLinkSkipped_other', existingCount + duplicateCount)
+          : t('popup_detailBatchQuickLink'),
         at: new Date().toISOString(),
       })
-      showToast('success', `已加入导航 ${creatableTabs.length} 个页面`)
+      showToast('success', plural('popup_toastBatchQuickLinkAdded_one', 'popup_toastBatchQuickLinkAdded_other', creatableTabs.length))
       clearSelection()
       closePopupSoon()
     } catch (error) {
-      showToast('error', errMsg(error) || '批量加入导航失败')
+      showToast('error', errMsg(error) || t('popup_errBatchQuickLink'))
     } finally {
       setActionLoading(prev => ({ ...prev, batchQuicklink: false }))
     }
@@ -1129,11 +1140,11 @@ export default function App() {
         )
       }
       if (isSupportedTab(currentTab)) await refreshCurrentPageState(currentTab)
-      await recordRecentAction({ type: 'workspace', title: `${uniqueTabs.length} 个页面`, url: uniqueTabs[0]?.url || '', detail: '整窗收进工作台', at: new Date().toISOString() })
-      showToast('success', `已处理 ${uniqueTabs.length} 个页面`)
+      await recordRecentAction({ type: 'workspace', title: plural('popup_pageCount_one', 'popup_pageCount_other', uniqueTabs.length), url: uniqueTabs[0]?.url || '', detail: t('popup_detailWindowToWorkspace'), at: new Date().toISOString() })
+      showToast('success', plural('popup_toastProcessedPages_one', 'popup_toastProcessedPages_other', uniqueTabs.length))
       closePopupSoon()
     } catch (error) {
-      showToast('error', errMsg(error) || '整窗收进工作台失败')
+      showToast('error', errMsg(error) || t('popup_errWindowToWorkspace'))
     } finally {
       setActionLoading(prev => ({ ...prev, batchWorkspace: false }))
     }
@@ -1161,10 +1172,10 @@ export default function App() {
         loadTabs()
       }
       clearSelection()
-      showToast('success', `已关闭并归档 ${selectedOpenTabs.length} 个标签`)
+      showToast('success', plural('popup_toastClosedArchived_one', 'popup_toastClosedArchived_other', selectedOpenTabs.length))
     } catch (error) {
       loadTabs()
-      showToast('error', `已归档 ${closed}/${selectedOpenTabs.length} 个，其余未完成：${errMsg(error)}`)
+      showToast('error', t('popup_errPartialArchive', { closed, total: selectedOpenTabs.length, error: errMsg(error) || '' }))
     } finally {
       setActionLoading(prev => ({ ...prev, batchArchive: false }))
     }
@@ -1180,6 +1191,8 @@ export default function App() {
   }
 
   const curFavicon = getRenderableFaviconUrl(currentTab?.favIconUrl)
+  // 计数要单独加粗，按 {count} 把文案切成前后两段
+  const [selectedCountBefore = '', selectedCountAfter = ''] = t('popup_selectedCount').split('{count}')
 
   return (
     <div className="app">
@@ -1189,16 +1202,16 @@ export default function App() {
         <img src="/icons/icon.svg" className="pop-logo" alt="" />
         <span className="pop-title">{brandName()}</span>
         <span className="pop-spacer" />
-        <button className="pop-hdr-btn" title={isDark ? '切换亮色' : '切换暗色'} onClick={() => setIsDark(d => !d)}>
+        <button className="pop-hdr-btn" title={isDark ? t('popup_switchToLight') : t('popup_switchToDark')} onClick={() => setIsDark(d => !d)}>
           {isDark
             ? <Ico d={['M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364-.707.707M6.343 17.657l-.707.707m12.728 0-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z']} size={14} />
             : <Ico d={['M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z']} size={14} />
           }
         </button>
-        <button className="pop-hdr-btn" title="打开新标签页" onClick={() => { chrome.tabs.create({ url: 'chrome://newtab' }); window.close() }}>
+        <button className="pop-hdr-btn" title={t('popup_openNewTab')} onClick={() => { chrome.tabs.create({ url: 'chrome://newtab' }); window.close() }}>
           <Ico d={['M3 3h7v7H3z', 'M14 3h7v7h-7z', 'M14 14h7v7h-7z', 'M3 14h7v7H3z']} size={14} />
         </button>
-        <button className="pop-hdr-btn" title="设置" onClick={() => { chrome.runtime.openOptionsPage(); window.close() }}>
+        <button className="pop-hdr-btn" title={t('popup_settings')} onClick={() => { chrome.runtime.openOptionsPage(); window.close() }}>
           <Ico d={['M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z', 'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z']} size={14} />
         </button>
       </div>
@@ -1217,27 +1230,27 @@ export default function App() {
                 <div className="pop-hero-title">{getTabTitle(currentTab)}</div>
                 <div className="pop-hero-url">{currentTab.url}</div>
               </div>
-              <span className="pop-cur-badge">当前页</span>
+              <span className="pop-cur-badge">{t('popup_currentPageBadge')}</span>
             </div>
             <div className="pop-status-row">
               {currentQuickLink && (
-                <span className="pop-chip pop-chip-green">已在导航{currentQuickLink.category ? ` · ${currentQuickLink.category}` : ''}</span>
+                <span className="pop-chip pop-chip-green">{t('popup_chipInQuickLinks')}{currentQuickLink.category ? ` · ${currentQuickLink.category}` : ''}</span>
               )}
               {currentBookmark && (
-                <span className="pop-chip pop-chip-muted">已收藏{currentBookmark.folderPath ? ` · ${currentBookmark.folderPath}` : ''}</span>
+                <span className="pop-chip pop-chip-muted">{t('popup_chipBookmarked')}{currentBookmark.folderPath ? ` · ${currentBookmark.folderPath}` : ''}</span>
               )}
               {!currentQuickLink && !currentBookmark && (
-                <span className="pop-chip pop-chip-muted pop-chip-dim">还没收进你的工作台</span>
+                <span className="pop-chip pop-chip-muted pop-chip-dim">{t('popup_chipNotCaptured')}</span>
               )}
             </div>
             <div className="pop-hero-ctas">
-              <button className="pop-cta-primary" onClick={handleSendCurrentToJustDoIt} disabled={actionLoading.inbox} title="把当前页发送到「倒计时321」工作台（收件箱），作为待办处理">
+              <button className="pop-cta-primary" onClick={handleSendCurrentToJustDoIt} disabled={actionLoading.inbox} title={t('popup_sendCurrentTitle')}>
                 <Ico d={['M22 2 11 13', 'M22 2 15 22l-4-9-9-4z']} size={14} />
-                {actionLoading.inbox ? '处理中...' : '当前页发到工作台'}
+                {actionLoading.inbox ? t('common_processing') : t('popup_sendCurrent')}
               </button>
-              <button className="pop-cta-secondary" onClick={handleCaptureAllToWorkspace} disabled={actionLoading.batchWorkspace} title="整窗收进工作台">
+              <button className="pop-cta-secondary" onClick={handleCaptureAllToWorkspace} disabled={actionLoading.batchWorkspace} title={t('popup_captureWindowTitle')}>
                 <Ico d={['M3 3h7v7H3z', 'M14 3h7v7h-7z', 'M14 14h7v7h-7z', 'M3 14h7v7H3z']} size={14} />
-                {actionLoading.batchWorkspace ? '处理中...' : `整窗 · ${currentWindowTabs.length}`}
+                {actionLoading.batchWorkspace ? t('common_processing') : t('popup_captureWindow', { count: currentWindowTabs.length })}
               </button>
             </div>
           </div>
@@ -1245,8 +1258,8 @@ export default function App() {
 
         {!currentTab && (
           <div className="pop-page-hint">
-            <strong>当前页无需收集</strong>
-            <p>新标签页和浏览器设置页不会发送到工作台。你仍可在下方整理其他页面。</p>
+            <strong>{t('popup_noCaptureTitle')}</strong>
+            <p>{t('popup_noCaptureBody')}</p>
           </div>
         )}
 
@@ -1258,10 +1271,10 @@ export default function App() {
                 <Ico d={['M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z', 'M16.1 7.9 13.5 13.5 7.9 16.1 10.5 10.5Z']} size={16} color="#10b981" />
               </span>
               <div className="pop-action-info">
-                <div className="pop-action-label">{currentQuickLink ? '调整导航分类' : '加入导航'}</div>
+                <div className="pop-action-label">{currentQuickLink ? t('popup_adjustQuickLinkCategory') : t('popup_addToQuickLinks')}</div>
                 <div className="pop-action-sub">
-                  <span className="pop-action-target">{suggestedQuickLinkCategory || '默认'}</span>
-                  <span className={`pop-action-badge${currentQuickLink ? ' hit' : ''}`}>{currentQuickLink ? '规则命中' : '推荐'}</span>
+                  <span className="pop-action-target">{suggestedQuickLinkCategory || categoryLabel(DEFAULT_CATEGORY_ID)}</span>
+                  <span className={`pop-action-badge${currentQuickLink ? ' hit' : ''}`}>{currentQuickLink ? t('popup_badgeRuleHit') : t('popup_badgeSuggested')}</span>
                 </div>
               </div>
               <Ico d={['M9 18l6-6-6-6']} size={15} color="var(--text3)" />
@@ -1271,9 +1284,9 @@ export default function App() {
                 <Ico d={['M5 3h14a1 1 0 0 1 1 1v17l-8-4-8 4V4a1 1 0 0 1 1-1z']} size={16} color="#f59e0b" />
               </span>
               <div className="pop-action-info">
-                <div className="pop-action-label">{currentBookmark ? '已收藏，换个文件夹' : '收藏书签'}</div>
+                <div className="pop-action-label">{currentBookmark ? t('popup_bookmarkedChangeFolder') : t('popup_bookmarkPage')}</div>
                 <div className="pop-action-sub">
-                  <span className="pop-action-target">{preferredBookmarkFolderPath || '选择文件夹'}</span>
+                  <span className="pop-action-target">{preferredBookmarkFolderPath || t('popup_chooseFolder')}</span>
                   <span className={`pop-action-badge${bookmarkRecommendation.source === 'host' || bookmarkRecommendation.source === 'existing' ? ' hit' : ''}`}>
                     {bookmarkRecommendationLabel[bookmarkRecommendation.source]}
                   </span>
@@ -1288,12 +1301,12 @@ export default function App() {
         {showQuickLinkPanel && (
           <div className="pop-subpanel">
             <div className="pop-subpanel-row">
-              <label className="pop-field-label">导航标题</label>
-              <input value={quickLinkTitle} onChange={e => setQuickLinkTitle(e.target.value)} placeholder="导航标题" />
+              <label className="pop-field-label">{t('popup_quickLinkTitle')}</label>
+              <input value={quickLinkTitle} onChange={e => setQuickLinkTitle(e.target.value)} placeholder={t('popup_quickLinkTitle')} />
             </div>
             <div className="pop-subpanel-row">
-              <label className="pop-field-label">搜索分类</label>
-              <input value={quickLinkCategoryQuery} onChange={e => setQuickLinkCategoryQuery(e.target.value)} placeholder="搜索已有导航分类..." />
+              <label className="pop-field-label">{t('popup_searchCategories')}</label>
+              <input value={quickLinkCategoryQuery} onChange={e => setQuickLinkCategoryQuery(e.target.value)} placeholder={t('popup_searchCategoriesPlaceholder')} />
             </div>
             <div className="pop-folder-list">
               {filteredQuickLinkCategoryOptions.length > 0 ? (
@@ -1301,23 +1314,23 @@ export default function App() {
                   <button key={category} className={`pop-folder-item${selectedQuickLinkCategory === category ? ' selected' : ''}`}
                     onClick={() => { setSelectedQuickLinkCategory(category); setNewQuickLinkCategory('') }} title={category}>
                     <span className="pop-folder-item-title">{category}</span>
-                    {currentQuickLink?.category === category ? <span className="pop-folder-badge">当前</span>
-                      : suggestedQuickLinkCategory === category ? <span className="pop-folder-badge">推荐</span>
-                      : hostPreferredQuickLinkCategory === category ? <span className="pop-folder-badge">站点</span>
+                    {currentQuickLink?.category === category ? <span className="pop-folder-badge">{t('popup_badgeCurrent')}</span>
+                      : suggestedQuickLinkCategory === category ? <span className="pop-folder-badge">{t('popup_badgeSuggested')}</span>
+                      : hostPreferredQuickLinkCategory === category ? <span className="pop-folder-badge">{t('popup_badgeSite')}</span>
                       : null}
                   </button>
                 ))
-              ) : <div className="pop-folder-empty">没有匹配的分类，可在下方新建</div>}
+              ) : <div className="pop-folder-empty">{t('popup_noMatchingCategory')}</div>}
             </div>
             <div className="pop-subpanel-row">
-              <label className="pop-field-label">新建分类（留空则用所选）</label>
-              <input value={newQuickLinkCategory} onChange={e => setNewQuickLinkCategory(e.target.value)} placeholder="新分类名称" />
+              <label className="pop-field-label">{t('popup_newCategoryLabel')}</label>
+              <input value={newQuickLinkCategory} onChange={e => setNewQuickLinkCategory(e.target.value)} placeholder={t('popup_newCategoryPlaceholder')} />
             </div>
             <div className="pop-subpanel-actions">
-              <button className="pop-rule-btn pop-rule-btn-secondary" onClick={() => setShowQuickLinkPanel(false)}>取消</button>
+              <button className="pop-rule-btn pop-rule-btn-secondary" onClick={() => setShowQuickLinkPanel(false)}>{t('common_cancel')}</button>
               <button className="pop-rule-btn pop-rule-btn-primary" onClick={handleAddCurrentToQuickLinks}
                 disabled={actionLoading.quicklink || !(newQuickLinkCategory.trim() || selectedQuickLinkCategory)}>
-                {actionLoading.quicklink ? '保存中...' : currentQuickLink ? '更新导航' : '保存导航'}
+                {actionLoading.quicklink ? t('common_saving') : currentQuickLink ? t('popup_updateQuickLink') : t('popup_saveQuickLink')}
               </button>
             </div>
           </div>
@@ -1327,12 +1340,12 @@ export default function App() {
         {showBookmarkPanel && (
           <div className="pop-subpanel">
             <div className="pop-subpanel-row">
-              <label className="pop-field-label">标题</label>
-              <input value={bookmarkTitle} onChange={e => setBookmarkTitle(e.target.value)} placeholder="收藏标题" />
+              <label className="pop-field-label">{t('popup_titleLabel')}</label>
+              <input value={bookmarkTitle} onChange={e => setBookmarkTitle(e.target.value)} placeholder={t('popup_bookmarkTitlePlaceholder')} />
             </div>
             <div className="pop-subpanel-row">
-              <label className="pop-field-label">搜索文件夹</label>
-              <input value={bookmarkFolderQuery} onChange={e => setBookmarkFolderQuery(e.target.value)} placeholder="搜索书签文件夹..." />
+              <label className="pop-field-label">{t('popup_searchFolders')}</label>
+              <input value={bookmarkFolderQuery} onChange={e => setBookmarkFolderQuery(e.target.value)} placeholder={t('popup_searchFoldersPlaceholder')} />
             </div>
             <div className="pop-folder-list">
               {filteredFolderOptions.length > 0 ? (
@@ -1340,20 +1353,20 @@ export default function App() {
                   <button key={folder.id} className={`pop-folder-item${selectedFolderId === folder.id ? ' selected' : ''}`}
                     onClick={() => setSelectedFolderId(folder.id)} title={folder.path}>
                     <span className="pop-folder-item-title">{showFolderTitle(folder)}</span>
-                    {recentFolderId === folder.id && <span className="pop-folder-badge">最近</span>}
+                    {recentFolderId === folder.id && <span className="pop-folder-badge">{t('popup_badgeRecent')}</span>}
                   </button>
                 ))
-              ) : <div className="pop-folder-empty">没有匹配的文件夹</div>}
+              ) : <div className="pop-folder-empty">{t('popup_noMatchingFolder')}</div>}
             </div>
             <div className="pop-subpanel-row">
-              <label className="pop-field-label">新建子文件夹（留空则收藏到所选）</label>
-              <input value={newFolderName} onChange={e => setNewFolderName(e.target.value)} placeholder="子文件夹名称" />
+              <label className="pop-field-label">{t('popup_newSubfolderLabel')}</label>
+              <input value={newFolderName} onChange={e => setNewFolderName(e.target.value)} placeholder={t('popup_subfolderPlaceholder')} />
             </div>
             <div className="pop-subpanel-actions">
-              <button className="pop-rule-btn pop-rule-btn-secondary" onClick={() => setShowBookmarkPanel(false)}>取消</button>
+              <button className="pop-rule-btn pop-rule-btn-secondary" onClick={() => setShowBookmarkPanel(false)}>{t('common_cancel')}</button>
               <button className="pop-rule-btn pop-rule-btn-primary" onClick={handleSaveCurrentBookmark}
                 disabled={actionLoading.bookmark || !selectedFolderId}>
-                {actionLoading.bookmark ? '保存中...' : '保存书签'}
+                {actionLoading.bookmark ? t('common_saving') : t('popup_saveBookmark')}
               </button>
             </div>
           </div>
@@ -1364,7 +1377,7 @@ export default function App() {
           <div className="pop-rules">
             <button className="pop-rules-toggle" onClick={() => setShowRulesLibrary(p => !p)}>
               <Ico d={['M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z', 'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.51 1.65 1.65 0 0 0 10 3V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z']} size={14} color="var(--text3)" />
-              <span className="pop-rules-title">站点规则</span>
+              <span className="pop-rules-title">{t('popup_siteRules')}</span>
               <span className="pop-rules-mode">
                 {bookmarkRecommendationLabel[bookmarkRecommendation.source]}
               </span>
@@ -1375,7 +1388,7 @@ export default function App() {
             {showRulesLibrary && (
               <div className="pop-rules-body">
                 <div className="pop-rule-grid">
-                  {[['站点', currentHostname || '无法识别'], ['默认书签夹', preferredBookmarkFolderPath || '未设置'], ['导航分类', `${suggestedQuickLinkCategory}${hostPreferredQuickLinkCategory ? ' · 站点规则' : ' · 自动推断'}`]].map(([k, v]) => (
+                  {[[t('popup_ruleSite'), currentHostname || t('popup_unrecognized')], [t('popup_ruleDefaultFolder'), preferredBookmarkFolderPath || t('popup_notSet')], [t('popup_ruleQuickLinkCategory'), `${suggestedQuickLinkCategory} · ${hostPreferredQuickLinkCategory ? t('popup_ruleFromSite') : t('popup_ruleAutoInferred')}`]].map(([k, v]) => (
                     <div key={k} className="pop-rule-row">
                       <span className="pop-rule-key">{k}</span>
                       <span className="pop-rule-val">{v}</span>
@@ -1385,51 +1398,51 @@ export default function App() {
                 <div className="pop-rule-btns">
                   <button className="pop-rule-btn pop-rule-btn-primary" onClick={handlePinCurrentBookmarkRule}
                     disabled={!currentBookmark?.folderId || hostPreferredFolderId === currentBookmark.folderId}>
-                    {hostPreferredFolderId === currentBookmark?.folderId ? '已记住收藏位置' : '记住当前收藏位置'}
+                    {hostPreferredFolderId === currentBookmark?.folderId ? t('popup_bookmarkLocationSaved') : t('popup_rememberBookmarkLocation')}
                   </button>
-                  <button className="pop-rule-btn pop-rule-btn-secondary" onClick={handleOpenBookmarkPanel}>改默认文件夹</button>
-                  <button className="pop-rule-btn pop-rule-btn-secondary" onClick={handleClearCurrentBookmarkRule} disabled={!hostPreferredFolderId}>清除书签规则</button>
+                  <button className="pop-rule-btn pop-rule-btn-secondary" onClick={handleOpenBookmarkPanel}>{t('popup_changeDefaultFolder')}</button>
+                  <button className="pop-rule-btn pop-rule-btn-secondary" onClick={handleClearCurrentBookmarkRule} disabled={!hostPreferredFolderId}>{t('popup_clearBookmarkRule')}</button>
                   <button className="pop-rule-btn pop-rule-btn-primary" onClick={handleRememberCurrentQuickLinkRule}
                     disabled={hostPreferredQuickLinkCategory === suggestedQuickLinkCategory}>
-                    {hostPreferredQuickLinkCategory === suggestedQuickLinkCategory ? '已记住导航分类' : '记住导航分类'}
+                    {hostPreferredQuickLinkCategory === suggestedQuickLinkCategory ? t('popup_quickLinkCategorySaved') : t('popup_rememberQuickLinkCategory')}
                   </button>
-                  <button className="pop-rule-btn pop-rule-btn-secondary" onClick={handleClearCurrentQuickLinkRule} disabled={!hostPreferredQuickLinkCategory}>清除导航规则</button>
+                  <button className="pop-rule-btn pop-rule-btn-secondary" onClick={handleClearCurrentQuickLinkRule} disabled={!hostPreferredQuickLinkCategory}>{t('popup_clearQuickLinkRule')}</button>
                 </div>
 
                 {/* 规则库 */}
                 <button className="pop-lib-toggle" onClick={() => { /* toggle lib inline */ }}>
                   <Ico d={['M9 18l6-6-6-6']} size={12} color="var(--text3)" />
-                  规则库（书签 {bookmarkRuleSummaries.length} · 导航 {quickLinkRuleSummaries.length}）
+                  {t('popup_ruleLibrary', { bookmarkCount: bookmarkRuleSummaries.length, quickLinkCount: quickLinkRuleSummaries.length })}
                 </button>
                 <div className="pop-lib-search-row">
                   <div className="pop-lib-search">
                     <Ico d={['M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z', 'm21 21-4.3-4.3']} size={12} color="var(--text3)" />
                     <input style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#fff', fontSize: 11 }}
-                      value={ruleSearch} onChange={e => setRuleSearch(e.target.value)} placeholder="搜索站点 / 文件夹 / 分类" />
+                      value={ruleSearch} onChange={e => setRuleSearch(e.target.value)} placeholder={t('popup_searchRulesPlaceholder')} />
                   </div>
-                  <button className="pop-lib-btn" onClick={handleExportRules}>导出</button>
-                  <button className="pop-lib-btn" onClick={handleImportRulesClick}>导入</button>
+                  <button className="pop-lib-btn" onClick={handleExportRules}>{t('common_export')}</button>
+                  <button className="pop-lib-btn" onClick={handleImportRulesClick}>{t('common_import')}</button>
                 </div>
                 <input ref={importRulesInputRef} type="file" accept="application/json,.json" style={{ display: 'none' }}
                   onChange={e => { void handleImportRulesFileChange(e) }} />
                 {filteredBookmarkRuleSummaries.map(rule => (
                   <div key={`${rule.hostname}-${rule.folderId}`} className="pop-rule-item">
-                    <span className="pop-rule-type-badge" style={{ background: 'rgba(245,158,11,0.14)', color: '#f59e0b' }}>书签</span>
+                    <span className="pop-rule-type-badge" style={{ background: 'rgba(245,158,11,0.14)', color: '#f59e0b' }}>{t('popup_ruleTypeBookmark')}</span>
                     <span className="pop-rule-host">{rule.hostname}</span>
                     <span className="pop-rule-target">{rule.folderPath}</span>
-                    <button className="pop-rule-x" onClick={() => { void handleRemoveRuleForHostname(rule.hostname) }} title="删除"><Ico d={['M18 6 6 18', 'M6 6l12 12']} size={11} /></button>
+                    <button className="pop-rule-x" onClick={() => { void handleRemoveRuleForHostname(rule.hostname) }} title={t('common_delete')}><Ico d={['M18 6 6 18', 'M6 6l12 12']} size={11} /></button>
                   </div>
                 ))}
                 {filteredQuickLinkRuleSummaries.map(rule => (
                   <div key={`${rule.hostname}-${rule.category}`} className="pop-rule-item">
-                    <span className="pop-rule-type-badge" style={{ background: 'rgba(16,185,129,0.14)', color: '#10b981' }}>导航</span>
+                    <span className="pop-rule-type-badge" style={{ background: 'rgba(16,185,129,0.14)', color: '#10b981' }}>{t('popup_ruleTypeQuickLink')}</span>
                     <span className="pop-rule-host">{rule.hostname}</span>
                     <span className="pop-rule-target">{rule.category}</span>
-                    <button className="pop-rule-x" onClick={() => { void handleRemoveQuickLinkRuleForHostname(rule.hostname) }} title="删除"><Ico d={['M18 6 6 18', 'M6 6l12 12']} size={11} /></button>
+                    <button className="pop-rule-x" onClick={() => { void handleRemoveQuickLinkRuleForHostname(rule.hostname) }} title={t('common_delete')}><Ico d={['M18 6 6 18', 'M6 6l12 12']} size={11} /></button>
                   </div>
                 ))}
                 {filteredBookmarkRuleSummaries.length === 0 && filteredQuickLinkRuleSummaries.length === 0 && (
-                  <div className="pop-rules-empty">暂无规则</div>
+                  <div className="pop-rules-empty">{t('popup_noRules')}</div>
                 )}
               </div>
             )}
@@ -1439,13 +1452,13 @@ export default function App() {
         {/* ④ 标签管理 */}
         <div className="pop-tabs-section">
           <div className="pop-tabs-head">
-            <span className="pop-tabs-label">标签管理</span>
+            <span className="pop-tabs-label">{t('popup_tabManager')}</span>
             <div className="pop-seg-ctrl">
               <button className={`pop-seg-btn${view === 'open' ? ' active' : ''}`} aria-pressed={view === 'open'} onClick={() => { setView('open'); setSelectedTabIds([]) }}>
-                打开 {openTabs.length}
+                {t('popup_openCount', { count: openTabs.length })}
               </button>
               <button className={`pop-seg-btn${view === 'archived' ? ' active' : ''}`} aria-pressed={view === 'archived'} onClick={() => { setView('archived'); setSelectedTabIds([]) }}>
-                归档 {archived.length}
+                {t('popup_archivedCount', { count: archived.length })}
               </button>
             </div>
           </div>
@@ -1453,35 +1466,35 @@ export default function App() {
           <div className="pop-search">
             <Ico d={['M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z', 'm21 21-4.3-4.3']} size={14} color="var(--text3)" />
             <input className="pop-search-input"
-              aria-label={view === 'open' ? '搜索打开的标签' : '搜索归档记录'}
-              placeholder={view === 'open' ? '搜索打开的标签...' : '搜索归档记录...'}
+              aria-label={view === 'open' ? t('popup_searchOpenTabs') : t('popup_searchArchive')}
+              placeholder={view === 'open' ? t('popup_searchOpenTabsPlaceholder') : t('popup_searchArchivePlaceholder')}
               value={query} onChange={e => setQuery(e.target.value)} />
           </div>
 
           <div className="pop-tab-list">
             {view === 'open' ? (
               filteredOpen.length === 0 ? (
-                <div className="pop-empty"><div className="pop-empty-icon">{query.trim() ? <SearchX size={26} strokeWidth={1.6} aria-hidden="true" /> : <PanelsTopLeft size={26} strokeWidth={1.6} aria-hidden="true" />}</div>{query.trim() ? '没有找到匹配的标签' : '当前窗口没有可整理的网页'}</div>
+                <div className="pop-empty"><div className="pop-empty-icon">{query.trim() ? <SearchX size={26} strokeWidth={1.6} aria-hidden="true" /> : <PanelsTopLeft size={26} strokeWidth={1.6} aria-hidden="true" />}</div>{query.trim() ? t('popup_noMatchingTabs') : t('popup_noTabsInWindow')}</div>
               ) : filteredOpen.map(tab => {
                 const selected = typeof tab.id === 'number' && selectedTabIds.includes(tab.id)
                 const favicon = getRenderableFaviconUrl(tab.favIconUrl)
                 return (
                   <div key={tab.id} className={`pop-tab-row${selected ? ' selected' : ''}`}>
-                    <input type="checkbox" className="pop-tab-checkbox" aria-label={`选择 ${getTabTitle(tab)}`}
+                    <input type="checkbox" className="pop-tab-checkbox" aria-label={t('popup_selectTab', { title: getTabTitle(tab) })}
                       checked={selected} onChange={e => typeof tab.id === 'number' && toggleTabSelection(tab.id, e.target.checked)} />
                     {favicon
                       ? <img className="pop-tab-favicon" src={favicon} alt="" onError={e => { e.currentTarget.style.display = 'none' }} />
                       : <div className="pop-tab-favicon-ph" />}
-                    <button className="pop-tab-info" onClick={() => switchToTab(tab)} title="切换到此标签页">
+                    <button className="pop-tab-info" onClick={() => switchToTab(tab)} title={t('popup_switchToTab')}>
                       <span className="pop-tab-title">{tab.title || tab.url}</span>
                       <span className="pop-tab-url">{tab.url}</span>
                     </button>
                     {!selected && (
                       <div className="pop-tab-btns">
-                        <button className="pop-tab-btn" onClick={e => { e.stopPropagation(); void archiveTab(tab) }} title="归档（保留标签）">
+                        <button className="pop-tab-btn" onClick={e => { e.stopPropagation(); void archiveTab(tab) }} title={t('popup_archiveKeepTab')}>
                           <Ico d={['M21 8v13H3V8', 'M1 3h22v5H1z', 'M10 12h4']} size={13} />
                         </button>
-                        <button className="pop-tab-btn danger" onClick={e => { e.stopPropagation(); void closeTab(tab) }} title="关闭标签页">
+                        <button className="pop-tab-btn danger" onClick={e => { e.stopPropagation(); void closeTab(tab) }} title={t('popup_closeTab')}>
                           <Ico d={['M18 6 6 18', 'M6 6l12 12']} size={13} />
                         </button>
                       </div>
@@ -1490,20 +1503,20 @@ export default function App() {
                 )
               })
             ) : filteredArchived.length === 0 ? (
-              <div className="pop-empty"><div className="pop-empty-icon">{query.trim() ? <SearchX size={26} strokeWidth={1.6} aria-hidden="true" /> : <Archive size={26} strokeWidth={1.6} aria-hidden="true" />}</div>{query.trim() ? '没有找到匹配的归档' : '暂无归档记录'}</div>
+              <div className="pop-empty"><div className="pop-empty-icon">{query.trim() ? <SearchX size={26} strokeWidth={1.6} aria-hidden="true" /> : <Archive size={26} strokeWidth={1.6} aria-hidden="true" />}</div>{query.trim() ? t('popup_noMatchingArchive') : t('popup_noArchive')}</div>
             ) : filteredArchived.map(tab => (
               <div key={tab.id} className="pop-tab-row">
                 <div className="pop-tab-favicon-ph" />
-                <button className="pop-tab-info" onClick={() => reopenArchived(tab)} title="重新打开此归档">
+                <button className="pop-tab-info" onClick={() => reopenArchived(tab)} title={t('popup_reopenArchivedTitle')}>
                   <span className="pop-tab-title">{tab.title}</span>
                   <span className="pop-tab-url">{tab.url}</span>
                   <span className="pop-tab-date">{formatDate(tab.archivedAt)}</span>
                 </button>
                 <div className="pop-tab-btns" style={{ opacity: 1 }}>
-                  <button className="pop-tab-btn" onClick={e => { e.stopPropagation(); reopenArchived(tab) }} title="重新打开">
+                  <button className="pop-tab-btn" onClick={e => { e.stopPropagation(); reopenArchived(tab) }} title={t('popup_reopen')}>
                     <Ico d={['M5 12h14', 'm12 5 7 7-7 7']} size={13} />
                   </button>
-                  <button className="pop-tab-btn danger" onClick={e => { e.stopPropagation(); void deleteArchived(tab) }} title="删除记录">
+                  <button className="pop-tab-btn danger" onClick={e => { e.stopPropagation(); void deleteArchived(tab) }} title={t('popup_deleteRecord')}>
                     <Ico d={['M3 6h18', 'M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6', 'M10 11v6', 'M14 11v6']} size={13} />
                   </button>
                 </div>
@@ -1512,7 +1525,7 @@ export default function App() {
 
             {searchedBookmarks.length > 0 && (
               <div className="pop-bm-section">
-                <div className="pop-bm-section-label">原生书签</div>
+                <div className="pop-bm-section-label">{t('popup_browserBookmarks')}</div>
                 {searchedBookmarks.map(bm => (
                   <div key={bm.id} className="pop-tab-row" onClick={() => { chrome.tabs.create({ url: bm.url }); window.close() }}>
                     <div className="pop-tab-favicon-ph" />
@@ -1521,7 +1534,7 @@ export default function App() {
                       <div className="pop-tab-url">{bm.url}</div>
                     </div>
                     <div className="pop-tab-btns" style={{ opacity: 1 }}>
-                      <button className="pop-tab-btn" title="在新标签打开"><Ico d={['M5 12h14', 'm12 5 7 7-7 7']} size={13} /></button>
+                      <button className="pop-tab-btn" title={t('popup_openInNewTab')}><Ico d={['M5 12h14', 'm12 5 7 7-7 7']} size={13} /></button>
                     </div>
                   </div>
                 ))}
@@ -1535,39 +1548,39 @@ export default function App() {
       {selectedOpenTabs.length > 0 ? (
         <div className="pop-batch-footer">
           <div className="pop-batch-head">
-            <span className="pop-batch-count">已选 <span>{selectedOpenTabs.length}</span> 个</span>
-            <button className="pop-batch-link" onClick={() => updateSelection(filteredSelectableIds, true)}>全选</button>
-            <button className="pop-batch-cancel" onClick={clearSelection}>取消</button>
+            <span className="pop-batch-count">{selectedCountBefore}<span>{selectedOpenTabs.length}</span>{selectedCountAfter}</span>
+            <button className="pop-batch-link" onClick={() => updateSelection(filteredSelectableIds, true)}>{t('popup_selectAll')}</button>
+            <button className="pop-batch-cancel" onClick={clearSelection}>{t('common_cancel')}</button>
           </div>
           <div className="pop-batch-actions">
             <button className="pop-batch-btn primary" onClick={handleBatchCaptureWorkspace} disabled={actionLoading.batchWorkspace}>
-              {actionLoading.batchWorkspace ? '...' : '工作台'}
+              {actionLoading.batchWorkspace ? '...' : t('popup_batchWorkspace')}
             </button>
             <button className="pop-batch-btn" onClick={handleBatchAddToQuickLinks} disabled={actionLoading.batchQuicklink}>
-              {actionLoading.batchQuicklink ? '...' : '导航'}
+              {actionLoading.batchQuicklink ? '...' : t('popup_batchQuickLink')}
             </button>
             <button className="pop-batch-btn" onClick={handleBatchBookmark} disabled={actionLoading.batchBookmark}>
-              {actionLoading.batchBookmark ? '...' : '书签'}
+              {actionLoading.batchBookmark ? '...' : t('popup_batchBookmark')}
             </button>
             <button className="pop-batch-btn danger" onClick={handleBatchCloseAndArchive} disabled={actionLoading.batchArchive}>
-              {actionLoading.batchArchive ? '...' : '关闭归档'}
+              {actionLoading.batchArchive ? '...' : t('popup_batchCloseArchive')}
             </button>
           </div>
         </div>
       ) : (
         <div className="pop-footer">
-          <button className="pop-toggle" title="开启后，每次执行操作（发送工作台 / 收藏 / 加入导航）会自动关闭此弹窗；关闭则保持打开以便连续操作" onClick={() => { void setCloseAfterActionPreference(!closeAfterAction) }}>
+          <button className="pop-toggle" title={t('popup_closeAfterActionTitle')} onClick={() => { void setCloseAfterActionPreference(!closeAfterAction) }}>
             <span className="pop-toggle-track" style={{ background: closeAfterAction ? 'var(--accent)' : 'var(--lg-stroke)' }}>
               <span className="pop-toggle-thumb" style={{ left: closeAfterAction ? 14 : 2 }} />
             </span>
-            <span className="pop-toggle-label">完成后关闭</span>
+            <span className="pop-toggle-label">{t('popup_closeAfterAction')}</span>
           </button>
           <span style={{ flex: 1 }} />
-          <button className="pop-foot-btn" onClick={exportMarkdown} title="导出 Markdown">
+          <button className="pop-foot-btn" onClick={exportMarkdown} title={t('popup_exportMarkdown')}>
             <Ico d={['M14 3v4a1 1 0 0 0 1 1h4', 'M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z', 'M9 13h6', 'M9 17h3']} size={13} />
             MD
           </button>
-          <button className="pop-foot-btn" onClick={exportJSON} title="导出 JSON">
+          <button className="pop-foot-btn" onClick={exportJSON} title={t('popup_exportJson')}>
             <Ico d={['M14 3v4a1 1 0 0 0 1 1h4', 'M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z']} size={13} />
             JSON
           </button>

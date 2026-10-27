@@ -1,6 +1,7 @@
 import { DEFAULT_JUSTDOIT_API_URL } from './settings.ts'
 import { DesktopIdentityError, isDesktopEndpoint, isDesktopPublicKey, sameDesktopKey, verifyDesktopProof, type DesktopIdentity } from './desktop-identity.ts'
 import { clearDesktopDiscovery, getDesktopDiscovery, invalidateDesktopDiscoveries, isDesktopDiscoveryActive, readDesktopLocal, registerDesktopDiscovery, type DesktopDiscoveryRequest } from './desktop-discovery.ts'
+import { t } from './i18n.ts'
 
 export const DESKTOP_ENDPOINT = DEFAULT_JUSTDOIT_API_URL
 const CREDENTIAL_KEY = 'tb_desktop_connection'
@@ -27,11 +28,11 @@ function serializeCredentialWrite<T>(work: () => Promise<T>): Promise<T> {
 }
 
 function checkCancellation(signal?: AbortSignal) {
-  if (signal?.aborted) throw new DOMException('配对已取消。', 'AbortError')
+  if (signal?.aborted) throw new DOMException(t('desktop_pairCancelled'), 'AbortError')
 }
 
 export function getDesktopClientOrigin(): string {
-  if (!/^[a-p]{32}$/.test(chrome.runtime.id)) throw new Error('无法确认插件身份，请重新载入插件。')
+  if (!/^[a-p]{32}$/.test(chrome.runtime.id)) throw new Error(t('desktop_extensionIdUnknown'))
   return `chrome-extension://${chrome.runtime.id}`
 }
 
@@ -51,7 +52,7 @@ function createDesktopLink(mode: 'pair' | 'connect'): DesktopPairing {
 
 export async function prepareDesktopConnection(link: DesktopPairing, mode: 'pair' | 'connect'): Promise<DesktopDiscoveryRequest> {
   const pinned = mode === 'connect' ? await getDesktopCredential() ?? await readCredential(PENDING_REVOCATION_KEY) : null
-  if (mode === 'connect' && !pinned) throw new Error('尚未保存 App 身份，请重新配对。')
+  if (mode === 'connect' && !pinned) throw new Error(t('desktop_appIdentityMissing'))
   const request: DesktopDiscoveryRequest = { origin: link.origin, nonce: link.nonce, mode, ...(pinned ? { publicKey: pinned.publicKey } : {}) }
   await registerDesktopDiscovery(request)
   return request
@@ -78,7 +79,7 @@ function writeCredential(value: DesktopCredential | null, key = CREDENTIAL_KEY):
   return new Promise((resolve, reject) => {
     const done = () => {
       const error = chrome.runtime.lastError
-      if (error) reject(new Error(error.message || '无法保存本机配对，请检查插件设置。'))
+      if (error) reject(new Error(error.message || t('desktop_savePairingFailed')))
       else resolve()
     }
     if (value) chrome.storage.local.set({ [key]: value }, done)
@@ -104,7 +105,7 @@ export async function requestDesktop(path: string, init: RequestInit = {}, signa
   const abort = () => controller.abort()
   let rejectAbort: () => void = () => {}
   const aborted = new Promise<never>((_resolve, reject) => {
-    rejectAbort = () => reject(new DOMException('请求已取消或超时。', 'AbortError'))
+    rejectAbort = () => reject(new DOMException(t('desktop_requestAborted'), 'AbortError'))
     controller.signal.addEventListener('abort', rejectAbort, { once: true })
   })
   signal?.addEventListener('abort', abort, { once: true })
@@ -147,7 +148,7 @@ export async function requestDesktop(path: string, init: RequestInit = {}, signa
 }
 
 function record(value: unknown): Record<string, unknown> {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('桌面端返回无效协议，请更新 App 后在插件设置重新配对。')
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(t('desktop_invalidProtocol'))
   return value as Record<string, unknown>
 }
 
@@ -162,12 +163,12 @@ export async function probeDesktopConnection(signal?: AbortSignal): Promise<Desk
     checkCancellation(signal)
     if (error instanceof TypeError || (error instanceof DOMException && error.name === 'AbortError')) return 'not-running'
     if (error instanceof DesktopIdentityError) throw error
-    throw new Error('桌面端返回无效协议，请更新 App 后在插件设置重新配对。')
+    throw new Error(t('desktop_invalidProtocol'))
   }
   if (result.response.status === 401 || result.response.status === 403) return credential ? 'revoked' : 'unpaired'
-  if (!result.response.ok) throw new Error('桌面端版本不支持配对，请更新 App 后重试。')
+  if (!result.response.ok) throw new Error(t('desktop_pairingUnsupported'))
   const data = record(result.data)
-  if (data.app !== 'djs321' || data.protocol !== 2 || typeof data.paired !== 'boolean') throw new Error('桌面端版本或协议不兼容，请更新 App 后重试。')
+  if (data.app !== 'djs321' || data.protocol !== 2 || typeof data.paired !== 'boolean') throw new Error(t('desktop_incompatible'))
   return credential ? (data.paired ? 'connected' : 'revoked') : 'unpaired'
 }
 
@@ -178,7 +179,7 @@ export async function loadDesktopConnectionSnapshot(signal?: AbortSignal): Promi
     getDesktopCredential(), hasPendingDesktopRevocation(),
     probeDesktopConnection(signal).then(state => ({ state, message: '' })).catch(error => {
       checkCancellation(signal)
-      return { state: 'error' as const, message: error instanceof Error ? error.message : '连接检查失败。' }
+      return { state: 'error' as const, message: error instanceof Error ? error.message : t('desktop_checkFailed') }
     }),
   ])
   checkCancellation(signal)
@@ -188,7 +189,7 @@ export async function loadDesktopConnectionSnapshot(signal?: AbortSignal): Promi
 function waitForPoll(delay: number, signal: AbortSignal): Promise<void> {
   checkCancellation(signal)
   return new Promise((resolve, reject) => {
-    const abort = () => { clearTimeout(timer); reject(new DOMException('配对已取消。', 'AbortError')) }
+    const abort = () => { clearTimeout(timer); reject(new DOMException(t('desktop_pairCancelled'), 'AbortError')) }
     const timer = setTimeout(() => { signal.removeEventListener('abort', abort); resolve() }, delay)
     signal.addEventListener('abort', abort, { once: true })
   })
@@ -211,7 +212,7 @@ export async function waitForDesktopConnection(options: { discovery: DesktopPair
       if (announced) {
         await serializeCredentialWrite(async () => {
           checkCancellation(controller.signal)
-          if (!await isDesktopDiscoveryActive(discovery)) throw new DOMException('连接已取消。', 'AbortError')
+          if (!await isDesktopDiscoveryActive(discovery)) throw new DOMException(t('desktop_connectCancelled'), 'AbortError')
           const current = await getDesktopCredential() ?? await readCredential(PENDING_REVOCATION_KEY)
           if (!current || current.token !== pinned.token || !sameDesktopKey(current.publicKey, pinned.publicKey)) throw new DesktopIdentityError()
           const active = await getDesktopCredential()
@@ -235,7 +236,7 @@ export async function waitForDesktopConnection(options: { discovery: DesktopPair
 }
 
 export async function pollDesktopPairing(pairing: DesktopPairing, options: { signal?: AbortSignal; timeoutMs?: number; intervalMs?: number } = {}): Promise<DesktopCredential> {
-  if (pairing.origin !== getDesktopClientOrigin() || !TOKEN_PATTERN.test(pairing.nonce)) throw new Error('配对请求无效，请在插件设置重新配对。')
+  if (pairing.origin !== getDesktopClientOrigin() || !TOKEN_PATTERN.test(pairing.nonce)) throw new Error(t('desktop_pairRequestInvalid'))
   checkCancellation(options.signal)
   activePairing?.abort()
   const controller = new AbortController()
@@ -258,17 +259,17 @@ export async function pollDesktopPairing(pairing: DesktopPairing, options: { sig
       } catch (error) {
         checkCancellation(controller.signal)
         if (error instanceof DesktopIdentityError) throw error
-        if (!(error instanceof TypeError || (error instanceof DOMException && error.name === 'AbortError'))) throw new Error('配对响应无效，请更新桌面 App 后重试。')
+        if (!(error instanceof TypeError || (error instanceof DOMException && error.name === 'AbortError'))) throw new Error(t('desktop_pairResponseInvalid'))
       }
       if (result?.response.ok) {
         const data = record(result.data)
-        if (data.state === 'denied') throw new Error('桌面 App 已拒绝配对；未发送任何内容，请在插件设置重新配对。')
+        if (data.state === 'denied') throw new Error(t('desktop_pairDenied'))
         if (data.state === 'approved') {
-          if (typeof data.token !== 'string' || !TOKEN_PATTERN.test(data.token)) throw new Error('配对令牌无效，请更新桌面 App 后重试。')
+          if (typeof data.token !== 'string' || !TOKEN_PATTERN.test(data.token)) throw new Error(t('desktop_pairTokenInvalid'))
           const credential: DesktopCredential = { origin: pairing.origin, token: data.token, ...discovered }
           await serializeCredentialWrite(async () => {
             checkCancellation(controller.signal)
-            if (!await isDesktopDiscoveryActive({ ...pairing, mode: 'pair' })) throw new DOMException('配对已取消。', 'AbortError')
+            if (!await isDesktopDiscoveryActive({ ...pairing, mode: 'pair' })) throw new DOMException(t('desktop_pairCancelled'), 'AbortError')
             await writeCredential(credential)
             savedCredential = credential
             savedVersion = ++credentialVersion
@@ -284,9 +285,9 @@ export async function pollDesktopPairing(pairing: DesktopPairing, options: { sig
           checkCancellation(controller.signal)
           return credential
         }
-        if (data.state !== 'pending') throw new Error('配对状态无效，请更新桌面 App 后重试。')
+        if (data.state !== 'pending') throw new Error(t('desktop_pairStateInvalid'))
       } else if (result && result.response.status !== 404 && result.response.status < 500) {
-        throw new Error('配对未获批准，请在桌面 App 确认后重试。')
+        throw new Error(t('desktop_pairNotApproved'))
       }
       await waitForPoll(Math.max(1, options.intervalMs ?? 1000), controller.signal)
     }
@@ -302,7 +303,7 @@ export async function pollDesktopPairing(pairing: DesktopPairing, options: { sig
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nonce: pairing.nonce }),
       }, undefined, 1500, discovered).catch(() => undefined)
     }
-    if (expired && !options.signal?.aborted) throw new Error('配对超时（最长三分钟）。请安装或打开最新版桌面 App，再在插件设置重试。')
+    if (expired && !options.signal?.aborted) throw new Error(t('desktop_pairTimeout'))
     throw error
   } finally {
     clearTimeout(timeout)
@@ -324,12 +325,12 @@ export async function disconnectDesktop(signal?: AbortSignal): Promise<void> {
         await writeCredential(null)
         credentialVersion++
         const { response } = await requestDesktop('/bridge/disconnect', { method: 'POST', headers: desktopHeaders(credential) }, signal, 5000, credential)
-        if (!response.ok && response.status !== 401 && response.status !== 403) throw new Error('撤销未完成。')
+        if (!response.ok && response.status !== 401 && response.status !== 403) throw new Error(t('desktop_revokeIncomplete'))
       }
       await writeCredential(null, PENDING_REVOCATION_KEY)
     } catch {
       if (credential) await writeCredential(credential, PENDING_REVOCATION_KEY)
-      throw new Error('本机已停止发送；请打开 App 后再次点击断开完成撤销。')
+      throw new Error(t('desktop_revokePending'))
     } finally {
       await writeCredential(null)
       credentialVersion++
@@ -342,17 +343,17 @@ export function isLocalDesktopEndpoint(base: string): boolean {
 }
 
 export function createDesktopInboxRequest(items: readonly { title: string; url: string; note?: string; content?: string }[]): { requestId: string; body: string } {
-  if (items.length < 1 || items.length > 100) throw new Error('本机发送每次仅支持 1 至 100 项，请分批发送。')
+  if (items.length < 1 || items.length > 100) throw new Error(t('desktop_batchSize'))
   for (const item of items) {
     for (const [field, limit] of [['title', 512], ['url', 8192], ['note', 16384], ['content', 200000]] as const) {
       const value = item[field]
       if ((value === undefined && (field === 'title' || field === 'url')) || (value !== undefined && (typeof value !== 'string' || value.length > limit))) {
-        throw new Error(`本机发送 ${field} 超过上限（${limit} 字符）或格式无效，请缩短后重试。`)
+        throw new Error(t('desktop_fieldTooLong', { field, limit }))
       }
     }
   }
   const requestId = crypto.randomUUID()
   const body = JSON.stringify({ requestId, items })
-  if (new TextEncoder().encode(body).byteLength > 2 * 1024 * 1024) throw new Error('本机发送超过 2 MiB 上限，请减少正文或分批发送。')
+  if (new TextEncoder().encode(body).byteLength > 2 * 1024 * 1024) throw new Error(t('desktop_bodyTooLarge'))
   return { requestId, body }
 }

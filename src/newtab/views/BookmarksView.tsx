@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { errMsg } from '../../lib/errors'
 import { sendToJustDoIt } from '../../lib/justdoit'
+import { t } from '../../lib/i18n'
 
 // 文件夹颜色调色盘（按 id hash 确定性分配，不同文件夹不同色）
 const FOLDER_COLORS = [
@@ -103,7 +104,7 @@ function FolderTreeItem({ node, currentId, onSelect, onDropNode }: FolderTreeIte
         </span>
         <FolderIcon size={16} color={getFolderColor(node.id)} />
         <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {node.title || '未命名'}
+          {node.title || t('common_untitled')}
         </span>
       </div>
       {expanded && node.children && (
@@ -121,7 +122,7 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
   const [rootNodes, setRootNodes] = useState<chrome.bookmarks.BookmarkTreeNode[]>([])
   const [currentNodeId, setCurrentNodeId] = useState<string>('0')
   const [children, setChildren] = useState<chrome.bookmarks.BookmarkTreeNode[]>([])
-  const [path, setPath] = useState<{ id: string, title: string }[]>([{ id: '0', title: '根目录' }])
+  const [path, setPath] = useState<{ id: string, title: string }[]>([{ id: '0', title: t('bookmarks_root') }])
   
   // 编辑状态
   const [editingNode, setEditingNode] = useState<{ id: string, title: string, url: string } | null>(null)
@@ -156,7 +157,7 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
              const bookmarksBar = rootChildren.find(n => n.id === '1') || rootChildren[0]
              if (bookmarksBar) {
                setCurrentNodeId(bookmarksBar.id)
-               setPath([{ id: bookmarksBar.id, title: bookmarksBar.title || '书签栏' }])
+               setPath([{ id: bookmarksBar.id, title: bookmarksBar.title || t('bookmarks_bar') }])
              }
           }
         }
@@ -195,14 +196,14 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
 
   function handleSelectFromTree(node: chrome.bookmarks.BookmarkTreeNode) {
     setCurrentNodeId(node.id)
-    setPath([{ id: '0', title: '根目录' }, { id: node.id, title: node.title }])
+    setPath([{ id: '0', title: t('bookmarks_root') }, { id: node.id, title: node.title }])
   }
 
   function handleDropNode(draggedId: string, targetFolderId: string) {
     chrome.bookmarks.move(draggedId, { parentId: targetFolderId }, () => {
       loadTree()
       loadCurrentFolder(currentNodeId)
-      showToast('✅ 移动成功')
+      showToast(t('bookmarks_moved'))
     })
   }
 
@@ -212,7 +213,7 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
        setEditingNode(null)
        loadTree()
        loadCurrentFolder(currentNodeId)
-       showToast('✅ 更新成功')
+       showToast(t('bookmarks_updated'))
     })
   }
 
@@ -298,7 +299,7 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
                  className="nt-input" 
                  value={editingNode.title} 
                  onChange={e => setEditingNode({...editingNode, title: e.target.value})} 
-                 placeholder="名称"
+                 placeholder={t('bookmarks_namePlaceholder')}
                  style={{ fontSize: '13px', padding: '6px 8px', width: '100%', background: 'var(--lg-fill-thin)', border: '1px solid var(--lg-stroke)', borderRadius: 'var(--lg-radius-sm)', color: 'var(--text-primary)' }}
                />
                {!isFolder && (
@@ -311,14 +312,14 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
                  />
                )}
                <div style={{ display: 'flex', gap: '6px', position: 'absolute', bottom: '8px', left: '42px' }}>
-                  <button onClick={(e) => { e.stopPropagation(); handleSaveEdit(node.id) }} className="nt-btn primary" style={{ fontSize: '12px', padding: '2px 10px', background: 'var(--accent)', color: 'var(--text-on-accent, #fff)', border: 'none', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer' }}>保存</button>
-                  <button onClick={(e) => { e.stopPropagation(); setEditingNode(null) }} className="nt-btn" style={{ fontSize: '12px', padding: '2px 10px', background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--lg-stroke)', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer' }}>取消</button>
+                  <button onClick={(e) => { e.stopPropagation(); handleSaveEdit(node.id) }} className="nt-btn primary" style={{ fontSize: '12px', padding: '2px 10px', background: 'var(--accent)', color: 'var(--text-on-accent, #fff)', border: 'none', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer' }}>{t('common_save')}</button>
+                  <button onClick={(e) => { e.stopPropagation(); setEditingNode(null) }} className="nt-btn" style={{ fontSize: '12px', padding: '2px 10px', background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--lg-stroke)', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer' }}>{t('common_cancel')}</button>
                </div>
              </div>
           ) : (
             <>
               <div style={{ color: 'var(--text-primary)', fontSize: '13px', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingRight: '16px' }}>
-                {node.title || '未命名'}
+                {node.title || t('common_untitled')}
               </div>
               {(!isFolder && viewMode !== 'compact') && (
                 <a
@@ -345,7 +346,7 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
               }} 
               className="ql-edit-btn"
               style={{ background: 'var(--accent)', color: 'var(--text-on-accent, #fff)', border: 'none', cursor: 'pointer', fontSize: '11px', padding: '0', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              title="编辑"
+              title={t('common_edit')}
             >✎</button>
           </div>
         )}
@@ -354,8 +355,8 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
            <button onClick={(e) => {
              e.stopPropagation()
              sendToJustDoIt({ title: node.title, url: node.url! })
-               .then(() => showToast('✅ 书签已推送到 Inbox'))
-               .catch((err: unknown) => showToast('❌ ' + (errMsg(err) ?? '未知错误')))
+               .then(() => showToast(t('bookmarks_sentToInbox')))
+               .catch((err: unknown) => showToast(t('newtab_errorToast', { error: errMsg(err) ?? t('common_unknownError') })))
            }} className="nt-batch-btn primary" style={{ position: 'absolute', bottom: '8px', right: '8px', padding: '3px 8px', fontSize: '10px', borderRadius: '4px', opacity: 0.8 }}>↗ Inbox</button>
         )}
       </div>
@@ -367,7 +368,7 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
       
       {/* 左侧树结构 */}
       <div style={{ width: '240px', flexShrink: 0, height: '100%', overflowY: 'auto', background: 'var(--lg-fill-thin)', border: '1px solid var(--lg-stroke-soft)', borderRadius: 'var(--lg-radius-md)', padding: '12px 8px' }}>
-         <h3 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '16px', paddingLeft: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>文件夹书签树</h3>
+         <h3 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '16px', paddingLeft: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>{t('bookmarks_folderTree')}</h3>
          {rootNodes.map(node => (
             <FolderTreeItem key={node.id} node={node} currentId={currentNodeId} onSelect={handleSelectFromTree} onDropNode={handleDropNode} />
          ))}
@@ -394,21 +395,21 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
             ))}
           </div>
           <div style={{ display: 'flex', gap: '4px', background: 'var(--lg-fill-thin)', padding: '4px', borderRadius: 'var(--lg-radius-sm)', border: '1px solid var(--lg-stroke)' }}>
-             <button onClick={() => handleViewModeChange('grid')} style={{ border: 'none', background: viewMode === 'grid' ? 'var(--bg-card-solid)' : 'transparent', color: viewMode === 'grid' ? 'var(--text-primary)' : 'var(--text-muted)', padding: '4px 8px', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer', fontSize: '14px', boxShadow: viewMode === 'grid' ? 'var(--lg-shadow)' : 'none' }} title="网格视图">𖣲</button>
-             <button onClick={() => handleViewModeChange('list')} style={{ border: 'none', background: viewMode === 'list' ? 'var(--bg-card-solid)' : 'transparent', color: viewMode === 'list' ? 'var(--text-primary)' : 'var(--text-muted)', padding: '4px 8px', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer', fontSize: '14px', boxShadow: viewMode === 'list' ? 'var(--lg-shadow)' : 'none' }} title="列表视图">☰</button>
-             <button onClick={() => handleViewModeChange('compact')} style={{ border: 'none', background: viewMode === 'compact' ? 'var(--bg-card-solid)' : 'transparent', color: viewMode === 'compact' ? 'var(--text-primary)' : 'var(--text-muted)', padding: '4px 8px', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer', fontSize: '14px', boxShadow: viewMode === 'compact' ? 'var(--lg-shadow)' : 'none' }} title="紧凑视图">☷</button>
+             <button onClick={() => handleViewModeChange('grid')} style={{ border: 'none', background: viewMode === 'grid' ? 'var(--bg-card-solid)' : 'transparent', color: viewMode === 'grid' ? 'var(--text-primary)' : 'var(--text-muted)', padding: '4px 8px', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer', fontSize: '14px', boxShadow: viewMode === 'grid' ? 'var(--lg-shadow)' : 'none' }} title={t('bookmarks_gridView')}>𖣲</button>
+             <button onClick={() => handleViewModeChange('list')} style={{ border: 'none', background: viewMode === 'list' ? 'var(--bg-card-solid)' : 'transparent', color: viewMode === 'list' ? 'var(--text-primary)' : 'var(--text-muted)', padding: '4px 8px', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer', fontSize: '14px', boxShadow: viewMode === 'list' ? 'var(--lg-shadow)' : 'none' }} title={t('bookmarks_listView')}>☰</button>
+             <button onClick={() => handleViewModeChange('compact')} style={{ border: 'none', background: viewMode === 'compact' ? 'var(--bg-card-solid)' : 'transparent', color: viewMode === 'compact' ? 'var(--text-primary)' : 'var(--text-muted)', padding: '4px 8px', borderRadius: 'var(--lg-radius-sm)', cursor: 'pointer', fontSize: '14px', boxShadow: viewMode === 'compact' ? 'var(--lg-shadow)' : 'none' }} title={t('bookmarks_compactView')}>☷</button>
           </div>
         </div>
 
         {children.length === 0 ? (
             <div style={{ color: 'var(--text-muted)', fontSize: '13px', marginTop: '20px', gridColumn: '1 / -1', textAlign: 'center', padding: '40px', background: 'var(--lg-fill-thin)', borderRadius: 'var(--lg-radius-md)', border: '1px dashed var(--lg-stroke)' }}>
-              该文件夹是空的，你可以从其它文件夹拖拽书签到左侧来整理。
+              {t('bookmarks_emptyFolder')}
             </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', paddingBottom: '32px' }}>
             {children.filter(n => !n.url).length > 0 && (
               <div>
-                <h4 style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>子文件夹</h4>
+                <h4 style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>{t('bookmarks_subfolders')}</h4>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '10px' }}>
                   {children.filter(n => !n.url).map(node => renderCard(node))}
                 </div>
@@ -417,7 +418,7 @@ export function BookmarksView({ showToast }: { showToast: (msg: string) => void 
             
             {children.filter(n => !!n.url).length > 0 && (
               <div>
-                <h4 style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>书签</h4>
+                <h4 style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>{t('bookmarks_bookmarks')}</h4>
                 <div style={{ 
                   display: 'grid', 
                   gridTemplateColumns: viewMode === 'grid' ? 'repeat(auto-fill, minmax(240px, 1fr))' : (viewMode === 'list' ? '1fr' : 'repeat(auto-fill, minmax(140px, 1fr))'), 

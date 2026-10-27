@@ -22,6 +22,8 @@ import { Dialog } from './views/Dialog'
 import { resolveSearchUrl } from '../lib/search'
 import { observeBrowserTabs } from '../lib/page-url'
 import { requestTabAction, requestUndoActions } from '../lib/tab-actions'
+import { t, plural, uiLocale } from '../lib/i18n'
+import { categoryLabel, DEFAULT_CATEGORY_ID } from '../lib/page-category'
 
 // ==========================================
 // Heroicons 风格 SVG 图标集（stroke 线性，颜色随 currentColor）
@@ -84,22 +86,29 @@ const IconSettings = () => <IC>
 </IC>
 
 
-const WEEKDAYS = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-const MONTHS   = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+// 星期、月份名交给 Intl 按界面语言生成（zh-CN 下仍是「星期一」「十月」）
+function formatClockDate(date: Date) {
+  const locale = uiLocale()
+  return t('newtab_date', {
+    weekday: date.toLocaleDateString(locale, { weekday: 'long' }),
+    month: date.toLocaleDateString(locale, { month: 'long' }),
+    day: date.getDate(),
+  })
+}
 
 const GROUP_SHORTCUTS: { value: GroupBy; label: string }[] = [
-  { value: 'none',        label: '全部' },
-  { value: 'domain',      label: '域名' },
-  { value: 'chromeGroup', label: '浏览器组' },
-  { value: 'window',      label: '窗口' },
-  { value: 'time',        label: '时间' },
-  { value: 'category',    label: '分类' },
+  { value: 'none',        label: t('newtab_groupAll') },
+  { value: 'domain',      label: t('newtab_groupDomain') },
+  { value: 'chromeGroup', label: t('newtab_groupChromeGroup') },
+  { value: 'window',      label: t('newtab_groupWindow') },
+  { value: 'time',        label: t('newtab_groupTime') },
+  { value: 'category',    label: t('newtab_groupCategory') },
 ]
 
 const VIEW_SHORTCUTS: { value: ViewMode; label: string }[] = [
-  { value: 'grid',   label: '网格卡片' },
-  { value: 'list',   label: '紧凑列表' },
-  { value: 'kanban', label: '看板' },
+  { value: 'grid',   label: t('newtab_viewGrid') },
+  { value: 'list',   label: t('newtab_viewList') },
+  { value: 'kanban', label: t('newtab_viewKanban') },
 ]
 
 const NAV_ITEMS: Array<{
@@ -113,7 +122,7 @@ const NAV_ITEMS: Array<{
   {
     key: 'tabs',
     icon: <IconTabs />,
-    label: '标签',
+    label: t('newtab_navTabs'),
     activeColor: '#3b82f6',
     activeBg: 'rgba(59,130,246,0.13)',
     activeBorder: 'rgba(59,130,246,0.35)',
@@ -121,7 +130,7 @@ const NAV_ITEMS: Array<{
   {
     key: 'quicklinks',
     icon: <IconCompass />,
-    label: '导航',
+    label: t('newtab_navQuicklinks'),
     activeColor: '#10b981',
     activeBg: 'rgba(16,185,129,0.13)',
     activeBorder: 'rgba(16,185,129,0.35)',
@@ -129,7 +138,7 @@ const NAV_ITEMS: Array<{
   {
     key: 'bookmarks',
     icon: <IconBookmark />,
-    label: '书签',
+    label: t('newtab_navBookmarks'),
     activeColor: '#f59e0b',
     activeBg: 'rgba(245,158,11,0.13)',
     activeBorder: 'rgba(245,158,11,0.35)',
@@ -177,12 +186,12 @@ const ENGINES = [
 
 function getGreeting() {
   const h = new Date().getHours()
-  if (h < 6)  return '夜深了，注意休息'
-  if (h < 11) return '早上好，新的一天开始了'
-  if (h < 14) return '中午好，记得休息一下'
-  if (h < 18) return '下午好，继续加油'
-  if (h < 22) return '晚上好，今天辛苦了'
-  return '夜深了，注意休息'
+  if (h < 6)  return t('newtab_greetingNight')
+  if (h < 11) return t('newtab_greetingMorning')
+  if (h < 14) return t('newtab_greetingNoon')
+  if (h < 18) return t('newtab_greetingAfternoon')
+  if (h < 22) return t('newtab_greetingEvening')
+  return t('newtab_greetingNight')
 }
 
 export default function NewTab() {
@@ -195,7 +204,7 @@ export default function NewTab() {
   // 包装 saveSetting，同时更新本地 state（wallpaper 字段不走 chrome.storage）
   const saveSettingAndSync = <K extends keyof Settings>(key: K, value: Settings[K]) => {
     void saveSetting(key, value).then(() => setSettings(prev => ({ ...prev, [key]: value })))
-      .catch(error => showToast('设置未保存：' + errMsg(error)))
+      .catch(error => showToast(t('newtab_settingsNotSaved', { error: String(errMsg(error)) })))
   }
   useEffect(() => {
     loadSettings().then(setSettings)
@@ -224,8 +233,8 @@ export default function NewTab() {
     const t = setInterval(() => setTime(new Date()), 1000)
     return () => clearInterval(t)
   }, [])
-  const timeStr = time.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false })
-  const dateStr = `${WEEKDAYS[time.getDay()]}，${MONTHS[time.getMonth()]} ${time.getDate()} 日`
+  const timeStr = time.toLocaleTimeString(uiLocale(), { hour: '2-digit', minute: '2-digit', hour12: false })
+  const dateStr = formatClockDate(time)
 
   // ── 壁纸模式：通过 JS 覆盖 .nt-root 上的 CSS 变量
   // 重要：变量定义在 .nt-root class 上，必须注入到 .nt-root 元素的 inline style 才能覆盖
@@ -546,9 +555,9 @@ export default function NewTab() {
         const result = await requestTabAction({ type: 'CLOSE_AND_ARCHIVE', tabId: tab.id })
         setOpenTabs(prev => prev.filter(t => t.id !== tab.id))
         setSelectedIds(prev => { const n = new Set(prev); n.delete(tab.id!); return n })
-        showToast(`已归档: ${tab.title}`, () => { void restoreTabs(result.undoIds || []) })
+        showToast(t('newtab_archivedTab', { title: tab.title ?? '' }), () => { void restoreTabs(result.undoIds || []) })
       } catch (error) {
-        showToast(`归档失败：${errMsg(error)}`)
+        showToast(t('newtab_archiveFailed', { error: String(errMsg(error)) }))
       }
     }
   }
@@ -558,9 +567,9 @@ export default function NewTab() {
     setUndoBusy(true)
     try {
       await requestUndoActions(undoIds)
-      showToast('已恢复对应页面')
+      showToast(t('newtab_restored'))
     } catch (error) {
-      showToast(`恢复失败：${errMsg(error)}`)
+      showToast(t('newtab_restoreFailed', { error: String(errMsg(error)) }))
     } finally {
       undoPending.current = false
       setUndoBusy(false)
@@ -569,9 +578,9 @@ export default function NewTab() {
   function reopenArchived(tab: ArchivedTab) { chrome.tabs.create({ url: tab.url }) }
   function formatDate(date: Date) {
     const diff = Date.now() - new Date(date).getTime()
-    if (diff < 3600000)   return `${Math.floor(diff / 60000)} 分钟前`
-    if (diff < 86400000)  return `${Math.floor(diff / 3600000)} 小时前`
-    return `${Math.floor(diff / 86400000)} 天前`
+    if (diff < 3600000)   return plural('newtab_minutesAgo_one', 'newtab_minutesAgo_other', Math.floor(diff / 60000))
+    if (diff < 86400000)  return plural('newtab_hoursAgo_one', 'newtab_hoursAgo_other', Math.floor(diff / 3600000))
+    return plural('newtab_daysAgo_one', 'newtab_daysAgo_other', Math.floor(diff / 86400000))
   }
 
   // ── Toast 通知与撤销
@@ -595,9 +604,9 @@ export default function NewTab() {
       await requestCaptureAccess([tab.url || ''])
       const content = tab.id ? await extractMarkdownFromTab(tab.id, tab.url) : undefined
       await sendToJustDoIt({ title: tab.title || 'Untitled', url: tab.url || '', content })
-      showToast('✅ 已推送到倒计时321收件箱')
+      showToast(t('newtab_sentToInbox'))
     } catch (err) {
-      showToast('❌ ' + (errMsg(err) ?? '未知错误'))
+      showToast(t('newtab_errorToast', { error: errMsg(err) ?? t('common_unknownError') }))
     }
   }
 
@@ -608,17 +617,17 @@ export default function NewTab() {
     
     try {
       await requestCaptureAccess(tabsToPush.map(tab => tab.url || ''))
-      showToast(`🔄 正在提取正文并推送 ${tabsToPush.length} 个标签...`)
+      showToast(plural('newtab_batchSending_one', 'newtab_batchSending_other', tabsToPush.length))
       const payloads = []
       for (const tab of tabsToPush) {
         const content = tab.id ? await extractMarkdownFromTab(tab.id, tab.url) : undefined
         payloads.push({ title: tab.title || 'Untitled', url: tab.url || '', content })
       }
       await sendToJustDoIt(payloads)
-      showToast(`✅ 已批量推送 ${payloads.length} 个标签页`)
+      showToast(plural('newtab_batchSent_one', 'newtab_batchSent_other', payloads.length))
       setSelectedIds(new Set())
     } catch (err) {
-      showToast('❌ ' + (errMsg(err) ?? '未知错误'))
+      showToast(t('newtab_errorToast', { error: errMsg(err) ?? t('common_unknownError') }))
     }
   }
 
@@ -636,9 +645,9 @@ export default function NewTab() {
         setOpenTabs(prev => prev.filter(item => item.id !== tab.id))
         setSelectedIds(prev => { const next = new Set(prev); next.delete(tab.id!); return next })
       }
-      showToast(`已批量归档 ${closed} 个标签页`, () => { void restoreTabs(undoIds) })
+      showToast(plural('newtab_batchArchived_one', 'newtab_batchArchived_other', closed), () => { void restoreTabs(undoIds) })
     } catch (error) {
-      showToast(`已归档 ${closed}/${tabsToClose.length} 个，其余未完成：${errMsg(error)}`,
+      showToast(t('newtab_batchArchivePartial', { closed, total: tabsToClose.length, error: String(errMsg(error)) }),
         undoIds.length ? () => { void restoreTabs(undoIds) } : undefined)
     }
   }
@@ -666,9 +675,9 @@ export default function NewTab() {
       a.download = `djs321-tabs-backup-${new Date().toISOString().split('T')[0]}.json`
       a.click()
       URL.revokeObjectURL(url)
-      showToast('✅ 数据已成功导出')
+      showToast(t('newtab_exported'))
     } catch (err) {
-      showToast('❌ 导出失败: ' + (errMsg(err) ?? '未知错误'))
+      showToast(t('newtab_exportFailed', { error: errMsg(err) ?? t('common_unknownError') }))
     }
   }
 
@@ -677,9 +686,9 @@ export default function NewTab() {
     if (!file) return
     
     try {
-      if (file.size > 30 * 1024 * 1024) throw new Error('备份文件超过 30 MB。')
+      if (file.size > 30 * 1024 * 1024) throw new Error(t('newtab_backupTooLarge'))
       const backup = parseBackup(await file.text())
-      if (!window.confirm('导入将替换备份中包含的导航、归档和撤销记录，并恢复设置。备份启用的语录或远程壁纸可能重新联网，但不会自动授予网站权限。请先导出当前备份。是否继续？')) return
+      if (!window.confirm(t('newtab_importConfirm'))) return
       await replaceBackupCollections(backup, {
         transaction: work => db.transaction('rw', db.quickLinks, db.archived, db.undo, work),
         quickLinks: db.quickLinks, archived: db.archived, undo: db.undo,
@@ -687,10 +696,10 @@ export default function NewTab() {
       for (const key of Object.keys(backup.settings) as (keyof Settings)[]) {
         await saveSetting(key, backup.settings[key] as Settings[typeof key])
       }
-      showToast('✅ 数据已成功导入，正在刷新...')
+      showToast(t('newtab_imported'))
       setTimeout(() => window.location.reload(), 1500)
     } catch (err) {
-      showToast('导入未完成：' + errMsg(err))
+      showToast(t('newtab_importFailed', { error: String(errMsg(err)) }))
     } finally {
       if (fileInputRef.current) {
         fileInputRef.current.value = ''
@@ -702,9 +711,10 @@ export default function NewTab() {
     if (!tab.url) return
     setQuicklinkingTab(tab)
     const links = await db.quickLinks.toArray()
-    const cats = Array.from(new Set(links.map(l => l.category || '默认')))
+    const defaultCategory = categoryLabel(DEFAULT_CATEGORY_ID)
+    const cats = Array.from(new Set(links.map(l => l.category || defaultCategory)))
     setAvailableCategories(cats)
-    setQlCategory(cats[0] || '默认')
+    setQlCategory(cats[0] || defaultCategory)
   }
 
   async function handleConfirmQuickLink(e: React.FormEvent) {
@@ -716,7 +726,7 @@ export default function NewTab() {
     const quickLinks = await db.quickLinks.toArray()
     const order = quickLinks.length > 0 ? Math.max(...quickLinks.map(l => l.order)) + 1 : 0
     await db.quickLinks.add({ url: quicklinkingTab.url, title, iconUrl, order, category: qlCategory })
-    showToast(`📌 已添加至常用导航：${title}`)
+    showToast(t('newtab_addedToQuickLinks', { title }))
     setQuicklinkingTab(null)
   }
 
@@ -734,7 +744,7 @@ export default function NewTab() {
       title: bookmarkingTab.title,
       url: bookmarkingTab.url
     }, () => {
-      showToast(`★ 已收藏至书签`)
+      showToast(t('newtab_bookmarked'))
       setBookmarkingTab(null)
     })
   }
@@ -754,7 +764,7 @@ export default function NewTab() {
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             onClick={() => onSelect(node.id)}
           >
-            <span style={{color: '#f5a623'}}>📁</span> {node.title || (node.id === '1' ? '书签栏' : node.id === '2' ? '其他书签' : '文件夹')}
+            <span style={{color: '#f5a623'}}>📁</span> {node.title || (node.id === '1' ? t('bookmarks_bar') : node.id === '2' ? t('bookmarks_other') : t('bookmarks_folder'))}
           </button>
           {node.children.length > 0 && renderBookmarkTree(node.children, onSelect, depth + 1)}
         </div>
@@ -831,12 +841,12 @@ export default function NewTab() {
         </>
       )}
       <header className="nt-right-nav-wrap">
-        <nav className="nt-right-nav" aria-label="主导航">
+        <nav className="nt-right-nav" aria-label={t('newtab_mainNav')}>
           {/* Logo */}
           <div className="nt-brand">
             <img src="/icons/icon.svg" alt={brandName()} className="nt-right-nav-logo"
               onError={(e) => { (e.target as HTMLImageElement).src = '/icons/icon48.png' }} />
-            <div><strong>{brandName()}</strong><span>浏览器里的工作台</span></div>
+            <div><strong>{brandName()}</strong><span>{t('newtab_brandTagline')}</span></div>
           </div>
           <div className="nt-primary-nav">
 
@@ -895,15 +905,15 @@ export default function NewTab() {
           <button
             className="nt-right-nav-tool"
             onClick={e => { e.stopPropagation(); setShowSkin(true) }}
-            title="皮肤设置"
-            aria-label="皮肤设置"
+            title={t('newtab_skinSettings')}
+            aria-label={t('newtab_skinSettings')}
           ><IconPalette /></button>
 
           <button
             className="nt-right-nav-tool"
             onClick={e => { e.stopPropagation(); saveSettingAndSync('theme', settings.theme === 'light' ? 'dark' : 'light') }}
-            title={settings.theme === 'light' ? '切换深色' : '切换浅色'}
-            aria-label={settings.theme === 'light' ? '切换深色' : '切换浅色'}
+            title={settings.theme === 'light' ? t('newtab_switchToDark') : t('newtab_switchToLight')}
+            aria-label={settings.theme === 'light' ? t('newtab_switchToDark') : t('newtab_switchToLight')}
           >
             {settings.theme === 'light' ? <IconMoon /> : <IconSun />}
           </button>
@@ -912,8 +922,8 @@ export default function NewTab() {
           <button
             className="nt-right-nav-tool"
             onClick={e => { e.stopPropagation(); setShowSettingsModal(true) }}
-            title="设置"
-            aria-label="设置"
+            title={t('common_settings')}
+            aria-label={t('common_settings')}
           ><IconSettings /></button>
           </div>
         </nav>
@@ -944,23 +954,23 @@ export default function NewTab() {
         <div className="nt-search-area" role="search">
           <button type="button"
             className="nt-search-badge"
-            title={`当前搜索引擎: ${currentEngine.name} (点击切换)`}
-            aria-label={`切换搜索引擎，当前为 ${currentEngine.name}`}
+            title={t('newtab_engineTitle', { name: currentEngine.name })}
+            aria-label={t('newtab_engineAria', { name: currentEngine.name })}
             onClick={cycleEngine}
           >
             <EngineIcon />
             <span>{currentEngine.name}</span>
           </button>
           <input ref={searchRef} className="nt-search-input"
-            aria-label="搜索标签、归档与书签，或输入网址"
-            placeholder="搜索你的页面，或输入网址"
+            aria-label={t('newtab_searchAria')}
+            placeholder={t('newtab_searchPlaceholder')}
             value={query} onChange={e => setQuery(e.target.value)}
             onKeyDown={handleSearch} />
           <div className="nt-enter-hint">
             <kbd>↵</kbd>
           </div>
         </div>
-        <p className="nt-search-caption">输入即查找本地页面，按 Enter 使用 {currentEngine.name} 搜索</p>
+        <p className="nt-search-caption">{t('newtab_searchCaption', { engine: currentEngine.name })}</p>
         </div>
         
         {/* 工具栏：分组 + 视图 快捷切换 (仅在 Tab 视图显示且没有搜索词时) */}
@@ -1004,10 +1014,10 @@ export default function NewTab() {
       <main className={`nt-scroll-body ${activeSection === 'tabs' && settings.viewMode === 'kanban' ? 'kanban-mode' : ''}`}>
         <div className="nt-workspace-heading">
           <div>
-            <h1>{query ? '查找页面' : activeSection === 'quicklinks' ? '常用导航' : activeSection === 'bookmarks' ? '书签空间' : '标签工作台'}</h1>
-            <p>{query ? '当前标签、历史归档和浏览器书签，集中查找。' : activeSection === 'quicklinks' ? '常用的网站，按你的习惯归位。' : activeSection === 'bookmarks' ? '把值得留下的内容，整理成下一次的起点。' : '找回上下文，把有价值的页面变成下一步行动。'}</p>
+            <h1>{query ? t('newtab_headingSearch') : activeSection === 'quicklinks' ? t('newtab_headingQuicklinks') : activeSection === 'bookmarks' ? t('newtab_headingBookmarks') : t('newtab_headingTabs')}</h1>
+            <p>{query ? t('newtab_subtitleSearch') : activeSection === 'quicklinks' ? t('newtab_subtitleQuicklinks') : activeSection === 'bookmarks' ? t('newtab_subtitleBookmarks') : t('newtab_subtitleTabs')}</p>
           </div>
-          {!query && activeSection === 'tabs' && <span className="nt-workspace-count">{openTabs.length} 个打开的页面</span>}
+          {!query && activeSection === 'tabs' && <span className="nt-workspace-count">{plural('newtab_openPagesCount_one', 'newtab_openPagesCount_other', openTabs.length)}</span>}
         </div>
 
         {/* 当有搜索词时，全局展示搜索结果，屏蔽普通视图 */}
@@ -1015,7 +1025,7 @@ export default function NewTab() {
           <>
             {groups.length > 0 && (
               <div className="nt-section">
-                <div className="nt-section-title">搜索结果：当前打开</div>
+                <div className="nt-section-title">{t('newtab_resultsOpen')}</div>
                 {settings.viewMode === 'grid' && <GridView {...viewProps} hideGroupHeader={hideGroupHeader} />}
                 {settings.viewMode === 'list' && <ListView {...viewProps} hideGroupHeader={hideGroupHeader} />}
                 {settings.viewMode === 'kanban' && <KanbanView {...viewProps} />}
@@ -1024,7 +1034,7 @@ export default function NewTab() {
             
             {filteredArchived.length > 0 && (
               <div className="nt-section">
-                <div className="nt-section-title">搜索结果：历史归档</div>
+                <div className="nt-section-title">{t('newtab_resultsArchived')}</div>
                 <div className="nt-archived-list">
                   {filteredArchived.map(tab => (
                     <div key={tab.id} className="nt-archived-item" onClick={() => reopenArchived(tab)}>
@@ -1040,7 +1050,7 @@ export default function NewTab() {
             {/* 原生书签检索结果 */}
             {searchedBookmarks.length > 0 && (
               <div className="nt-section">
-                <div className="nt-section-title">搜索结果：原生书签</div>
+                <div className="nt-section-title">{t('newtab_resultsBookmarks')}</div>
                 <div className="nt-archived-list">
                   {searchedBookmarks.map(bookmark => (
                     <div key={bookmark.id} className="nt-archived-item" onClick={() => window.location.href = bookmark.url!} style={{ position: 'relative' }}>
@@ -1051,9 +1061,9 @@ export default function NewTab() {
                          <button onClick={(e) => {
                            e.stopPropagation();
                            sendToJustDoIt({ title: bookmark.title, url: bookmark.url! })
-                             .then(() => showToast('✅ 书签已推送到倒计时321收件箱'))
-                             .catch((err: unknown) => showToast('❌ ' + (errMsg(err) ?? '未知错误')))
-                         }} className="nt-batch-btn primary" style={{ padding: '2px 6px', fontSize: '10px' }}>↗ 发送</button>
+                             .then(() => showToast(t('newtab_bookmarkSentToInbox')))
+                             .catch((err: unknown) => showToast(t('newtab_errorToast', { error: errMsg(err) ?? t('common_unknownError') })))
+                         }} className="nt-batch-btn primary" style={{ padding: '2px 6px', fontSize: '10px' }}>{t('newtab_send')}</button>
                       </div>
                     </div>
                   ))}
@@ -1061,7 +1071,7 @@ export default function NewTab() {
               </div>
             )}
             {groups.length === 0 && filteredArchived.length === 0 && searchedBookmarks.length === 0 && (
-               <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>没有找到包含 "{query}" 的相关内容。</div>
+               <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>{t('newtab_noResults', { query })}</div>
             )}
           </>
         ) : (
@@ -1072,12 +1082,12 @@ export default function NewTab() {
             {activeSection === 'tabs' && (
               <>
                 {groups.length === 0 && filteredArchived.length === 0 && (
-                  <div className="nt-empty-state"><h2>工作台准备好了</h2><p>打开网页后，就能在这里查找、整理并发送到 App。</p></div>
+                  <div className="nt-empty-state"><h2>{t('newtab_emptyTitle')}</h2><p>{t('newtab_emptyBody')}</p></div>
                 )}
                 {/* Tab 展示区 */}
                 {groups.length > 0 && (
                   <div className="nt-section">
-                  <div className="nt-section-title">当前打开 <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.65, marginLeft: '6px' }}>· {openTabs.length} 页</span></div>
+                  <div className="nt-section-title">{t('newtab_currentlyOpen')} <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.65, marginLeft: '6px' }}>{plural('newtab_pageCount_one', 'newtab_pageCount_other', openTabs.length)}</span></div>
                     {settings.viewMode === 'grid' &&
                       <GridView {...viewProps} hideGroupHeader={hideGroupHeader} />}
                     {settings.viewMode === 'list' &&
@@ -1089,7 +1099,7 @@ export default function NewTab() {
                 {/* 最近归档 */}
                 {filteredArchived.length > 0 && (
                   <div className="nt-section">
-                    <div className="nt-section-title">最近归档</div>
+                    <div className="nt-section-title">{t('newtab_recentArchived')}</div>
                     <div className="nt-archived-list">
                       {filteredArchived.map(tab => (
                         <div key={tab.id} className="nt-archived-item" onClick={() => reopenArchived(tab)}>
@@ -1116,7 +1126,7 @@ export default function NewTab() {
       {toast && (
         <div className="nt-toast" role="status">
           {toast}
-          {undoAction && <button className="nt-batch-btn primary" style={{marginLeft: '12px', padding: '2px 8px'}} disabled={undoBusy} onClick={undoAction}>{undoBusy ? '恢复中' : '撤销'}</button>}
+          {undoAction && <button className="nt-batch-btn primary" style={{marginLeft: '12px', padding: '2px 8px'}} disabled={undoBusy} onClick={undoAction}>{undoBusy ? t('newtab_restoring') : t('common_undo')}</button>}
         </div>
       )}
 
@@ -1134,28 +1144,28 @@ export default function NewTab() {
       {selectedIds.size > 0 && (
         <div className="nt-batch-bar">
           <div className="nt-batch-info">
-            已选择 <span className="nt-batch-count">{selectedIds.size}</span> 个标签
+            {t('newtab_selectedBefore')} <span className="nt-batch-count">{selectedIds.size}</span> {plural('newtab_selectedAfter_one', 'newtab_selectedAfter_other', selectedIds.size)}
           </div>
           <div className="nt-batch-actions">
-            <button className="nt-batch-btn primary" onClick={handleBatchSend}>↗ 批量推送</button>
-            <button className="nt-batch-btn" onClick={handleBatchClose}>✕ 批量归档</button>
-            <button className="nt-batch-btn" onClick={() => setSelectedIds(new Set())}>取消</button>
+            <button className="nt-batch-btn primary" onClick={handleBatchSend}>{t('newtab_batchSend')}</button>
+            <button className="nt-batch-btn" onClick={handleBatchClose}>{t('newtab_batchArchive')}</button>
+            <button className="nt-batch-btn" onClick={() => setSelectedIds(new Set())}>{t('common_cancel')}</button>
           </div>
         </div>
       )}
       {/* ── 书签分类选择弹窗 ── */}
       {bookmarkingTab && (
-        <Dialog label="收藏到书签" onClose={() => setBookmarkingTab(null)}>
+        <Dialog label={t('newtab_addToBookmarks')} onClose={() => setBookmarkingTab(null)}>
           <div className="nt-modal" onClick={e => e.stopPropagation()}>
-            <h3>收藏到书签</h3>
+            <h3>{t('newtab_addToBookmarks')}</h3>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {bookmarkingTab.title}
             </p>
             <div className="nt-bookmark-picker" style={{ maxHeight: '300px', overflowY: 'auto', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px', background: 'var(--bg-card)' }}>
-              {bookmarkTree.length > 0 ? renderBookmarkTree(bookmarkTree, handleConfirmBookmark) : <div style={{padding: '10px', fontSize: '13px', color: 'var(--text-muted)'}}>正在加载或无可用书签文件夹...</div>}
+              {bookmarkTree.length > 0 ? renderBookmarkTree(bookmarkTree, handleConfirmBookmark) : <div style={{padding: '10px', fontSize: '13px', color: 'var(--text-muted)'}}>{t('newtab_bookmarkFoldersLoading')}</div>}
             </div>
             <div className="nt-modal-actions" style={{ marginTop: '16px' }}>
-              <button className="nt-btn-cancel" onClick={() => setBookmarkingTab(null)}>取消</button>
+              <button className="nt-btn-cancel" onClick={() => setBookmarkingTab(null)}>{t('common_cancel')}</button>
             </div>
           </div>
         </Dialog>
@@ -1163,35 +1173,35 @@ export default function NewTab() {
 
       {/* ── 常用导航分类选择弹窗 ── */}
       {quicklinkingTab && (
-        <Dialog label="添加到常用导航" onClose={() => setQuicklinkingTab(null)}>
+        <Dialog label={t('newtab_addToQuickLinks')} onClose={() => setQuicklinkingTab(null)}>
           <div className="nt-modal" onClick={e => e.stopPropagation()}>
-            <h3>添加到常用导航</h3>
+            <h3>{t('newtab_addToQuickLinks')}</h3>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '16px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {quicklinkingTab.title}
             </p>
             <form onSubmit={handleConfirmQuickLink} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div>
-                <label style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>选择分类</label>
+                <label style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>{t('newtab_chooseCategory')}</label>
                 {availableCategories.length > 0 ? (
                   <select
-                    aria-label="选择分类"
+                    aria-label={t('newtab_chooseCategory')}
                     value={availableCategories.includes(qlCategory) ? qlCategory : '__new__'}
                     onChange={e => setQlCategory(e.target.value === '__new__' ? '' : e.target.value)}
                     className="nt-input nt-select"
                     style={{ width: '100%' }}
                   >
                     {availableCategories.map(c => <option key={c} value={c}>{c}</option>)}
-                    <option value="__new__">＋ 新建分类...</option>
+                    <option value="__new__">{t('newtab_newCategoryOption')}</option>
                   </select>
                 ) : null}
                 {/* 没有现有分类、或选择了“新建分类”时显示输入框 */}
                 {(!availableCategories.includes(qlCategory)) && (
                   <input
                     type="text"
-                    aria-label="新分类名称"
+                    aria-label={t('newtab_newCategoryName')}
                     value={qlCategory}
                     onChange={e => setQlCategory(e.target.value)}
-                    placeholder="输入新分类名称..."
+                    placeholder={t('newtab_newCategoryPlaceholder')}
                     className="nt-input"
                     style={{ width: '100%', marginTop: availableCategories.length > 0 ? '8px' : '0' }}
                     autoFocus
@@ -1199,8 +1209,8 @@ export default function NewTab() {
                 )}
               </div>
               <div className="nt-modal-actions" style={{ marginTop: '16px' }}>
-                <button type="button" className="nt-btn-cancel" onClick={() => setQuicklinkingTab(null)}>取消</button>
-                <button type="submit" className="nt-btn-submit" disabled={!qlCategory.trim()}>确定</button>
+                <button type="button" className="nt-btn-cancel" onClick={() => setQuicklinkingTab(null)}>{t('common_cancel')}</button>
+                <button type="submit" className="nt-btn-submit" disabled={!qlCategory.trim()}>{t('common_confirm')}</button>
               </div>
             </form>
           </div>

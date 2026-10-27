@@ -1,5 +1,6 @@
 import { GroupBy } from '../lib/settings'
-import { inferPageCategory } from '../lib/page-category'
+import { inferPageCategoryId, categoryLabel, DEFAULT_CATEGORY_ID, type PageCategoryId } from '../lib/page-category'
+import { t } from '../lib/i18n'
 export { CATEGORY_RULES } from '../lib/page-category'
 
 export interface TabGroup {
@@ -42,13 +43,13 @@ async function groupByChromeGroup(tabs: chrome.tabs.Tab[]): Promise<TabGroup[]> 
   for (const [gid, tabs] of grouped) {
     try {
       const g = await chrome.tabGroups.get(gid)
-      result.push({ id: `g${gid}`, label: g.title || '未命名分组', color: g.color, tabs })
+      result.push({ id: `g${gid}`, label: g.title || t('group_unnamed'), color: g.color, tabs })
     } catch {
-      result.push({ id: `g${gid}`, label: '未命名分组', tabs })
+      result.push({ id: `g${gid}`, label: t('group_unnamed'), tabs })
     }
   }
   if (ungrouped.length > 0)
-    result.push({ id: 'ungrouped', label: '未分组', tabs: ungrouped })
+    result.push({ id: 'ungrouped', label: t('group_ungrouped'), tabs: ungrouped })
   return result
 }
 
@@ -62,7 +63,7 @@ function groupByWindow(tabs: chrome.tabs.Tab[]): TabGroup[] {
   }
   let idx = 1
   return [...map.entries()].map(([wid, tabs]) => ({
-    id: `win-${wid}`, label: `🪟 窗口 ${idx++}`, tabs,
+    id: `win-${wid}`, label: t('group_window', { index: idx++ }), tabs,
   }))
 }
 
@@ -72,10 +73,10 @@ function groupByTime(tabs: chrome.tabs.Tab[]): TabGroup[] {
   const DAY = 86400000
   type BucketKey = 'recent' | 'today' | 'yesterday' | 'older'
   const buckets: Record<BucketKey, { label: string; tabs: chrome.tabs.Tab[] }> = {
-    recent:    { label: '⚡ 刚刚（1小时内）', tabs: [] },
-    today:     { label: '☀️ 今天',           tabs: [] },
-    yesterday: { label: '🌙 昨天',           tabs: [] },
-    older:     { label: '📦 更早',           tabs: [] },
+    recent:    { label: t('group_recent'),    tabs: [] },
+    today:     { label: t('group_today'),     tabs: [] },
+    yesterday: { label: t('group_yesterday'), tabs: [] },
+    older:     { label: t('group_older'),     tabs: [] },
   }
   for (const t of tabs) {
     const la = (t as chrome.tabs.Tab & { lastAccessed?: number }).lastAccessed ?? now
@@ -92,20 +93,20 @@ function groupByTime(tabs: chrome.tabs.Tab[]): TabGroup[] {
 
 // ── 按内容类型（语义分类）
 function groupByCategory(tabs: chrome.tabs.Tab[]): TabGroup[] {
-  const map = new Map<string, chrome.tabs.Tab[]>()
+  const map = new Map<PageCategoryId, chrome.tabs.Tab[]>()
   const other: chrome.tabs.Tab[] = []
   for (const t of tabs) {
-    const label = inferPageCategory(t.url || '', t.title || '')
-    if (label === '默认') other.push(t)
+    const id = inferPageCategoryId(t.url || '', t.title || '')
+    if (id === DEFAULT_CATEGORY_ID) other.push(t)
     else {
-      if (!map.has(label)) map.set(label, [])
-      map.get(label)!.push(t)
+      if (!map.has(id)) map.set(id, [])
+      map.get(id)!.push(t)
     }
   }
-  const result = [...map.entries()]
+  const result: TabGroup[] = [...map.entries()]
     .sort((a, b) => b[1].length - a[1].length)
-    .map(([label, tabs]) => ({ id: label, label, tabs }))
-  if (other.length > 0) result.push({ id: 'other', label: '🔖 其他', tabs: other })
+    .map(([id, tabs]) => ({ id, label: categoryLabel(id), tabs }))
+  if (other.length > 0) result.push({ id: 'other', label: t('group_other'), tabs: other })
   return result
 }
 
@@ -113,7 +114,7 @@ function groupByCategory(tabs: chrome.tabs.Tab[]): TabGroup[] {
 export async function groupTabs(tabs: chrome.tabs.Tab[], groupBy: GroupBy): Promise<TabGroup[]> {
   if (tabs.length === 0) return []
   switch (groupBy) {
-    case 'none':        return [{ id: 'all', label: '全部标签', tabs }]
+    case 'none':        return [{ id: 'all', label: t('group_allTabs'), tabs }]
     case 'domain':      return groupByDomain(tabs)
     case 'chromeGroup': return await groupByChromeGroup(tabs)
     case 'window':      return groupByWindow(tabs)

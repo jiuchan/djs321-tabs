@@ -4,6 +4,7 @@ import { handleTabActionMessage } from './message-handler'
 import { isBrowserContentUrl } from '../lib/page-url'
 import { createUndoRestorer } from '../lib/tab-actions'
 import { acceptDesktopDiscovery } from '../lib/desktop-discovery'
+import { t } from '../lib/i18n'
 
 // Web pages can only report a registered, signed local handshake; never request actions or secrets.
 chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => {
@@ -19,14 +20,14 @@ const restoreUndo = createUndoRestorer({
 
 // 归档 Tab（可选关闭）
 async function archiveTab(tab: chrome.tabs.Tab, close = false) {
-  if (!isBrowserContentUrl(tab.url) || tab.id == null) throw new Error('该页面无法归档。')
+  if (!isBrowserContentUrl(tab.url) || tab.id == null) throw new Error(t('bg_cannotArchive'))
   const url = tab.url!
   let undoId: number | undefined
   await db.transaction('rw', db.archived, db.undo, async () => {
     await db.archived.add({ title: tab.title || url, url, favicon: tab.favIconUrl, archivedAt: new Date() })
     if (close) {
       const id = await db.undo.add({ title: tab.title || url, url, closedAt: new Date() })
-      if (typeof id !== 'number') throw new Error('撤销记录保存失败。')
+      if (typeof id !== 'number') throw new Error(t('bg_undoSaveFailed'))
       undoId = id
     }
   })
@@ -64,17 +65,17 @@ chrome.commands.onCommand.addListener(async (command) => {
     if (command === 'archive-tab') await archiveTab(tab, false)
     if (command === 'close-and-archive') await archiveTab(tab, true)
     if (command === 'archive-tab' || command === 'close-and-archive') {
-      notify(brandName(), command === 'archive-tab' ? '已归档，原标签保留。' : '已保存链接并关闭标签。')
+      notify(brandName(), command === 'archive-tab' ? t('bg_archivedKept') : t('bg_savedAndClosed'))
     }
     if (command === 'send-to-justdoit') {
       const { sendToJustDoIt, extractMarkdownFromTab } = await import('../lib/justdoit')
       const content = tab.id != null ? await extractMarkdownFromTab(tab.id, tab.url) : undefined
       await sendToJustDoIt({ title: tab.title || 'Untitled', url: tab.url || '', content })
-      notify('已发送至倒计时321', tab.title || tab.url || '成功保存为任务', true)
+      notify(t('bg_sentToApp'), tab.title || tab.url || t('bg_savedAsTask'), true)
     }
   } catch (error) {
     console.error('[DJS321 Tabs] shortcut failed:', error)
-    notify(`${brandName()} 操作未完成`, error instanceof Error ? error.message : '请打开插件检查设置后重试。')
+    notify(t('bg_actionFailedTitle', { brand: brandName() }), error instanceof Error ? error.message : t('bg_checkSettings'))
   }
 })
 
@@ -101,10 +102,10 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     ;(async () => {
       try {
         const restored = await restoreUndo(msg.undoIds)
-        if (!restored) throw new Error('没有可恢复的记录。')
+        if (!restored) throw new Error(t('bg_nothingToRestore'))
         sendResponse({ ok: true, restored })
       } catch (error) {
-        sendResponse({ ok: false, error: error instanceof Error ? error.message : '恢复标签失败' })
+        sendResponse({ ok: false, error: error instanceof Error ? error.message : t('bg_restoreFailed') })
       }
     })()
     return true

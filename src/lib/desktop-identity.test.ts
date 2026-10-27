@@ -40,13 +40,13 @@ test('rejects mismatched challenges, clients, endpoints, key pins and tampered s
   const module = await identity()
   const expected = { client: origin, challenge, endpoint, publicKey }
   for (const value of [proof({ challenge: 'c'.repeat(64) }), proof({ client: `chrome-extension://${'b'.repeat(32)}` }), proof({ endpoint: 'http://localhost:49153' }), { ...proof(), signature: 'A'.repeat(86) }, proof({ publicKey: { ...publicKey, x: 'A'.repeat(43) } }), proof({ protocol: 1 }), proof({ app: 'other' }), proof({ publicKey: { ...publicKey, d: 'private' } })]) {
-    await assert.rejects(module.verifyDesktopProof(value, expected), /身份|协议/)
+    await assert.rejects(module.verifyDesktopProof(value, expected), /identity|protocol/)
   }
 })
 
 test('a first-pair public key still requires a valid signature and bounded exact fields', async () => {
   const module = await identity()
   assert.deepEqual(await module.verifyDesktopProof(proof(), { client: origin, challenge, endpoint }), proofFields())
-  await assert.rejects(module.verifyDesktopProof({ ...proof(), arbitrary: true }, { client: origin, challenge, endpoint }), /身份|协议/)
-  await assert.rejects(module.verifyDesktopProof({ ...proof(), signature: 'a'.repeat(10000) }, { client: origin, challenge, endpoint }), /身份|协议/)
+  await assert.rejects(module.verifyDesktopProof({ ...proof(), arbitrary: true }, { client: origin, challenge, endpoint }), /identity|protocol/)
+  await assert.rejects(module.verifyDesktopProof({ ...proof(), signature: 'a'.repeat(10000) }, { client: origin, challenge, endpoint }), /identity|protocol/)
 })

@@ -1,3 +1,5 @@
+import { t } from './i18n.ts'
+
 export interface DesktopPublicKey { kty: 'EC'; crv: 'P-256'; x: string; y: string }
 export interface DesktopIdentity { endpoint: string; publicKey: DesktopPublicKey }
 export interface DesktopProof extends DesktopIdentity {
@@ -5,7 +7,7 @@ export interface DesktopProof extends DesktopIdentity {
 }
 
 export class DesktopIdentityError extends Error {
-  constructor() { super('桌面 App 身份或协议不匹配，未发送令牌或内容。请打开插件设置重新连接。'); this.name = 'DesktopIdentityError' }
+  constructor() { super(t('desktop_identityMismatch')); this.name = 'DesktopIdentityError' }
 }
 
 export function isDesktopEndpoint(value: unknown): value is string {

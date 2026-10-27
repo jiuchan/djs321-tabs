@@ -1,3 +1,5 @@
+import { t } from './i18n.ts'
+
 const NOISY_FAVICON_HOSTS = new Set([
   'www.google.com',
   'google.com',
@@ -29,7 +31,7 @@ export function pickPersistableFaviconUrl(iconUrl?: string | null) {
 }
 
 export function getQuickLinkFallbackLabel(title?: string, url?: string) {
-  const text = title?.trim() || url?.trim() || '站'
+  const text = title?.trim() || url?.trim() || t('tabs_faviconFallback')
   const letterOrDigit = Array.from(text).find(char => /[\p{L}\p{N}]/u.test(char))
-  return (letterOrDigit || '站').toUpperCase()
+  return (letterOrDigit || t('tabs_faviconFallback')).toUpperCase()
 }

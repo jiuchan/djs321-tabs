@@ -1,3 +1,5 @@
+import { t } from './i18n.ts'
+
 export type GroupBy = 'none' | 'domain' | 'chromeGroup' | 'window' | 'time' | 'category'
 export type ViewMode = 'grid' | 'list' | 'kanban'
 export type Theme = 'light' | 'dark'
@@ -64,7 +66,7 @@ export function getJustDoItApiUrl(): Promise<string> {
       if (error) { reject(new Error(error.message)); return }
       const raw = String(r.justdoitApiUrl ?? '').trim().replace(/\/+$/, '')
       const normalized = normalizeApiUrl(raw)
-      if (raw && normalized !== raw) reject(new Error('连接地址无效；仅支持本机 HTTP 或无密码、无查询参数的 HTTPS 地址。'))
+      if (raw && normalized !== raw) reject(new Error(t('justdoit_endpointInvalid')))
       else resolve(normalized)
     })
   })
@@ -113,7 +115,7 @@ export function saveSetting<K extends keyof Settings>(key: K, value: Settings[K]
   }
   return new Promise((resolve, reject) => chrome.storage.sync.set({ [key]: value }, () => {
     const error = chrome.runtime?.lastError
-    if (error) reject(new Error(error.message || '保存设置失败。'))
+    if (error) reject(new Error(error.message || t('justdoit_settingsSaveFailed')))
     else resolve()
   }))
 }

@@ -11,7 +11,7 @@ test('native launch uses a direct user-click anchor, not an awaited popup or aut
 })
 
 test('advanced URL is collapsed while privacy and site permission controls remain available', () => {
-  assert.match(options, /<details[^>]*>[\s\S]*?<summary>高级连接设置<\/summary>[\s\S]*?value=\{apiDraft\}/)
+  assert.match(options, /<details[^>]*>[\s\S]*?<summary>\{t\('options_advancedConnection'\)\}<\/summary>[\s\S]*?value=\{apiDraft\}/)
   assert.match(options, /requestCaptureAccess\(\[normalized\]\)/)
   assert.match(options, /revokeOptionalSiteAccess/)
   assert.match(options, /settings\.enableRemoteQuotes/)
@@ -19,7 +19,7 @@ test('advanced URL is collapsed while privacy and site permission controls remai
 
 test('pairing UI exposes code, cancellation and disconnect, aborting work on unmount', () => {
   assert.match(options, /pairingLink\.code/)
-  assert.match(options, /取消配对/)
+  assert.match(options, /t\('options_cancelPairing'\)/)
   assert.match(options, /disconnectDesktop/)
   assert.match(options, /AbortController/)
   assert.match(options, /return \(\) => \{[\s\S]*?\.abort\(\)/)
@@ -54,7 +54,7 @@ test('native links stay disabled until discovery registration has completed loca
   assert.match(options, /setLaunchReady\(true\)/)
   assert.match(options, /if \(!ready \|\| busy \|\| savingConnection \|\| !launchReady\)/)
   assert.match(options, /clearDesktopDiscovery/)
-  assert.match(options, /默认浏览器/)
+  assert.match(options, /t\('options_connBrowserHint'\)/)
   assert.doesNotMatch(options, /本机配对固定|placeholder="http:\/\/localhost:37373"/)
   assert.match(options, /const mode = primaryOpen \? 'connect' : 'pair'/)
 })

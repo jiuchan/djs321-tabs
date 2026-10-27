@@ -1,5 +1,6 @@
 import { TabGroup, hostname } from '../groupers'
 import { getRenderableFaviconUrl } from '../../lib/favicon'
+import { t } from '../../lib/i18n'
 
 interface Props {
   groups: TabGroup[]
@@ -52,10 +53,10 @@ export function GridView({ groups, collapsedIds, onToggleCollapse, onSwitch, onC
                     </div>
                     </button>
                     <div className="tab-actions">
-                      <button className="tab-action-btn tab-bookmark" onClick={e => { e.stopPropagation(); onAddToBookmark?.(tab) }} title="收藏到书签">★</button>
-                      <button className="tab-action-btn tab-quicklink" onClick={e => { e.stopPropagation(); onAddToQuickLink?.(tab) }} title="添加到常用导航">📌</button>
-                      <button className="tab-action-btn tab-send" onClick={e => onSend(e, tab)} title="推送到倒计时321">↗</button>
-                      <button className="tab-action-btn tab-close" onClick={e => onClose(e, tab)} title="关闭并归档">✕</button>
+                      <button className="tab-action-btn tab-bookmark" onClick={e => { e.stopPropagation(); onAddToBookmark?.(tab) }} title={t('newtab_addToBookmarks')}>★</button>
+                      <button className="tab-action-btn tab-quicklink" onClick={e => { e.stopPropagation(); onAddToQuickLink?.(tab) }} title={t('newtab_addToQuickLinks')}>📌</button>
+                      <button className="tab-action-btn tab-send" onClick={e => onSend(e, tab)} title={t('newtab_sendToApp')}>↗</button>
+                      <button className="tab-action-btn tab-close" onClick={e => onClose(e, tab)} title={t('newtab_closeAndArchive')}>✕</button>
                     </div>
                   </div>
                 ))}

@@ -272,7 +272,7 @@ test('buildQuickLinkCategoryOptions prioritizes suggested category and deduplica
     },
   )
 
-  assert.deepEqual(options, ['📄 文档协作', '🤖 AI 工具', '💻 开发工具', '默认'])
+  assert.deepEqual(options, ['📄 文档协作', '🤖 AI 工具', '💻 开发工具', 'Default'])
 })
 
 test('createRuleSnapshot packages both rule maps with version metadata', () => {

@@ -11,7 +11,7 @@ const folders = [
 
 const input = {
   url: 'https://skillhub.cn/', title: 'SkillHub - AI Skills 社区', folders,
-  bookmarks: [], preferences: {}, recentFolderId: 'music', category: '🤖 AI 助手',
+  bookmarks: [], preferences: {}, recentFolderId: 'music', category: 'ai' as const,
 }
 
 test('SkillHub content chooses the existing AI folder instead of the last music folder', () => {
@@ -36,14 +36,14 @@ test('an exact existing bookmark takes priority over content and unrelated recen
 })
 
 test('a unique same-host collection is reused, not a substring lookalike host', () => {
-  assert.deepEqual(recommendBookmarkFolder({ ...input, category: '默认', bookmarks: [
+  assert.deepEqual(recommendBookmarkFolder({ ...input, category: 'default' as const, bookmarks: [
     { id: 'a', title: 'Skill', url: 'https://skillhub.cn/skills', parentId: 'ai' },
     { id: 'b', title: 'Other', url: 'https://skillhub.cn.example.com/', parentId: 'music' },
   ] }), { folderId: 'ai', source: 'same-site' })
 })
 
 test('conflicting same-site folders do not become a confident recommendation', () => {
-  assert.deepEqual(recommendBookmarkFolder({ ...input, category: '默认', bookmarks: [
+  assert.deepEqual(recommendBookmarkFolder({ ...input, category: 'default' as const, bookmarks: [
     { id: 'a', title: 'Skill', url: 'https://skillhub.cn/a', parentId: 'ai' },
     { id: 'b', title: 'Skill', url: 'https://skillhub.cn/b', parentId: 'music' },
   ] }), { folderId: 'music', source: 'recent' })
@@ -62,19 +62,19 @@ test('ambiguous AI folders fall back honestly rather than selecting the first on
 })
 
 test('unknown pages use an explicitly identified recent fallback, never an AI guess', () => {
-  assert.deepEqual(recommendBookmarkFolder({ ...input, url: 'https://example.com/', title: 'Daily', category: '默认' }),
+  assert.deepEqual(recommendBookmarkFolder({ ...input, url: 'https://example.com/', title: 'Daily', category: 'default' as const }),
     { folderId: 'music', source: 'recent' })
 })
 
 test('missing or deleted fallback asks for a folder instead of silently choosing the first', () => {
-  assert.deepEqual(recommendBookmarkFolder({ ...input, category: '默认', recentFolderId: 'deleted' }),
+  assert.deepEqual(recommendBookmarkFolder({ ...input, category: 'default' as const, recentFolderId: 'deleted' }),
     { folderId: null, source: 'none' })
 })
 
 test('recent fallback and content matches are labelled as different decision sources', () => {
-  assert.equal(bookmarkRecommendationLabel.recent, '最近使用')
-  assert.equal(bookmarkRecommendationLabel.content, '内容匹配')
-  assert.equal(bookmarkRecommendationLabel.none, '待选择')
+  assert.equal(bookmarkRecommendationLabel.recent, 'Recently used')
+  assert.equal(bookmarkRecommendationLabel.content, 'Content match')
+  assert.equal(bookmarkRecommendationLabel.none, 'Not chosen')
 })
 
 test('collectBookmarkMatches retains real parent IDs without turning folders into bookmarks', () => {

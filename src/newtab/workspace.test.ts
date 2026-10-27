@@ -6,7 +6,7 @@ const read = (file: string) => readFileSync(new URL(file, import.meta.url), 'utf
 
 test('workspace navigation is visible and its active state is accessible', () => {
   const source = read('./NewTab.tsx')
-  assert.match(source, /aria-label="主导航"/)
+  assert.match(source, /aria-label=\{t\('newtab_mainNav'\)\}/)
   assert.match(source, /aria-current=\{isActive/)
   assert.match(read('./NewTab.css'), /\.nt-root\.dark \.nt-right-nav-item\.active\s*\{[^}]*background: rgba\(255,255,255,0\.14\)/)
   assert.doesNotMatch(read('./NewTab.css'), /width: 8px;\s*pointer-events: all/)
@@ -34,8 +34,11 @@ test('sidebar styling is bounded to roomy windows and keeps shared glass materia
 
 test('classic is discoverable in both existing settings surfaces', () => {
   const modal = read('./views/SettingsModal.tsx')
-  assert.match(modal, /value: 'classic', title: '经典右侧'/)
-  assert.match(read('../options/Options.tsx'), /<option value="classic">经典右侧/)
+  assert.match(modal, /value: 'classic', title: 'settings_layoutClassic'/)
+  assert.match(read('../options/Options.tsx'), /<option value="classic">\{t\('options_layoutClassic'\)\}/)
+  const zh = JSON.parse(read('../../public/_locales/zh_CN/messages.json'))
+  assert.equal(zh.settings_layoutClassic.message, '经典右侧')
+  assert.match(zh.options_layoutClassic.message, /^经典右侧/)
   assert.match(read('./NewTab.css'), /\.nt-layout-preview\.classic\s*\{[^}]*flex-direction: row-reverse/)
 })
 
@@ -60,8 +63,8 @@ test('settings use a native modal with cancel handling instead of an unfocused o
   assert.match(read('./views/Dialog.tsx'), /showModal\(\)/)
   assert.match(read('./views/Dialog.tsx'), /onCancel/)
   assert.match(read('./views/SettingsModal.tsx'), /<Dialog/)
-  assert.ok(/<Dialog label="收藏到书签"/.test(read('./NewTab.tsx')))
-  assert.ok(/<Dialog label="添加到常用导航"/.test(read('./NewTab.tsx')))
+  assert.ok(/<Dialog label=\{t\('newtab_addToBookmarks'\)\}/.test(read('./NewTab.tsx')))
+  assert.ok(/<Dialog label=\{t\('newtab_addToQuickLinks'\)\}/.test(read('./NewTab.tsx')))
 })
 
 test('search has one focus indicator and category drag targets do not shift the layout', () => {

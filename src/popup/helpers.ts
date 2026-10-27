@@ -1,3 +1,6 @@
+import { t } from '../lib/i18n.ts'
+import { categoryLabel, DEFAULT_CATEGORY_ID } from '../lib/page-category.ts'
+
 export interface BookmarkFolderOption {
   id: string
   title: string
@@ -91,7 +94,7 @@ export function flattenBookmarkFolders(
   for (const node of nodes) {
     if (node.url) continue
 
-    const title = normalizeFolderTitle(node.title || '', node.id === '1' ? '书签栏' : node.id === '2' ? '其他书签' : '未命名文件夹')
+    const title = normalizeFolderTitle(node.title || '', node.id === '1' ? t('popup_bookmarkBar') : node.id === '2' ? t('popup_otherBookmarks') : t('popup_untitledFolder'))
     const path = [...parents, title].join(' / ')
     folders.push({ id: node.id, title, path, depth })
 
@@ -323,7 +326,7 @@ export function buildQuickLinkCategoryOptions(
     suggestedCategory,
     ...quickLinks.map(link => link.category || ''),
     ...Object.values(preferences),
-    '默认',
+    categoryLabel(DEFAULT_CATEGORY_ID),
   ]
 
   return Array.from(

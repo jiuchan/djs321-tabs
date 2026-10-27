@@ -45,7 +45,7 @@ test('failed identity probe retains credential and inactive-revocation recovery 
   assert.equal(snapshot.state, 'error')
   assert.equal(snapshot.hasCredential, true)
   assert.equal(snapshot.pendingRevocation, true)
-  assert.match(snapshot.message, /身份/)
+  assert.match(snapshot.message, /identity/)
 });
 
 test('pair and reconnect links contain only runtime origin and independent fresh nonces', t => {
@@ -106,7 +106,7 @@ test('another service at a stale port receives neither token nor task on identit
     fx.calls.push({ url: String(input), init })
     return json(signedProof(new URL(String(input)).searchParams.get('challenge')!, {}, impostor))
   }
-  await assert.rejects(client.probeDesktopConnection(), /身份/)
+  await assert.rejects(client.probeDesktopConnection(), /identity/)
   assert.equal(fx.calls.length, 1)
   assert.equal(authenticated(fx).length, 0)
   assert.equal(fx.calls[0].init?.body, undefined)
@@ -125,13 +125,13 @@ for (const value of [{ app: 'other', protocol: 2, paired: true }, { app: 'djs321
   test(`status rejects ${JSON.stringify(value)}`, async t => {
     const fx = fixture(t, credential)
     fx.respond(async () => json(value))
-    await assert.rejects(client.probeDesktopConnection(), /版本|协议/)
+    await assert.rejects(client.probeDesktopConnection(), /version|protocol/)
   })
 }
 
 test('pair waits for nonce announcement without probing or scanning any port', async t => {
   const fx = fixture(t)
-  await assert.rejects(client.pollDesktopPairing(client.createDesktopPairing(), { timeoutMs: 15, intervalMs: 1 }), /超时/)
+  await assert.rejects(client.pollDesktopPairing(client.createDesktopPairing(), { timeoutMs: 15, intervalMs: 1 }), /timed out/)
   assert.equal(fx.calls.length, 0)
   assert.deepEqual(fx.local, {})
 })
@@ -185,7 +185,7 @@ test('cancelled sleep cannot begin another poll; expiry cancels only its own non
   const next = client.createDesktopPairing()
   await announce(next)
   fx.respond(async () => json({ state: 'pending' }))
-  await assert.rejects(client.pollDesktopPairing(next, { timeoutMs: 15, intervalMs: 1 }), /超时/)
+  await assert.rejects(client.pollDesktopPairing(next, { timeoutMs: 15, intervalMs: 1 }), /timed out/)
   assert.deepEqual(JSON.parse(String(fx.calls.at(-1)?.init?.body)), { nonce: next.nonce })
   assert.deepEqual(fx.local, {})
 })
@@ -230,7 +230,7 @@ test('offline disconnect deactivates before probing and keeps only inactive revo
     assert.equal(await client.getDesktopCredential(), null)
     throw new TypeError('App stopped')
   }
-  await assert.rejects(client.disconnectDesktop(), /本机已停止发送.*打开 App.*再次点击断开/)
+  await assert.rejects(client.disconnectDesktop(), /stopped.*Open the app.*Disconnect again/)
   assert.deepEqual(fx.local, { [DESKTOP_GENERATION_KEY]: 1, [pendingKey]: credential })
   assert.equal(authenticated(fx).length, 0)
   assert.equal(await client.probeDesktopConnection(), 'unpaired')
@@ -249,7 +249,7 @@ test('pending revocation retry verifies identity and accepts 204 or invalid auth
 test('identity mismatch during revoke preserves inactive state without sending a bearer', async t => {
   const fx = fixture(t, credential)
   globalThis.fetch = async (input, init) => { fx.calls.push({ url: String(input), init }); return json({ success: true }) }
-  await assert.rejects(client.disconnectDesktop(), /再次点击断开/)
+  await assert.rejects(client.disconnectDesktop(), /Disconnect again/)
   assert.deepEqual(fx.local, { [DESKTOP_GENERATION_KEY]: 1, [pendingKey]: credential })
   assert.equal(authenticated(fx).length, 0)
 })
@@ -366,7 +366,7 @@ test('body and bearer cannot leave if the stored authorization is removed during
     delete fx.local[credentialKey]
     return json(signedProof(new URL(String(input)).searchParams.get('challenge')!))
   }
-  await assert.rejects(client.requestDesktop('/api/inbox', { method: 'POST', headers: client.desktopHeaders(credential), body: 'private' }, undefined, 1000, credential), /身份/)
+  await assert.rejects(client.requestDesktop('/api/inbox', { method: 'POST', headers: client.desktopHeaders(credential), body: 'private' }, undefined, 1000, credential), /identity/)
   assert.equal(fx.calls.length, 1)
   assert.equal(fx.calls[0].init?.body, undefined)
   assert.equal(authenticated(fx).length, 0)

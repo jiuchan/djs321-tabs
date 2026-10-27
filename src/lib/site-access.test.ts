@@ -14,7 +14,7 @@ test('request only specified origins and stop on user denial', async () => {
   const requested: string[][] = []
   await assert.rejects(() => access.requestCaptureAccess(['https://example.com/page'], {
     request: async origins => { requested.push(origins); return false },
-  }), /授权/)
+  }), /granted/)
   assert.deepEqual(requested, [['https://example.com/*']])
   await access.requestCaptureAccess(['https://example.com/page'], { request: async () => true })
 })

@@ -6,5 +6,1726 @@
   "extDescription": {
     "message": "Local-first tab manager: archive, search and group tabs, with an optional link to the DJS 321 app.",
     "description": "Store and extensions-page description, 132 characters max."
+  },
+  "category_ai": {
+    "message": "🤖 AI assistants"
+  },
+  "category_dev": {
+    "message": "💻 Developer tools"
+  },
+  "category_cloud": {
+    "message": "☁️ Cloud & ops"
+  },
+  "category_design": {
+    "message": "🎨 Design & assets"
+  },
+  "category_finance": {
+    "message": "📈 Finance"
+  },
+  "category_video": {
+    "message": "📺 Video & entertainment"
+  },
+  "category_news": {
+    "message": "📰 News & reading"
+  },
+  "category_geek": {
+    "message": "🔥 Tech communities"
+  },
+  "category_shopping": {
+    "message": "🛒 Shopping"
+  },
+  "category_social": {
+    "message": "💬 Social & chat"
+  },
+  "category_music": {
+    "message": "🎵 Music"
+  },
+  "category_mail": {
+    "message": "📧 Mail"
+  },
+  "category_docs": {
+    "message": "📄 Docs & wikis"
+  },
+  "category_default": {
+    "message": "Default",
+    "description": "Fallback category for pages that match no rule"
+  },
+  "common_cancel": {
+    "message": "Cancel"
+  },
+  "common_loading": {
+    "message": "Loading…"
+  },
+  "common_apply": {
+    "message": "Apply"
+  },
+  "skin_presetNone": {
+    "message": "No wallpaper"
+  },
+  "skin_presetMountains": {
+    "message": "Sea of clouds",
+    "description": "Preset wallpaper name: mountains above clouds"
+  },
+  "skin_presetForest": {
+    "message": "Forest morning",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetOcean": {
+    "message": "Blue sea and sky",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetAurora": {
+    "message": "Aurora night",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetSakura": {
+    "message": "Cherry blossoms",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetGalaxy": {
+    "message": "Starry galaxy",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetDesert": {
+    "message": "Golden desert",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetSnow": {
+    "message": "Quiet snow",
+    "description": "Preset wallpaper name"
+  },
+  "skin_themeNature": {
+    "message": "Nature",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeCity": {
+    "message": "City",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeMountain": {
+    "message": "Mountains",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeOcean": {
+    "message": "Ocean",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeSpace": {
+    "message": "Space",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeMinimal": {
+    "message": "Minimal",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeFlower": {
+    "message": "Flowers",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeArchitecture": {
+    "message": "Architecture",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeAnimal": {
+    "message": "Animals",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeAutumn": {
+    "message": "Autumn",
+    "description": "Online gallery theme filter"
+  },
+  "skin_title": {
+    "message": "Skin settings"
+  },
+  "skin_close": {
+    "message": "Close skin settings"
+  },
+  "skin_tabPreset": {
+    "message": "Presets"
+  },
+  "skin_tabOnline": {
+    "message": "Online gallery"
+  },
+  "skin_tabCustom": {
+    "message": "Custom"
+  },
+  "skin_presetHint": {
+    "message": "Preset wallpapers — click to apply"
+  },
+  "skin_browseByTheme": {
+    "message": "Browse by theme"
+  },
+  "skin_random": {
+    "message": "Random"
+  },
+  "skin_picsumCredit": {
+    "message": "Picsum Photos · Free HD, royalty-free",
+    "description": "Picsum Photos is a proper noun; do not translate it."
+  },
+  "skin_page": {
+    "message": "Page {page}"
+  },
+  "skin_photoAuthor": {
+    "message": "Author: {author}"
+  },
+  "skin_imageUrlLabel": {
+    "message": "Image URL"
+  },
+  "skin_imageUrlHint": {
+    "message": "Works with Unsplash, Pexels or any direct image link"
+  },
+  "skin_uploadLabel": {
+    "message": "Upload a local image"
+  },
+  "skin_uploadButton": {
+    "message": "Choose an image (JPG / PNG / WEBP)"
+  },
+  "skin_uploadHint": {
+    "message": "Local images are stored as Base64 in localStorage"
+  },
+  "skin_blur": {
+    "message": "Blur"
+  },
+  "skin_dim": {
+    "message": "Dim"
+  },
+  "quicklinks_promptLabel": {
+    "message": "Prompt"
+  },
+  "quicklinks_editNamed": {
+    "message": "Edit {title}"
+  },
+  "quicklinks_deleteNamed": {
+    "message": "Delete {title}"
+  },
+  "quicklinks_editLink": {
+    "message": "Edit link"
+  },
+  "quicklinks_deleteLink": {
+    "message": "Delete link"
+  },
+  "quicklinks_addLink": {
+    "message": "Add link"
+  },
+  "quicklinks_siteCount_one": {
+    "message": "{count} site"
+  },
+  "quicklinks_siteCount_other": {
+    "message": "{count} sites"
+  },
+  "quicklinks_categoryCount_one": {
+    "message": "{count} category"
+  },
+  "quicklinks_categoryCount_other": {
+    "message": "{count} categories"
+  },
+  "quicklinks_layout": {
+    "message": "Link layout"
+  },
+  "quicklinks_gridMode": {
+    "message": "Grid view"
+  },
+  "quicklinks_grid": {
+    "message": "Grid"
+  },
+  "quicklinks_listMode": {
+    "message": "Two-column view"
+  },
+  "quicklinks_list": {
+    "message": "Two columns"
+  },
+  "quicklinks_addSite": {
+    "message": "Add site"
+  },
+  "quicklinks_dragToSort": {
+    "message": "Drag to reorder"
+  },
+  "quicklinks_addFavoriteSite": {
+    "message": "Add a favorite site"
+  },
+  "quicklinks_geekCommunity": {
+    "message": "🔥 Tech communities",
+    "description": "Category name for the seeded NodeSeek / LINUX DO / V2EX links"
+  },
+  "quicklinks_fillGeekCommunity": {
+    "message": "🪄 Add tech communities"
+  },
+  "quicklinks_url": {
+    "message": "URL"
+  },
+  "quicklinks_urlPlaceholder": {
+    "message": "URL (e.g. github.com)"
+  },
+  "quicklinks_titleLabel": {
+    "message": "Title"
+  },
+  "quicklinks_titlePlaceholder": {
+    "message": "Title (optional)"
+  },
+  "quicklinks_category": {
+    "message": "Link category"
+  },
+  "quicklinks_newCategoryOption": {
+    "message": "New category..."
+  },
+  "quicklinks_newCategoryName": {
+    "message": "New category name"
+  },
+  "quicklinks_newCategoryPlaceholder": {
+    "message": "Enter a new category name..."
+  },
+  "quicklinks_backToSelect": {
+    "message": "Back to list"
+  },
+  "quicklinks_promptPlaceholder": {
+    "message": "Enter a prompt (shown on hover)..."
+  },
+  "quicklinks_saveChanges": {
+    "message": "Save changes"
+  },
+  "quicklinks_confirmAdd": {
+    "message": "Add"
+  },
+  "desktop_pairCancelled": {
+    "message": "Pairing cancelled."
+  },
+  "desktop_extensionIdUnknown": {
+    "message": "Couldn't verify the extension's identity. Reload the extension."
+  },
+  "desktop_appIdentityMissing": {
+    "message": "The app's identity hasn't been saved. Pair again."
+  },
+  "desktop_savePairingFailed": {
+    "message": "Couldn't save the local pairing. Check the extension settings."
+  },
+  "desktop_requestAborted": {
+    "message": "The request was cancelled or timed out."
+  },
+  "desktop_invalidProtocol": {
+    "message": "The desktop app returned an invalid protocol response. Update the app, then pair again in the extension settings."
+  },
+  "desktop_pairingUnsupported": {
+    "message": "This desktop app version doesn't support pairing. Update the app and try again."
+  },
+  "desktop_incompatible": {
+    "message": "The desktop app version or protocol is incompatible. Update the app and try again."
+  },
+  "desktop_checkFailed": {
+    "message": "Connection check failed."
+  },
+  "desktop_connectCancelled": {
+    "message": "Connection cancelled."
+  },
+  "desktop_pairRequestInvalid": {
+    "message": "Invalid pairing request. Pair again in the extension settings."
+  },
+  "desktop_pairResponseInvalid": {
+    "message": "Invalid pairing response. Update the desktop app and try again."
+  },
+  "desktop_pairDenied": {
+    "message": "The desktop app denied pairing. Nothing was sent. Pair again in the extension settings."
+  },
+  "desktop_pairTokenInvalid": {
+    "message": "Invalid pairing token. Update the desktop app and try again."
+  },
+  "desktop_pairStateInvalid": {
+    "message": "Invalid pairing state. Update the desktop app and try again."
+  },
+  "desktop_pairNotApproved": {
+    "message": "Pairing wasn't approved. Confirm it in the desktop app and try again."
+  },
+  "desktop_pairTimeout": {
+    "message": "Pairing timed out (3 minutes max). Install or open the latest desktop app, then try again in the extension settings."
+  },
+  "desktop_revokeIncomplete": {
+    "message": "Revocation didn't complete."
+  },
+  "desktop_revokePending": {
+    "message": "Sending from this device has stopped. Open the app and click Disconnect again to finish revoking."
+  },
+  "desktop_batchSize": {
+    "message": "Each local send supports 1 to 100 items. Send in smaller batches."
+  },
+  "desktop_fieldTooLong": {
+    "message": "The {field} field exceeds the local send limit ({limit} characters) or is invalid. Shorten it and try again.",
+    "description": "{field} is a field name such as title/url/note/content; {limit} is a number"
+  },
+  "desktop_bodyTooLarge": {
+    "message": "The local send exceeds the 2 MiB limit. Reduce the content or send in batches."
+  },
+  "desktop_localStateInvalid": {
+    "message": "Invalid local pairing state. Reopen the extension settings."
+  },
+  "desktop_readPairingFailed": {
+    "message": "Couldn't read the local pairing. Check the extension settings."
+  },
+  "desktop_clearPairingFailed": {
+    "message": "Couldn't clear the local pairing. Check the extension settings."
+  },
+  "desktop_discoveryInvalid": {
+    "message": "Invalid discovery request or pairing identity. Pair again."
+  },
+  "desktop_tooManyRequests": {
+    "message": "Too many local connection requests. Close other extension settings pages and try again."
+  },
+  "desktop_identityMismatch": {
+    "message": "The desktop app's identity or protocol doesn't match. No token or content was sent. Open the extension settings and reconnect."
+  },
+  "justdoit_pageChanged": {
+    "message": "The selected page's address has changed. Select it again before collecting."
+  },
+  "justdoit_readContentFailed": {
+    "message": "Couldn't read the page content. Check site access for this website."
+  },
+  "justdoit_manualPortNotAllowed": {
+    "message": "Restore automatic local mode in the extension settings and pair. The local port can't be set manually."
+  },
+  "justdoit_notPaired": {
+    "message": "The desktop app isn't paired yet. Open the extension settings, click Connect, and approve pairing in the app."
+  },
+  "justdoit_receiptInvalid": {
+    "message": "The desktop app returned an invalid receipt. Update the app and try again from the extension settings."
+  },
+  "justdoit_networkFailed": {
+    "message": "Network request failed. Make sure the desktop app is running; if its port changed, reconnect in the extension settings."
+  },
+  "justdoit_pairingRevoked": {
+    "message": "Pairing was revoked. Open the extension settings and pair again."
+  },
+  "justdoit_serverStatus": {
+    "message": "The connection service returned {status}. Open the extension settings to check the address or desktop app version.",
+    "description": "{status} is an HTTP status code"
+  },
+  "justdoit_receiptMismatch": {
+    "message": "The desktop app's receipt doesn't match, so the write wasn't confirmed. Open the extension settings to check the app version."
+  },
+  "justdoit_notConfirmed": {
+    "message": "The service didn't confirm the send."
+  },
+  "justdoit_sendIncomplete": {
+    "message": "Sending didn't complete. Open the extension settings to check the connection."
+  },
+  "justdoit_endpointInvalid": {
+    "message": "Invalid connection address. Only local HTTP, or HTTPS without a password or query string, is supported."
+  },
+  "justdoit_settingsSaveFailed": {
+    "message": "Couldn't save settings."
+  },
+  "siteAccess_unsupportedPage": {
+    "message": "Content can't be extracted from this page. Use a regular HTTP/HTTPS web page."
+  },
+  "siteAccess_denied": {
+    "message": "Access to these sites wasn't granted. No content was extracted and no task was sent."
+  },
+  "siteAccess_endpointNotAuthorized": {
+    "message": "Save and authorize this connection address in the extension settings first."
+  },
+  "siteAccess_revokePartial": {
+    "message": "Some site access wasn't revoked."
+  },
+  "tabs_actionIncomplete": {
+    "message": "The action didn't complete. Try again."
+  },
+  "tabs_undoInvalid": {
+    "message": "Invalid undo record."
+  },
+  "tabs_undoUrlInvalid": {
+    "message": "Invalid undo address."
+  },
+  "tabs_undoUrlBlocked": {
+    "message": "The undo address can't be opened."
+  },
+  "tabs_faviconFallback": {
+    "message": "#",
+    "description": "Single character shown as a quick link icon when the title/URL has no letter or digit"
+  },
+  "bg_cannotArchive": {
+    "message": "This page can't be archived."
+  },
+  "bg_undoSaveFailed": {
+    "message": "Couldn't save the undo record."
+  },
+  "bg_archivedKept": {
+    "message": "Archived. The original tab was kept."
+  },
+  "bg_savedAndClosed": {
+    "message": "Link saved and tab closed."
+  },
+  "bg_sentToApp": {
+    "message": "Sent to DJS 321"
+  },
+  "bg_savedAsTask": {
+    "message": "Saved as a task"
+  },
+  "bg_actionFailedTitle": {
+    "message": "{brand}: action didn't complete",
+    "description": "{brand} is the extension name"
+  },
+  "bg_checkSettings": {
+    "message": "Open the extension, check the settings, and try again."
+  },
+  "bg_nothingToRestore": {
+    "message": "There are no records to restore."
+  },
+  "bg_restoreFailed": {
+    "message": "Couldn't restore tabs"
+  },
+  "content_extractFailed": {
+    "message": "Content extraction failed. No task was sent."
+  },
+  "settings_title": {
+    "message": "Settings"
+  },
+  "settings_navLayout": {
+    "message": "Navigation layout"
+  },
+  "settings_layoutTop": {
+    "message": "Top navigation"
+  },
+  "settings_layoutSidebar": {
+    "message": "Side navigation"
+  },
+  "settings_layoutClassic": {
+    "message": "Classic right"
+  },
+  "settings_groupByTitle": {
+    "message": "Tab grouping"
+  },
+  "settings_groupByDesc": {
+    "message": "Choose how the new tab page groups your open tabs"
+  },
+  "settings_groupNone": {
+    "message": "No grouping"
+  },
+  "settings_groupDomain": {
+    "message": "By domain"
+  },
+  "settings_groupChromeGroup": {
+    "message": "Browser groups"
+  },
+  "settings_groupWindow": {
+    "message": "By window"
+  },
+  "settings_groupTime": {
+    "message": "By time"
+  },
+  "settings_groupCategory": {
+    "message": "By category"
+  },
+  "settings_viewTitle": {
+    "message": "View"
+  },
+  "settings_viewDesc": {
+    "message": "Choose how tabs are displayed"
+  },
+  "settings_viewGrid": {
+    "message": "Grid cards"
+  },
+  "settings_viewList": {
+    "message": "Compact list"
+  },
+  "settings_viewKanban": {
+    "message": "Board"
+  },
+  "settings_defaultSectionTitle": {
+    "message": "Start section"
+  },
+  "settings_sectionQuicklinks": {
+    "message": "Quick links"
+  },
+  "settings_sectionBookmarks": {
+    "message": "Bookmarks"
+  },
+  "settings_themeTitle": {
+    "message": "Appearance"
+  },
+  "settings_themeDesc": {
+    "message": "Switch the new tab page between light and dark"
+  },
+  "settings_themeLight": {
+    "message": "Light mode"
+  },
+  "settings_themeDark": {
+    "message": "Dark mode"
+  },
+  "settings_privacyTitle": {
+    "message": "Network & privacy"
+  },
+  "settings_subtitle": {
+    "message": "Changes apply instantly and are saved automatically"
+  },
+  "settings_close": {
+    "message": "Close settings"
+  },
+  "settings_navLayoutHint": {
+    "message": "Small windows switch to top navigation automatically; your choice stays the same."
+  },
+  "settings_layoutTopDesc": {
+    "message": "Horizontal workspace with more room for content"
+  },
+  "settings_layoutSidebarDesc": {
+    "message": "Vertical bar that keeps shortcuts at hand"
+  },
+  "settings_layoutClassicDesc": {
+    "message": "Large centered clock with the roomy classic layout"
+  },
+  "settings_groupNoneDesc": {
+    "message": "Show all tabs in one flat list"
+  },
+  "settings_groupDomainDesc": {
+    "message": "Group tabs from the same site"
+  },
+  "settings_groupChromeGroupDesc": {
+    "message": "Use your browser's tab groups"
+  },
+  "settings_groupWindowDesc": {
+    "message": "One column per browser window"
+  },
+  "settings_groupTimeDesc": {
+    "message": "Layered by last visit time"
+  },
+  "settings_groupCategoryDesc": {
+    "message": "Auto-detected: dev, video, shopping, etc."
+  },
+  "settings_viewGridDesc": {
+    "message": "Small cards with icons, easy to scan"
+  },
+  "settings_viewListDesc": {
+    "message": "Compact single rows, high density"
+  },
+  "settings_viewKanbanDesc": {
+    "message": "One column per group"
+  },
+  "settings_sectionTabs": {
+    "message": "Tabs"
+  },
+  "settings_sectionTabsDesc": {
+    "message": "Start with your open tabs"
+  },
+  "settings_sectionQuicklinksDesc": {
+    "message": "Use the new tab page as your quick-links hub"
+  },
+  "settings_sectionBookmarksDesc": {
+    "message": "Start in bookmarks to collect reference material"
+  },
+  "settings_defaultSectionDesc": {
+    "message": "Set the area shown when you open a new tab"
+  },
+  "settings_privacyDesc": {
+    "message": "Local management needs no account. Network features are opt-in."
+  },
+  "settings_enableQuotes": {
+    "message": "Enable daily quote (sends requests to the Hitokoto service)"
+  },
+  "settings_privacyNote": {
+    "message": "Online wallpapers and site icons connect to their websites. Page text is collected only when you click, and the send destination is set on the full settings page."
+  },
+  "settings_openOptions": {
+    "message": "Connection access & privacy"
+  },
+  "settings_exportBackup": {
+    "message": "Export backup"
+  },
+  "settings_importBackup": {
+    "message": "Import backup"
+  },
+  "options_saved": {
+    "message": "✓ Saved"
+  },
+  "options_navLayoutHint": {
+    "message": "Small windows switch to top navigation automatically without changing your saved choice."
+  },
+  "options_layoutClassic": {
+    "message": "Classic right · large centered clock"
+  },
+  "options_groupNoneDesc": {
+    "message": "All tabs in one flat list, best when you have few tabs"
+  },
+  "options_groupDomainDesc": {
+    "message": "Tabs from the same site are grouped together, the most common choice"
+  },
+  "options_groupChromeGroupDesc": {
+    "message": "Uses the tab groups you created in your browser, no extra work"
+  },
+  "options_groupWindowDesc": {
+    "message": "A must for multi-window users: one column per browser window"
+  },
+  "options_groupTimeDesc": {
+    "message": "Layered by last visit: just now / today / yesterday / earlier"
+  },
+  "options_groupCategoryDesc": {
+    "message": "Auto-detected: dev / video / shopping / social / music and more"
+  },
+  "options_viewGridDesc": {
+    "message": "Small cards with icons, easy to scan, good for a moderate number of tabs"
+  },
+  "options_viewListDesc": {
+    "message": "Compact single rows with the highest density, good for many tabs"
+  },
+  "options_viewKanbanDesc": {
+    "message": "One column per group, good for an overview when there are few groups"
+  },
+  "options_sectionTabs": {
+    "message": "Tabs"
+  },
+  "options_sectionTabsDesc": {
+    "message": "Show your open tabs by default"
+  },
+  "options_sectionQuicklinksDesc": {
+    "message": "Open the quick links page by default"
+  },
+  "options_sectionBookmarksDesc": {
+    "message": "Open the bookmarks space by default"
+  },
+  "options_defaultSectionDesc": {
+    "message": "Choose the area a new tab opens to first"
+  },
+  "options_connTitle": {
+    "message": "DJS 321 connection"
+  },
+  "options_connDesc": {
+    "message": "Click Connect and approve in the app; the app's actual port is then used automatically. Identity and pairing data stay in this browser only, are never synced or backed up, and nothing is sent automatically."
+  },
+  "options_connBrowserHint": {
+    "message": "The app opens a local handshake page in your system's default browser. Use the browser profile that has this extension; if it opens in another browser or profile, come back here and retry. No port needs to be entered."
+  },
+  "options_stateLoading": {
+    "message": "Loading settings"
+  },
+  "options_stateChecking": {
+    "message": "Checking the connection to the desktop app on this computer…"
+  },
+  "options_stateNotRunning": {
+    "message": "The app isn't responding or its port changed. Open the app and reconnect."
+  },
+  "options_stateUnpaired": {
+    "message": "Not paired yet. Click Connect and approve in the app."
+  },
+  "options_stateConnected": {
+    "message": "Desktop app on this computer is connected"
+  },
+  "options_stateRevoked": {
+    "message": "Pairing was revoked. Please reconnect."
+  },
+  "options_statePairing": {
+    "message": "Pairing. Check the pairing code in the app."
+  },
+  "options_stateError": {
+    "message": "Connection not completed. Follow the hint below and retry."
+  },
+  "options_pairingCode": {
+    "message": "Pairing code"
+  },
+  "options_pairingCodeHint": {
+    "message": "Valid for three minutes; declining or canceling sends nothing."
+  },
+  "options_openAppReconnect": {
+    "message": "Open app / reconnect"
+  },
+  "options_connectDesktop": {
+    "message": "Connect desktop app"
+  },
+  "options_openDesktop": {
+    "message": "Open desktop app"
+  },
+  "options_cancelPairing": {
+    "message": "Cancel pairing"
+  },
+  "options_checkConnection": {
+    "message": "Check connection"
+  },
+  "options_disconnectRevoke": {
+    "message": "Disconnect (finish revoking)"
+  },
+  "options_disconnect": {
+    "message": "Unpair"
+  },
+  "options_currentEndpoint": {
+    "message": "Current send address: {url}. Connecting the desktop app switches back to the local address; a custom HTTPS address can be kept or chosen again in advanced settings."
+  },
+  "options_advancedConnection": {
+    "message": "Advanced connection settings"
+  },
+  "options_advancedDesc": {
+    "message": "The local address is discovered and verified automatically; guessing ports manually and the old unauthenticated sending are not supported. Leave the field below empty and save to restore local mode. A custom HTTPS address keeps the original API format; saving requests access to that site, and the remote service receives the titles, URLs and page text you choose to send."
+  },
+  "options_apiUrlLabel": {
+    "message": "DJS 321 connection address"
+  },
+  "options_apiUrlPlaceholder": {
+    "message": "https://your-service.example (leave empty for local)"
+  },
+  "options_saveAuthorize": {
+    "message": "Save and authorize this address"
+  },
+  "options_privacyDesc": {
+    "message": "Online wallpapers and site icons connect to their websites. Page text is extracted only when you click Collect; batch collection uses only the site access for the selected pages. Your tabs, bookmarks and page text are never sent to the developer."
+  },
+  "options_quotesTitle": {
+    "message": "Daily quote"
+  },
+  "options_quotesDesc": {
+    "message": "Off by default; when on, the new tab page fetches a short quote from the Hitokoto service."
+  },
+  "options_revokeAccess": {
+    "message": "Revoke optional site access"
+  },
+  "options_privacyPolicy": {
+    "message": "Extension privacy policy"
+  },
+  "options_footer": {
+    "message": "Settings apply instantly; refresh the new tab page to see them"
+  },
+  "options_msgSettingsLoadFailed": {
+    "message": "Couldn't read settings. Reopen the extension settings."
+  },
+  "options_msgCheckFailed": {
+    "message": "Connection check failed."
+  },
+  "options_msgDiscoveryFailed": {
+    "message": "Couldn't prepare local discovery. Please retry."
+  },
+  "options_msgWaitingHandshake": {
+    "message": "Waiting up to 20 seconds for the app to report its current port. Complete the handshake in the default browser that has this extension."
+  },
+  "options_msgHandshakeIncomplete": {
+    "message": "Handshake not completed. Make sure the latest app is installed and the local handshake page opened in the browser profile that has this extension, then retry."
+  },
+  "options_msgPairingApprove": {
+    "message": "Check the pairing code in the desktop app and approve. No tabs or page text are sent automatically."
+  },
+  "options_msgPairingDone": {
+    "message": "Paired. The send address is now this computer. Selected content is collected and sent only when you click Send."
+  },
+  "options_msgPairingFailed": {
+    "message": "Pairing not completed. Please retry."
+  },
+  "options_msgPairingCancelled": {
+    "message": "Pairing canceled. Nothing was sent."
+  },
+  "options_msgDisconnected": {
+    "message": "Disconnected and cleared the local pairing."
+  },
+  "options_msgDisconnectFailed": {
+    "message": "Disconnect not completed. Please retry."
+  },
+  "options_msgInvalidUrl": {
+    "message": "Advanced addresses must be custom HTTPS; the app reports the local port automatically, so leave it empty for local mode. The address can't contain credentials, query parameters or fragments."
+  },
+  "options_msgUrlSaved": {
+    "message": "Connection address saved. Titles, URLs and selected page text are sent to it only when you click Send."
+  },
+  "options_msgLocalRestored": {
+    "message": "Automatic local connection restored; the port comes from the paired app, so no address is needed."
+  },
+  "options_msgSaveFailed": {
+    "message": "Authorization or saving not completed."
+  },
+  "options_msgWakeOnly": {
+    "message": "This only wakes the app. Click Connect and approve pairing in the app."
+  },
+  "options_msgRevokeDone": {
+    "message": "Optional site access revoked. You'll need to authorize again to collect or use a custom connection."
+  },
+  "options_msgRevokeFailed": {
+    "message": "Revoking not completed. Check the browser's extension settings."
+  },
+  "common_delete": {
+    "message": "Delete"
+  },
+  "common_export": {
+    "message": "Export"
+  },
+  "common_import": {
+    "message": "Import"
+  },
+  "common_saving": {
+    "message": "Saving..."
+  },
+  "common_processing": {
+    "message": "Working..."
+  },
+  "popup_untitledPage": {
+    "message": "Untitled page"
+  },
+  "popup_bookmarkBar": {
+    "message": "Bookmarks bar",
+    "description": "Fallback name for the root bookmarks bar folder"
+  },
+  "popup_otherBookmarks": {
+    "message": "Other bookmarks",
+    "description": "Fallback name for the root Other bookmarks folder"
+  },
+  "popup_untitledFolder": {
+    "message": "Untitled folder"
+  },
+  "popup_recSourceHost": {
+    "message": "Site rule",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceExisting": {
+    "message": "Bookmarked",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceSameSite": {
+    "message": "Same site",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceContent": {
+    "message": "Content match",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceRecent": {
+    "message": "Recently used",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceNone": {
+    "message": "Not chosen",
+    "description": "No bookmark folder recommended yet"
+  },
+  "popup_recentFolder": {
+    "message": "Recent folder"
+  },
+  "popup_toastArchivedKept": {
+    "message": "Archived, tab kept open"
+  },
+  "popup_errArchive": {
+    "message": "Couldn't archive"
+  },
+  "popup_markdownHeading": {
+    "message": "# {brand} archive",
+    "description": "Heading of the exported Markdown file"
+  },
+  "popup_toastBookmarkRuleSaved": {
+    "message": "Bookmark rule saved for this site"
+  },
+  "popup_toastBookmarkRuleCleared": {
+    "message": "Bookmark rule cleared for this site"
+  },
+  "popup_toastQuickLinkRuleSaved": {
+    "message": "Shortcut category rule saved for this site"
+  },
+  "popup_toastQuickLinkRuleCleared": {
+    "message": "Shortcut category rule cleared for this site"
+  },
+  "popup_toastRuleApplied": {
+    "message": "Rule applied to this site"
+  },
+  "popup_toastRuleDeleted": {
+    "message": "Rule deleted"
+  },
+  "popup_toastQuickLinkRuleApplied": {
+    "message": "Shortcut category rule applied to this site"
+  },
+  "popup_toastQuickLinkRuleDeleted": {
+    "message": "Shortcut category rule deleted"
+  },
+  "popup_toastRulesExported": {
+    "message": "Rules exported"
+  },
+  "popup_errExportRules": {
+    "message": "Couldn't export rules"
+  },
+  "popup_toastRulesImported": {
+    "message": "Imported {bookmarkCount} bookmark rules and {quickLinkCount} shortcut rules"
+  },
+  "popup_errImportRules": {
+    "message": "Couldn't import rules"
+  },
+  "popup_detailInboxAndQuickLink": {
+    "message": "Inbox + shortcuts",
+    "description": "Recent action detail"
+  },
+  "popup_detailInbox": {
+    "message": "Inbox",
+    "description": "Recent action detail"
+  },
+  "popup_toastSentToInboxAndQuickLink": {
+    "message": "Sent to inbox and added to shortcuts"
+  },
+  "popup_toastSentToInbox": {
+    "message": "Sent to inbox"
+  },
+  "popup_errAction": {
+    "message": "Something went wrong"
+  },
+  "popup_detailSendToInbox": {
+    "message": "Sent to inbox",
+    "description": "Recent action detail"
+  },
+  "popup_toastSentToAppInbox": {
+    "message": "Sent to the DJS 321 inbox"
+  },
+  "popup_errSend": {
+    "message": "Couldn't send"
+  },
+  "popup_toastQuickLinkAdded": {
+    "message": "Added to shortcuts · {category}"
+  },
+  "popup_toastQuickLinkCategoryUpdated": {
+    "message": "Shortcut category updated · {category}"
+  },
+  "popup_toastQuickLinkKept": {
+    "message": "Shortcut stays in · {category}"
+  },
+  "popup_errAddQuickLink": {
+    "message": "Couldn't add shortcut"
+  },
+  "popup_detailBookmark": {
+    "message": "Bookmarks",
+    "description": "Recent action detail when no folder path is known"
+  },
+  "popup_toastBookmarkUpdated": {
+    "message": "Bookmark updated"
+  },
+  "popup_toastBookmarkAdded": {
+    "message": "Bookmarked"
+  },
+  "popup_errBookmark": {
+    "message": "Couldn't save bookmark"
+  },
+  "popup_toastDefaultBookmarkUpdated": {
+    "message": "Bookmark in default folder updated"
+  },
+  "popup_toastSavedToDefaultFolder": {
+    "message": "Saved to default folder"
+  },
+  "popup_errQuickSave": {
+    "message": "Couldn't quick-save"
+  },
+  "popup_toastNoDefaultFolder": {
+    "message": "No default bookmark folder yet"
+  },
+  "popup_pageCount_one": {
+    "message": "{count} page"
+  },
+  "popup_pageCount_other": {
+    "message": "{count} pages"
+  },
+  "popup_detailBatchBookmarkSkipped_one": {
+    "message": "Batch bookmark, skipped {count} unmatched or duplicate page"
+  },
+  "popup_detailBatchBookmarkSkipped_other": {
+    "message": "Batch bookmark, skipped {count} unmatched or duplicate pages"
+  },
+  "popup_detailBatchBookmark": {
+    "message": "Batch bookmark"
+  },
+  "popup_toastBatchBookmarkUpdated": {
+    "message": "Processed {processed} bookmarks, updated {updated}"
+  },
+  "popup_toastBatchBookmarked_one": {
+    "message": "Bookmarked {count} page"
+  },
+  "popup_toastBatchBookmarked_other": {
+    "message": "Bookmarked {count} pages"
+  },
+  "popup_errBatchBookmark": {
+    "message": "Couldn't bookmark pages"
+  },
+  "popup_detailBatchWorkspaceAdded_one": {
+    "message": "Batch sent to workspace, {count} new shortcut"
+  },
+  "popup_detailBatchWorkspaceAdded_other": {
+    "message": "Batch sent to workspace, {count} new shortcuts"
+  },
+  "popup_detailBatchInbox": {
+    "message": "Batch sent to inbox"
+  },
+  "popup_toastProcessedPages_one": {
+    "message": "Processed {count} page"
+  },
+  "popup_toastProcessedPages_other": {
+    "message": "Processed {count} pages"
+  },
+  "popup_errBatchWorkspace": {
+    "message": "Couldn't send pages to workspace"
+  },
+  "popup_toastAllAlreadyQuickLinks": {
+    "message": "All selected pages are already in shortcuts"
+  },
+  "popup_toastNothingToAdd": {
+    "message": "No pages to add"
+  },
+  "popup_detailBatchQuickLinkSkipped_one": {
+    "message": "Batch added to shortcuts, skipped {count} duplicate"
+  },
+  "popup_detailBatchQuickLinkSkipped_other": {
+    "message": "Batch added to shortcuts, skipped {count} duplicates"
+  },
+  "popup_detailBatchQuickLink": {
+    "message": "Batch added to shortcuts"
+  },
+  "popup_toastBatchQuickLinkAdded_one": {
+    "message": "Added {count} page to shortcuts"
+  },
+  "popup_toastBatchQuickLinkAdded_other": {
+    "message": "Added {count} pages to shortcuts"
+  },
+  "popup_errBatchQuickLink": {
+    "message": "Couldn't add pages to shortcuts"
+  },
+  "popup_detailWindowToWorkspace": {
+    "message": "Whole window sent to workspace"
+  },
+  "popup_errWindowToWorkspace": {
+    "message": "Couldn't send window to workspace"
+  },
+  "popup_toastClosedArchived_one": {
+    "message": "Closed and archived {count} tab"
+  },
+  "popup_toastClosedArchived_other": {
+    "message": "Closed and archived {count} tabs"
+  },
+  "popup_errPartialArchive": {
+    "message": "Archived {closed}/{total}, the rest failed: {error}"
+  },
+  "popup_switchToLight": {
+    "message": "Switch to light mode"
+  },
+  "popup_switchToDark": {
+    "message": "Switch to dark mode"
+  },
+  "popup_openNewTab": {
+    "message": "Open new tab"
+  },
+  "popup_settings": {
+    "message": "Settings"
+  },
+  "popup_currentPageBadge": {
+    "message": "Current"
+  },
+  "popup_chipInQuickLinks": {
+    "message": "In shortcuts"
+  },
+  "popup_chipBookmarked": {
+    "message": "Bookmarked"
+  },
+  "popup_chipNotCaptured": {
+    "message": "Not in your workspace yet"
+  },
+  "popup_sendCurrentTitle": {
+    "message": "Send this page to the DJS 321 workspace (inbox) as a to-do"
+  },
+  "popup_sendCurrent": {
+    "message": "Send page to workspace"
+  },
+  "popup_captureWindowTitle": {
+    "message": "Send whole window to workspace"
+  },
+  "popup_captureWindow": {
+    "message": "Window · {count}"
+  },
+  "popup_noCaptureTitle": {
+    "message": "Nothing to capture here"
+  },
+  "popup_noCaptureBody": {
+    "message": "New tab and browser settings pages aren't sent to the workspace. You can still organize other pages below."
+  },
+  "popup_adjustQuickLinkCategory": {
+    "message": "Change shortcut category"
+  },
+  "popup_addToQuickLinks": {
+    "message": "Add to shortcuts"
+  },
+  "popup_badgeRuleHit": {
+    "message": "Rule match"
+  },
+  "popup_badgeSuggested": {
+    "message": "Suggested"
+  },
+  "popup_bookmarkedChangeFolder": {
+    "message": "Bookmarked, change folder"
+  },
+  "popup_bookmarkPage": {
+    "message": "Bookmark page"
+  },
+  "popup_chooseFolder": {
+    "message": "Choose folder"
+  },
+  "popup_quickLinkTitle": {
+    "message": "Shortcut title"
+  },
+  "popup_searchCategories": {
+    "message": "Search categories"
+  },
+  "popup_searchCategoriesPlaceholder": {
+    "message": "Search shortcut categories..."
+  },
+  "popup_badgeCurrent": {
+    "message": "Current"
+  },
+  "popup_badgeSite": {
+    "message": "Site"
+  },
+  "popup_noMatchingCategory": {
+    "message": "No matching category. Create one below."
+  },
+  "popup_newCategoryLabel": {
+    "message": "New category (leave empty to use selection)"
+  },
+  "popup_newCategoryPlaceholder": {
+    "message": "New category name"
+  },
+  "popup_updateQuickLink": {
+    "message": "Update shortcut"
+  },
+  "popup_saveQuickLink": {
+    "message": "Save shortcut"
+  },
+  "popup_titleLabel": {
+    "message": "Title"
+  },
+  "popup_bookmarkTitlePlaceholder": {
+    "message": "Bookmark title"
+  },
+  "popup_searchFolders": {
+    "message": "Search folders"
+  },
+  "popup_searchFoldersPlaceholder": {
+    "message": "Search bookmark folders..."
+  },
+  "popup_badgeRecent": {
+    "message": "Recent"
+  },
+  "popup_noMatchingFolder": {
+    "message": "No matching folders"
+  },
+  "popup_newSubfolderLabel": {
+    "message": "New subfolder (leave empty to save to selection)"
+  },
+  "popup_subfolderPlaceholder": {
+    "message": "Subfolder name"
+  },
+  "popup_saveBookmark": {
+    "message": "Save bookmark"
+  },
+  "popup_siteRules": {
+    "message": "Site rules"
+  },
+  "popup_ruleSite": {
+    "message": "Site"
+  },
+  "popup_unrecognized": {
+    "message": "Unrecognized"
+  },
+  "popup_ruleDefaultFolder": {
+    "message": "Default folder"
+  },
+  "popup_notSet": {
+    "message": "Not set"
+  },
+  "popup_ruleQuickLinkCategory": {
+    "message": "Shortcut category"
+  },
+  "popup_ruleFromSite": {
+    "message": "site rule",
+    "description": "Suffix after the category: comes from a site rule"
+  },
+  "popup_ruleAutoInferred": {
+    "message": "auto",
+    "description": "Suffix after the category: inferred automatically"
+  },
+  "popup_bookmarkLocationSaved": {
+    "message": "Bookmark location saved"
+  },
+  "popup_rememberBookmarkLocation": {
+    "message": "Remember bookmark location"
+  },
+  "popup_changeDefaultFolder": {
+    "message": "Change default folder"
+  },
+  "popup_clearBookmarkRule": {
+    "message": "Clear bookmark rule"
+  },
+  "popup_quickLinkCategorySaved": {
+    "message": "Category saved"
+  },
+  "popup_rememberQuickLinkCategory": {
+    "message": "Remember category"
+  },
+  "popup_clearQuickLinkRule": {
+    "message": "Clear shortcut rule"
+  },
+  "popup_ruleLibrary": {
+    "message": "Rule library (bookmarks {bookmarkCount} · shortcuts {quickLinkCount})"
+  },
+  "popup_searchRulesPlaceholder": {
+    "message": "Search sites / folders / categories"
+  },
+  "popup_ruleTypeBookmark": {
+    "message": "Bookmark"
+  },
+  "popup_ruleTypeQuickLink": {
+    "message": "Shortcut"
+  },
+  "popup_noRules": {
+    "message": "No rules yet"
+  },
+  "popup_tabManager": {
+    "message": "Tabs"
+  },
+  "popup_openCount": {
+    "message": "Open {count}"
+  },
+  "popup_archivedCount": {
+    "message": "Archived {count}"
+  },
+  "popup_searchOpenTabs": {
+    "message": "Search open tabs"
+  },
+  "popup_searchArchive": {
+    "message": "Search archive"
+  },
+  "popup_searchOpenTabsPlaceholder": {
+    "message": "Search open tabs..."
+  },
+  "popup_searchArchivePlaceholder": {
+    "message": "Search archive..."
+  },
+  "popup_noMatchingTabs": {
+    "message": "No matching tabs"
+  },
+  "popup_noTabsInWindow": {
+    "message": "No web pages to organize in this window"
+  },
+  "popup_selectTab": {
+    "message": "Select {title}"
+  },
+  "popup_switchToTab": {
+    "message": "Switch to this tab"
+  },
+  "popup_archiveKeepTab": {
+    "message": "Archive (keep tab)"
+  },
+  "popup_closeTab": {
+    "message": "Close tab"
+  },
+  "popup_noMatchingArchive": {
+    "message": "No matching archived tabs"
+  },
+  "popup_noArchive": {
+    "message": "No archived tabs yet"
+  },
+  "popup_reopenArchivedTitle": {
+    "message": "Reopen this archived tab"
+  },
+  "popup_reopen": {
+    "message": "Reopen"
+  },
+  "popup_deleteRecord": {
+    "message": "Delete record"
+  },
+  "popup_browserBookmarks": {
+    "message": "Browser bookmarks"
+  },
+  "popup_openInNewTab": {
+    "message": "Open in new tab"
+  },
+  "popup_selectedCount": {
+    "message": "{count} selected"
+  },
+  "popup_selectAll": {
+    "message": "Select all"
+  },
+  "popup_batchWorkspace": {
+    "message": "Workspace"
+  },
+  "popup_batchQuickLink": {
+    "message": "Shortcuts"
+  },
+  "popup_batchBookmark": {
+    "message": "Bookmarks"
+  },
+  "popup_batchCloseArchive": {
+    "message": "Close & archive"
+  },
+  "popup_closeAfterActionTitle": {
+    "message": "When on, the popup closes after each action (send to workspace / bookmark / add shortcut). When off, it stays open so you can keep going."
+  },
+  "popup_closeAfterAction": {
+    "message": "Close when done"
+  },
+  "popup_exportMarkdown": {
+    "message": "Export Markdown"
+  },
+  "popup_exportJson": {
+    "message": "Export JSON"
+  },
+  "common_confirm": {
+    "message": "OK"
+  },
+  "common_save": {
+    "message": "Save"
+  },
+  "common_edit": {
+    "message": "Edit"
+  },
+  "common_settings": {
+    "message": "Settings"
+  },
+  "common_unknownError": {
+    "message": "Unknown error"
+  },
+  "common_undo": {
+    "message": "Undo"
+  },
+  "common_untitled": {
+    "message": "Untitled"
+  },
+  "newtab_date": {
+    "message": "{weekday}, {month} {day}",
+    "description": "Clock date line; weekday and month are localized names"
+  },
+  "newtab_groupAll": {
+    "message": "All"
+  },
+  "newtab_groupDomain": {
+    "message": "Domain"
+  },
+  "newtab_groupChromeGroup": {
+    "message": "Tab groups"
+  },
+  "newtab_groupWindow": {
+    "message": "Window"
+  },
+  "newtab_groupTime": {
+    "message": "Time"
+  },
+  "newtab_groupCategory": {
+    "message": "Category"
+  },
+  "newtab_viewGrid": {
+    "message": "Grid cards"
+  },
+  "newtab_viewList": {
+    "message": "Compact list"
+  },
+  "newtab_viewKanban": {
+    "message": "Board"
+  },
+  "newtab_navTabs": {
+    "message": "Tabs"
+  },
+  "newtab_navQuicklinks": {
+    "message": "Links"
+  },
+  "newtab_navBookmarks": {
+    "message": "Bookmarks"
+  },
+  "newtab_greetingNight": {
+    "message": "It's late, time to get some rest"
+  },
+  "newtab_greetingMorning": {
+    "message": "Good morning, a new day begins"
+  },
+  "newtab_greetingNoon": {
+    "message": "Good day, remember to take a break"
+  },
+  "newtab_greetingAfternoon": {
+    "message": "Good afternoon, keep going"
+  },
+  "newtab_greetingEvening": {
+    "message": "Good evening, you've worked hard today"
+  },
+  "newtab_settingsNotSaved": {
+    "message": "Settings not saved: {error}"
+  },
+  "newtab_archivedTab": {
+    "message": "Archived: {title}"
+  },
+  "newtab_archiveFailed": {
+    "message": "Archive failed: {error}"
+  },
+  "newtab_restored": {
+    "message": "Pages restored"
+  },
+  "newtab_restoreFailed": {
+    "message": "Restore failed: {error}"
+  },
+  "newtab_minutesAgo_one": {
+    "message": "{count} minute ago"
+  },
+  "newtab_minutesAgo_other": {
+    "message": "{count} minutes ago"
+  },
+  "newtab_hoursAgo_one": {
+    "message": "{count} hour ago"
+  },
+  "newtab_hoursAgo_other": {
+    "message": "{count} hours ago"
+  },
+  "newtab_daysAgo_one": {
+    "message": "{count} day ago"
+  },
+  "newtab_daysAgo_other": {
+    "message": "{count} days ago"
+  },
+  "newtab_sentToInbox": {
+    "message": "✅ Sent to the DJS 321 inbox"
+  },
+  "newtab_errorToast": {
+    "message": "❌ {error}"
+  },
+  "newtab_batchSending_one": {
+    "message": "🔄 Extracting content and sending {count} tab..."
+  },
+  "newtab_batchSending_other": {
+    "message": "🔄 Extracting content and sending {count} tabs..."
+  },
+  "newtab_batchSent_one": {
+    "message": "✅ Sent {count} tab"
+  },
+  "newtab_batchSent_other": {
+    "message": "✅ Sent {count} tabs"
+  },
+  "newtab_batchArchived_one": {
+    "message": "Archived {count} tab"
+  },
+  "newtab_batchArchived_other": {
+    "message": "Archived {count} tabs"
+  },
+  "newtab_batchArchivePartial": {
+    "message": "Archived {closed}/{total}; the rest did not finish: {error}"
+  },
+  "newtab_exported": {
+    "message": "✅ Data exported"
+  },
+  "newtab_exportFailed": {
+    "message": "❌ Export failed: {error}"
+  },
+  "newtab_backupTooLarge": {
+    "message": "The backup file is larger than 30 MB."
+  },
+  "newtab_importConfirm": {
+    "message": "Importing replaces the quick links, archive and undo history contained in the backup, and restores its settings. Quotes or remote wallpapers enabled in the backup may go online again, but no site permissions are granted automatically. Export a backup of your current data first. Continue?"
+  },
+  "newtab_imported": {
+    "message": "✅ Data imported, reloading..."
+  },
+  "newtab_importFailed": {
+    "message": "Import did not finish: {error}"
+  },
+  "newtab_addedToQuickLinks": {
+    "message": "📌 Added to quick links: {title}"
+  },
+  "newtab_bookmarked": {
+    "message": "★ Saved to bookmarks"
+  },
+  "newtab_mainNav": {
+    "message": "Main navigation"
+  },
+  "newtab_brandTagline": {
+    "message": "Your workspace in the browser"
+  },
+  "newtab_skinSettings": {
+    "message": "Appearance"
+  },
+  "newtab_switchToDark": {
+    "message": "Switch to dark"
+  },
+  "newtab_switchToLight": {
+    "message": "Switch to light"
+  },
+  "newtab_engineTitle": {
+    "message": "Search engine: {name} (click to switch)"
+  },
+  "newtab_engineAria": {
+    "message": "Switch search engine, currently {name}"
+  },
+  "newtab_searchAria": {
+    "message": "Search tabs, archive and bookmarks, or enter a URL"
+  },
+  "newtab_searchPlaceholder": {
+    "message": "Search your pages, or enter a URL"
+  },
+  "newtab_searchCaption": {
+    "message": "Type to find local pages, press Enter to search with {engine}"
+  },
+  "newtab_headingSearch": {
+    "message": "Find pages"
+  },
+  "newtab_headingQuicklinks": {
+    "message": "Quick links"
+  },
+  "newtab_headingBookmarks": {
+    "message": "Bookmarks"
+  },
+  "newtab_headingTabs": {
+    "message": "Tab workspace"
+  },
+  "newtab_subtitleSearch": {
+    "message": "Open tabs, archive history and browser bookmarks, all in one search."
+  },
+  "newtab_subtitleQuicklinks": {
+    "message": "Your favorite sites, arranged the way you like."
+  },
+  "newtab_subtitleBookmarks": {
+    "message": "Organize what's worth keeping into your next starting point."
+  },
+  "newtab_subtitleTabs": {
+    "message": "Recover your context and turn valuable pages into next steps."
+  },
+  "newtab_openPagesCount_one": {
+    "message": "{count} open page"
+  },
+  "newtab_openPagesCount_other": {
+    "message": "{count} open pages"
+  },
+  "newtab_resultsOpen": {
+    "message": "Results: open now"
+  },
+  "newtab_resultsArchived": {
+    "message": "Results: archive"
+  },
+  "newtab_resultsBookmarks": {
+    "message": "Results: browser bookmarks"
+  },
+  "newtab_bookmarkSentToInbox": {
+    "message": "✅ Bookmark sent to the DJS 321 inbox"
+  },
+  "newtab_send": {
+    "message": "↗ Send"
+  },
+  "newtab_noResults": {
+    "message": "Nothing found for \"{query}\"."
+  },
+  "newtab_emptyTitle": {
+    "message": "Your workspace is ready"
+  },
+  "newtab_emptyBody": {
+    "message": "Open some web pages to find, organize and send them to the app from here."
+  },
+  "newtab_currentlyOpen": {
+    "message": "Open now"
+  },
+  "newtab_pageCount_one": {
+    "message": "· {count} page"
+  },
+  "newtab_pageCount_other": {
+    "message": "· {count} pages"
+  },
+  "newtab_recentArchived": {
+    "message": "Recently archived"
+  },
+  "newtab_restoring": {
+    "message": "Restoring"
+  },
+  "newtab_selectedBefore": {
+    "message": "Selected",
+    "description": "Text before the selected-tab count in the batch bar"
+  },
+  "newtab_selectedAfter_one": {
+    "message": "tab",
+    "description": "Text after the selected-tab count in the batch bar"
+  },
+  "newtab_selectedAfter_other": {
+    "message": "tabs",
+    "description": "Text after the selected-tab count in the batch bar"
+  },
+  "newtab_batchSend": {
+    "message": "↗ Send selected"
+  },
+  "newtab_batchArchive": {
+    "message": "✕ Archive selected"
+  },
+  "newtab_addToBookmarks": {
+    "message": "Add to bookmarks"
+  },
+  "newtab_bookmarkFoldersLoading": {
+    "message": "Loading, or no bookmark folders available..."
+  },
+  "newtab_addToQuickLinks": {
+    "message": "Add to quick links"
+  },
+  "newtab_chooseCategory": {
+    "message": "Choose a category"
+  },
+  "newtab_newCategoryOption": {
+    "message": "＋ New category..."
+  },
+  "newtab_newCategoryName": {
+    "message": "New category name"
+  },
+  "newtab_newCategoryPlaceholder": {
+    "message": "Enter a new category name..."
+  },
+  "newtab_sendToApp": {
+    "message": "Send to DJS 321"
+  },
+  "newtab_closeAndArchive": {
+    "message": "Close and archive"
+  },
+  "group_unnamed": {
+    "message": "Unnamed group"
+  },
+  "group_ungrouped": {
+    "message": "Ungrouped"
+  },
+  "group_window": {
+    "message": "🪟 Window {index}"
+  },
+  "group_recent": {
+    "message": "⚡ Just now (last hour)"
+  },
+  "group_today": {
+    "message": "☀️ Today"
+  },
+  "group_yesterday": {
+    "message": "🌙 Yesterday"
+  },
+  "group_older": {
+    "message": "📦 Older"
+  },
+  "group_other": {
+    "message": "🔖 Other"
+  },
+  "group_allTabs": {
+    "message": "All tabs"
+  },
+  "bookmarks_bar": {
+    "message": "Bookmarks bar"
+  },
+  "bookmarks_other": {
+    "message": "Other bookmarks"
+  },
+  "bookmarks_folder": {
+    "message": "Folder"
+  },
+  "bookmarks_root": {
+    "message": "Root"
+  },
+  "bookmarks_moved": {
+    "message": "✅ Moved"
+  },
+  "bookmarks_updated": {
+    "message": "✅ Updated"
+  },
+  "bookmarks_namePlaceholder": {
+    "message": "Name"
+  },
+  "bookmarks_sentToInbox": {
+    "message": "✅ Bookmark sent to the inbox"
+  },
+  "bookmarks_folderTree": {
+    "message": "Folder tree"
+  },
+  "bookmarks_gridView": {
+    "message": "Grid view"
+  },
+  "bookmarks_listView": {
+    "message": "List view"
+  },
+  "bookmarks_compactView": {
+    "message": "Compact view"
+  },
+  "bookmarks_emptyFolder": {
+    "message": "This folder is empty. Drag bookmarks from other folders to the left to organize them."
+  },
+  "bookmarks_subfolders": {
+    "message": "Subfolders"
+  },
+  "bookmarks_bookmarks": {
+    "message": "Bookmarks"
   }
 }

@@ -1,5 +1,6 @@
 import { TabGroup, hostname } from '../groupers'
 import { getRenderableFaviconUrl } from '../../lib/favicon'
+import { t } from '../../lib/i18n'
 
 interface Props {
   groups: TabGroup[]
@@ -33,10 +34,10 @@ export function KanbanView({ groups, onSwitch, onClose, onSend, selectedIds, onA
                     : <div className="tab-favicon-ph" />
                   }
                   <div className="tab-actions">
-                    <button className="tab-action-btn tab-bookmark always-visible" onClick={e => { e.stopPropagation(); onAddToBookmark?.(tab) }} title="收藏到书签">★</button>
-                    <button className="tab-action-btn tab-quicklink always-visible" onClick={e => { e.stopPropagation(); onAddToQuickLink?.(tab) }} title="添加到常用导航">📌</button>
-                    <button className="tab-action-btn tab-send always-visible" onClick={e => onSend(e, tab)} title="推送到倒计时321">↗</button>
-                    <button className="tab-action-btn tab-close always-visible" onClick={e => onClose(e, tab)} title="关闭并归档">✕</button>
+                    <button className="tab-action-btn tab-bookmark always-visible" onClick={e => { e.stopPropagation(); onAddToBookmark?.(tab) }} title={t('newtab_addToBookmarks')}>★</button>
+                    <button className="tab-action-btn tab-quicklink always-visible" onClick={e => { e.stopPropagation(); onAddToQuickLink?.(tab) }} title={t('newtab_addToQuickLinks')}>📌</button>
+                    <button className="tab-action-btn tab-send always-visible" onClick={e => onSend(e, tab)} title={t('newtab_sendToApp')}>↗</button>
+                    <button className="tab-action-btn tab-close always-visible" onClick={e => onClose(e, tab)} title={t('newtab_closeAndArchive')}>✕</button>
                   </div>
                 </div>
                 <button className="nt-tab-trigger kanban-trigger" onClick={e => { e.stopPropagation(); onSwitch(tab) }}>

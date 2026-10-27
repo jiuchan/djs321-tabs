@@ -1,32 +1,33 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { Dices, FolderOpen, Globe, Image, Palette, Pencil, X } from 'lucide-react'
 import { Settings } from '../../lib/settings'
+import { t, type MessageKey } from '../../lib/i18n'
 
 /* ── 预设壁纸 ─────────────────────────────────────────────────── */
-const PRESET_WALLPAPERS = [
-  { id: 'none',      label: '无壁纸',   thumb: '',  url: '' },
-  { id: 'mountains', label: '山川云海', thumb: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&q=60', url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80' },
-  { id: 'forest',    label: '林间晨光', thumb: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=200&q=60', url: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80' },
-  { id: 'ocean',     label: '碧海蓝天', thumb: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=200&q=60', url: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1920&q=80' },
-  { id: 'aurora',    label: '极光夜空', thumb: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=200&q=60', url: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1920&q=80' },
-  { id: 'sakura',    label: '樱花烂漫', thumb: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=200&q=60', url: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=1920&q=80' },
-  { id: 'galaxy',    label: '星河璀璨', thumb: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=200&q=60', url: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1920&q=80' },
-  { id: 'desert',    label: '沙漠金沙', thumb: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=200&q=60', url: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1920&q=80' },
-  { id: 'snow',      label: '雪景静谧', thumb: 'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=200&q=60', url: 'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=1920&q=80' },
+const PRESET_WALLPAPERS: { id: string; label: MessageKey; thumb: string; url: string }[] = [
+  { id: 'none',      label: 'skin_presetNone',   thumb: '',  url: '' },
+  { id: 'mountains', label: 'skin_presetMountains', thumb: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&q=60', url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80' },
+  { id: 'forest',    label: 'skin_presetForest', thumb: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=200&q=60', url: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80' },
+  { id: 'ocean',     label: 'skin_presetOcean', thumb: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=200&q=60', url: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=1920&q=80' },
+  { id: 'aurora',    label: 'skin_presetAurora', thumb: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=200&q=60', url: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1920&q=80' },
+  { id: 'sakura',    label: 'skin_presetSakura', thumb: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=200&q=60', url: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=1920&q=80' },
+  { id: 'galaxy',    label: 'skin_presetGalaxy', thumb: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=200&q=60', url: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1920&q=80' },
+  { id: 'desert',    label: 'skin_presetDesert', thumb: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=200&q=60', url: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1920&q=80' },
+  { id: 'snow',      label: 'skin_presetSnow', thumb: 'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=200&q=60', url: 'https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=1920&q=80' },
 ]
 
 /* ── 主题分类（Unsplash 关键词） ─────────────────────────────── */
-const THEMES = [
-  { id: 'nature',      label: '自然',   kw: 'nature' },
-  { id: 'city',        label: '城市',   kw: 'city+night' },
-  { id: 'mountain',    label: '山峰',   kw: 'mountain' },
-  { id: 'ocean',       label: '海洋',   kw: 'ocean' },
-  { id: 'space',       label: '宇宙',   kw: 'galaxy+space' },
-  { id: 'minimal',     label: '极简',   kw: 'minimal+abstract' },
-  { id: 'flower',      label: '花卉',   kw: 'flower' },
-  { id: 'architecture',label: '建筑',   kw: 'architecture' },
-  { id: 'animal',      label: '动物',   kw: 'wildlife' },
-  { id: 'autumn',      label: '秋季',   kw: 'autumn+forest' },
+const THEMES: { id: string; label: MessageKey; kw: string }[] = [
+  { id: 'nature',      label: 'skin_themeNature',   kw: 'nature' },
+  { id: 'city',        label: 'skin_themeCity',   kw: 'city+night' },
+  { id: 'mountain',    label: 'skin_themeMountain',   kw: 'mountain' },
+  { id: 'ocean',       label: 'skin_themeOcean',   kw: 'ocean' },
+  { id: 'space',       label: 'skin_themeSpace',   kw: 'galaxy+space' },
+  { id: 'minimal',     label: 'skin_themeMinimal',   kw: 'minimal+abstract' },
+  { id: 'flower',      label: 'skin_themeFlower',   kw: 'flower' },
+  { id: 'architecture',label: 'skin_themeArchitecture',   kw: 'architecture' },
+  { id: 'animal',      label: 'skin_themeAnimal',   kw: 'wildlife' },
+  { id: 'autumn',      label: 'skin_themeAutumn',   kw: 'autumn+forest' },
 ]
 
 interface PicsumPhoto { id: string; author: string; width: number; height: number; download_url: string }
@@ -160,12 +161,12 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Palette size={20} aria-hidden="true" style={{ color: sub }} />
-            <span style={{ fontSize: 16, fontWeight: 700, color: txt }}>皮肤设置</span>
+            <span style={{ fontSize: 16, fontWeight: 700, color: txt }}>{t('skin_title')}</span>
           </div>
           <button onClick={onClose} style={{
             background: 'none', border: 'none', cursor: 'pointer',
             display: 'inline-flex', color: sub, padding: '4px 8px', borderRadius: 8,
-          }} aria-label="关闭皮肤设置"><X size={18} aria-hidden="true" /></button>
+          }} aria-label={t('skin_close')}><X size={18} aria-hidden="true" /></button>
         </div>
 
         {/* ── Tab 切换 */}
@@ -173,9 +174,9 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
           display: 'flex', gap: 8, padding: '14px 22px 12px',
           borderBottom: `1px solid ${bd}`, flexShrink: 0,
         }}>
-          <button style={tabBtnStyle(activeTab === 'preset')} onClick={() => setActiveTab('preset')}><Image size={14} aria-hidden="true" />预设</button>
-          <button style={tabBtnStyle(activeTab === 'online')} onClick={() => setActiveTab('online')}><Globe size={14} aria-hidden="true" />在线图库</button>
-          <button style={tabBtnStyle(activeTab === 'custom')} onClick={() => setActiveTab('custom')}><Pencil size={14} aria-hidden="true" />自定义</button>
+          <button style={tabBtnStyle(activeTab === 'preset')} onClick={() => setActiveTab('preset')}><Image size={14} aria-hidden="true" />{t('skin_tabPreset')}</button>
+          <button style={tabBtnStyle(activeTab === 'online')} onClick={() => setActiveTab('online')}><Globe size={14} aria-hidden="true" />{t('skin_tabOnline')}</button>
+          <button style={tabBtnStyle(activeTab === 'custom')} onClick={() => setActiveTab('custom')}><Pencil size={14} aria-hidden="true" />{t('skin_tabCustom')}</button>
         </div>
 
         {/* ── 内容区（可滚动） */}
@@ -184,13 +185,13 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
           {/* ════ 预设 Tab ════ */}
           {activeTab === 'preset' && (
             <div>
-              <div style={labelStyle}>预设壁纸 — 点击即用</div>
+              <div style={labelStyle}>{t('skin_presetHint')}</div>
               {/* 3列布局，图片更大 */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
                 {PRESET_WALLPAPERS.map(p => {
                   const isActive = settings.wallpaper === p.url
                   return (
-                    <button key={p.id} onClick={() => onSave('wallpaper', p.url)} title={p.label}
+                    <button key={p.id} onClick={() => onSave('wallpaper', p.url)} title={t(p.label)}
                       style={{
                         position: 'relative', width: '100%', padding: 0,
                         borderRadius: 12, cursor: 'pointer', overflow: 'hidden',
@@ -219,7 +220,7 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
                         padding: '6px 8px',
                         fontSize: 11, fontWeight: 500, color: isActive ? 'var(--accent)' : sub,
                         textAlign: 'center', background: 'var(--lg-fill-thin)',
-                      }}>{p.label}</div>
+                      }}>{t(p.label)}</div>
                     </button>
                   )
                 })}
@@ -233,7 +234,7 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
 
               {/* 主题分类筛选 */}
               <div>
-                <div style={labelStyle}>按主题浏览</div>
+                <div style={labelStyle}>{t('skin_browseByTheme')}</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   <button
                     style={{
@@ -244,18 +245,18 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
                       transition: 'all 0.15s',
                     }}
                     onClick={() => { setSelectedTheme(''); loadPicsumPhotos(1) }}
-                  ><Dices size={13} aria-hidden="true" style={{ verticalAlign: '-2px', marginInlineEnd: 4 }} />随机</button>
-                  {THEMES.map(t => (
-                    <button key={t.id}
+                  ><Dices size={13} aria-hidden="true" style={{ verticalAlign: '-2px', marginInlineEnd: 4 }} />{t('skin_random')}</button>
+                  {THEMES.map(theme => (
+                    <button key={theme.id}
                       style={{
                         padding: '4px 12px', borderRadius: 'var(--lg-radius-pill)', border: `1px solid ${bd}`,
                         fontSize: 11, cursor: 'pointer', fontFamily: 'var(--font-apple)',
-                        background: selectedTheme === t.id ? 'var(--accent)' : bg2,
-                        color:      selectedTheme === t.id ? 'var(--text-on-accent, #fff)' : sub,
+                        background: selectedTheme === theme.id ? 'var(--accent)' : bg2,
+                        color:      selectedTheme === theme.id ? 'var(--text-on-accent, #fff)' : sub,
                         transition: 'all 0.15s',
                       }}
-                      onClick={() => loadThemePhotos(t.kw, t.id)}
-                    >{t.label}</button>
+                      onClick={() => loadThemePhotos(theme.kw, theme.id)}
+                    >{t(theme.label)}</button>
                   ))}
                 </div>
               </div>
@@ -263,12 +264,12 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
               {/* 图片网格 */}
               <div>
                 <div style={{ ...labelStyle, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                  <span>Picsum Photos · 免费高清无版权</span>
+                  <span>{t('skin_picsumCredit')}</span>
                   {!selectedTheme && (
                     <div style={{ display: 'flex', gap: 6 }}>
                       <button onClick={() => loadPicsumPhotos(Math.max(1, photosPage - 1))} disabled={photosPage <= 1 || loadingPhotos}
                         style={{ padding: '2px 10px', borderRadius: 8, border: `1px solid ${bd}`, background: bg2, color: sub, cursor: 'pointer', fontSize: 12, fontFamily: 'inherit' }}>‹</button>
-                      <span style={{ color: sub, fontSize: 11, lineHeight: '26px' }}>第 {photosPage} 页</span>
+                      <span style={{ color: sub, fontSize: 11, lineHeight: '26px' }}>{t('skin_page', { page: photosPage })}</span>
                       <button onClick={() => loadPicsumPhotos(photosPage + 1)} disabled={loadingPhotos}
                         style={{ padding: '2px 10px', borderRadius: 8, border: `1px solid ${bd}`, background: bg2, color: sub, cursor: 'pointer', fontSize: 12, fontFamily: 'inherit' }}>›</button>
                     </div>
@@ -278,7 +279,7 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
                 {loadingPhotos ? (
                   <div style={{ textAlign: 'center', padding: '32px 0', color: sub, fontSize: 13 }}>
                     <div style={{ fontSize: 24, marginBottom: 8, animation: 'spin 1s linear infinite', display: 'inline-block' }}>⟳</div>
-                    <div>加载中…</div>
+                    <div>{t('common_loading')}</div>
                   </div>
                 ) : (
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
@@ -291,7 +292,7 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
                           onClick={() => onSave('wallpaper', full)}
                           onMouseEnter={() => setPreviewUrl(thumb)}
                           onMouseLeave={() => setPreviewUrl('')}
-                          title={`作者: ${photo.author}`}
+                          title={t('skin_photoAuthor', { author: photo.author })}
                           style={{
                             position: 'relative', width: '100%', aspectRatio: '16/10',
                             borderRadius: 9, cursor: 'pointer', overflow: 'hidden',
@@ -332,7 +333,7 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
           {activeTab === 'custom' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
-                <div style={labelStyle}>输入图片 URL</div>
+                <div style={labelStyle}>{t('skin_imageUrlLabel')}</div>
                 <div style={{ display: 'flex', gap: 8 }}>
                   <input
                     style={{
@@ -347,23 +348,23 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
                   />
                   <button onClick={() => { if (customUrl.trim()) { onSave('wallpaper', customUrl.trim()); setCustomUrl('') } }}
                     style={{ padding: '0 18px', borderRadius: 'var(--lg-radius-md)', border: 'none', cursor: 'pointer', background: 'var(--accent)', color: 'var(--text-on-accent, #fff)', fontSize: 13, fontWeight: 600, fontFamily: 'var(--font-apple)', flexShrink: 0 }}>
-                    应用
+                    {t('common_apply')}
                   </button>
                 </div>
                 <div style={{ fontSize: 11, color: sub, marginTop: 6 }}>
-                  支持 Unsplash / Pexels / 任意图片直链
+                  {t('skin_imageUrlHint')}
                 </div>
               </div>
 
               <div>
-                <div style={labelStyle}>上传本地图片</div>
+                <div style={labelStyle}>{t('skin_uploadLabel')}</div>
                 <button onClick={() => fileInputRef.current?.click()}
                   style={{
                     width: '100%', padding: '16px', borderRadius: 12, cursor: 'pointer',
                     border: `2px dashed ${bd}`, background: bg2, color: sub,
                     fontSize: 13, fontFamily: 'inherit', transition: 'border-color 0.15s',
                   }}>
-                  <FolderOpen size={15} aria-hidden="true" style={{ verticalAlign: '-3px', marginInlineEnd: 6 }} />点击选择图片（JPG / PNG / WEBP）
+                  <FolderOpen size={15} aria-hidden="true" style={{ verticalAlign: '-3px', marginInlineEnd: 6 }} />{t('skin_uploadButton')}
                 </button>
                 <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }}
                   onChange={e => {
@@ -375,7 +376,7 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
                   }}
                 />
                 <div style={{ fontSize: 11, color: sub, marginTop: 6 }}>
-                  本地图片以 Base64 存储在 localStorage 中
+                  {t('skin_uploadHint')}
                 </div>
               </div>
             </div>
@@ -392,7 +393,7 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
           }}>
             <div>
               <div style={{ ...labelStyle, display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <span>模糊度</span>
+                <span>{t('skin_blur')}</span>
                 <span style={{ color: 'var(--accent)', fontWeight: 700 }}>{blur}px</span>
               </div>
               <input type="range" min={0} max={20} step={1} value={blur} style={sliderStyle}
@@ -400,7 +401,7 @@ export function SkinPanel({ settings, onClose, onSave }: SkinPanelProps) {
             </div>
             <div>
               <div style={{ ...labelStyle, display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                <span>遮罩深度</span>
+                <span>{t('skin_dim')}</span>
                 <span style={{ color: 'var(--accent)', fontWeight: 700 }}>{Math.round(dim * 100)}%</span>
               </div>
               <input type="range" min={0} max={0.8} step={0.05} value={dim} style={sliderStyle}

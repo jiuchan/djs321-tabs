@@ -6,5 +6,1726 @@
   "extDescription": {
     "message": "本地优先的标签管理：归档、搜索、分组标签，可选与倒计时321 联动，把标签一键变成任务。",
     "description": "商店与扩展页描述，最多 132 个字符"
+  },
+  "category_ai": {
+    "message": "🤖 AI 助手"
+  },
+  "category_dev": {
+    "message": "💻 开发工具"
+  },
+  "category_cloud": {
+    "message": "☁️ 云服务与运维"
+  },
+  "category_design": {
+    "message": "🎨 设计与素材"
+  },
+  "category_finance": {
+    "message": "📈 金融理财"
+  },
+  "category_video": {
+    "message": "📺 视频娱乐"
+  },
+  "category_news": {
+    "message": "📰 资讯阅读"
+  },
+  "category_geek": {
+    "message": "🔥 极客社区"
+  },
+  "category_shopping": {
+    "message": "🛒 购物电商"
+  },
+  "category_social": {
+    "message": "💬 社交沟通"
+  },
+  "category_music": {
+    "message": "🎵 音乐"
+  },
+  "category_mail": {
+    "message": "📧 邮件"
+  },
+  "category_docs": {
+    "message": "📄 文档协作"
+  },
+  "category_default": {
+    "message": "默认",
+    "description": "无法归类的页面"
+  },
+  "common_cancel": {
+    "message": "取消"
+  },
+  "common_loading": {
+    "message": "加载中…"
+  },
+  "common_apply": {
+    "message": "应用"
+  },
+  "skin_presetNone": {
+    "message": "无壁纸"
+  },
+  "skin_presetMountains": {
+    "message": "山川云海",
+    "description": "Preset wallpaper name: mountains above clouds"
+  },
+  "skin_presetForest": {
+    "message": "林间晨光",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetOcean": {
+    "message": "碧海蓝天",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetAurora": {
+    "message": "极光夜空",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetSakura": {
+    "message": "樱花烂漫",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetGalaxy": {
+    "message": "星河璀璨",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetDesert": {
+    "message": "沙漠金沙",
+    "description": "Preset wallpaper name"
+  },
+  "skin_presetSnow": {
+    "message": "雪景静谧",
+    "description": "Preset wallpaper name"
+  },
+  "skin_themeNature": {
+    "message": "自然",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeCity": {
+    "message": "城市",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeMountain": {
+    "message": "山峰",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeOcean": {
+    "message": "海洋",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeSpace": {
+    "message": "宇宙",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeMinimal": {
+    "message": "极简",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeFlower": {
+    "message": "花卉",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeArchitecture": {
+    "message": "建筑",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeAnimal": {
+    "message": "动物",
+    "description": "Online gallery theme filter"
+  },
+  "skin_themeAutumn": {
+    "message": "秋季",
+    "description": "Online gallery theme filter"
+  },
+  "skin_title": {
+    "message": "皮肤设置"
+  },
+  "skin_close": {
+    "message": "关闭皮肤设置"
+  },
+  "skin_tabPreset": {
+    "message": "预设"
+  },
+  "skin_tabOnline": {
+    "message": "在线图库"
+  },
+  "skin_tabCustom": {
+    "message": "自定义"
+  },
+  "skin_presetHint": {
+    "message": "预设壁纸 — 点击即用"
+  },
+  "skin_browseByTheme": {
+    "message": "按主题浏览"
+  },
+  "skin_random": {
+    "message": "随机"
+  },
+  "skin_picsumCredit": {
+    "message": "Picsum Photos · 免费高清无版权",
+    "description": "Picsum Photos is a proper noun; do not translate it."
+  },
+  "skin_page": {
+    "message": "第 {page} 页"
+  },
+  "skin_photoAuthor": {
+    "message": "作者: {author}"
+  },
+  "skin_imageUrlLabel": {
+    "message": "输入图片 URL"
+  },
+  "skin_imageUrlHint": {
+    "message": "支持 Unsplash / Pexels / 任意图片直链"
+  },
+  "skin_uploadLabel": {
+    "message": "上传本地图片"
+  },
+  "skin_uploadButton": {
+    "message": "点击选择图片（JPG / PNG / WEBP）"
+  },
+  "skin_uploadHint": {
+    "message": "本地图片以 Base64 存储在 localStorage 中"
+  },
+  "skin_blur": {
+    "message": "模糊度"
+  },
+  "skin_dim": {
+    "message": "遮罩深度"
+  },
+  "quicklinks_promptLabel": {
+    "message": "提示词"
+  },
+  "quicklinks_editNamed": {
+    "message": "编辑 {title}"
+  },
+  "quicklinks_deleteNamed": {
+    "message": "删除 {title}"
+  },
+  "quicklinks_editLink": {
+    "message": "编辑导航"
+  },
+  "quicklinks_deleteLink": {
+    "message": "删除导航"
+  },
+  "quicklinks_addLink": {
+    "message": "添加导航"
+  },
+  "quicklinks_siteCount_one": {
+    "message": "{count} 个网站"
+  },
+  "quicklinks_siteCount_other": {
+    "message": "{count} 个网站"
+  },
+  "quicklinks_categoryCount_one": {
+    "message": "{count} 个分类"
+  },
+  "quicklinks_categoryCount_other": {
+    "message": "{count} 个分类"
+  },
+  "quicklinks_layout": {
+    "message": "导航布局"
+  },
+  "quicklinks_gridMode": {
+    "message": "宫格模式"
+  },
+  "quicklinks_grid": {
+    "message": "宫格"
+  },
+  "quicklinks_listMode": {
+    "message": "双列模式"
+  },
+  "quicklinks_list": {
+    "message": "双列"
+  },
+  "quicklinks_addSite": {
+    "message": "添加网站"
+  },
+  "quicklinks_dragToSort": {
+    "message": "拖动以排序"
+  },
+  "quicklinks_addFavoriteSite": {
+    "message": "添加常用网站"
+  },
+  "quicklinks_geekCommunity": {
+    "message": "🔥 极客社区",
+    "description": "Category name for the seeded NodeSeek / LINUX DO / V2EX links"
+  },
+  "quicklinks_fillGeekCommunity": {
+    "message": "🪄 一键填充极客社区"
+  },
+  "quicklinks_url": {
+    "message": "网址"
+  },
+  "quicklinks_urlPlaceholder": {
+    "message": "网址 (如 github.com)"
+  },
+  "quicklinks_titleLabel": {
+    "message": "标题"
+  },
+  "quicklinks_titlePlaceholder": {
+    "message": "标题 (可选)"
+  },
+  "quicklinks_category": {
+    "message": "导航分类"
+  },
+  "quicklinks_newCategoryOption": {
+    "message": "新建分类..."
+  },
+  "quicklinks_newCategoryName": {
+    "message": "新分类名称"
+  },
+  "quicklinks_newCategoryPlaceholder": {
+    "message": "输入新分类名称..."
+  },
+  "quicklinks_backToSelect": {
+    "message": "返回选择"
+  },
+  "quicklinks_promptPlaceholder": {
+    "message": "输入提示词（鼠标悬浮时展示）..."
+  },
+  "quicklinks_saveChanges": {
+    "message": "保存更改"
+  },
+  "quicklinks_confirmAdd": {
+    "message": "确认添加"
+  },
+  "desktop_pairCancelled": {
+    "message": "配对已取消。"
+  },
+  "desktop_extensionIdUnknown": {
+    "message": "无法确认插件身份，请重新载入插件。"
+  },
+  "desktop_appIdentityMissing": {
+    "message": "尚未保存 App 身份，请重新配对。"
+  },
+  "desktop_savePairingFailed": {
+    "message": "无法保存本机配对，请检查插件设置。"
+  },
+  "desktop_requestAborted": {
+    "message": "请求已取消或超时。"
+  },
+  "desktop_invalidProtocol": {
+    "message": "桌面端返回无效协议，请更新 App 后在插件设置重新配对。"
+  },
+  "desktop_pairingUnsupported": {
+    "message": "桌面端版本不支持配对，请更新 App 后重试。"
+  },
+  "desktop_incompatible": {
+    "message": "桌面端版本或协议不兼容，请更新 App 后重试。"
+  },
+  "desktop_checkFailed": {
+    "message": "连接检查失败。"
+  },
+  "desktop_connectCancelled": {
+    "message": "连接已取消。"
+  },
+  "desktop_pairRequestInvalid": {
+    "message": "配对请求无效，请在插件设置重新配对。"
+  },
+  "desktop_pairResponseInvalid": {
+    "message": "配对响应无效，请更新桌面 App 后重试。"
+  },
+  "desktop_pairDenied": {
+    "message": "桌面 App 已拒绝配对；未发送任何内容，请在插件设置重新配对。"
+  },
+  "desktop_pairTokenInvalid": {
+    "message": "配对令牌无效，请更新桌面 App 后重试。"
+  },
+  "desktop_pairStateInvalid": {
+    "message": "配对状态无效，请更新桌面 App 后重试。"
+  },
+  "desktop_pairNotApproved": {
+    "message": "配对未获批准，请在桌面 App 确认后重试。"
+  },
+  "desktop_pairTimeout": {
+    "message": "配对超时（最长三分钟）。请安装或打开最新版桌面 App，再在插件设置重试。"
+  },
+  "desktop_revokeIncomplete": {
+    "message": "撤销未完成。"
+  },
+  "desktop_revokePending": {
+    "message": "本机已停止发送；请打开 App 后再次点击断开完成撤销。"
+  },
+  "desktop_batchSize": {
+    "message": "本机发送每次仅支持 1 至 100 项，请分批发送。"
+  },
+  "desktop_fieldTooLong": {
+    "message": "本机发送 {field} 超过上限（{limit} 字符）或格式无效，请缩短后重试。",
+    "description": "{field} is a field name such as title/url/note/content; {limit} is a number"
+  },
+  "desktop_bodyTooLarge": {
+    "message": "本机发送超过 2 MiB 上限，请减少正文或分批发送。"
+  },
+  "desktop_localStateInvalid": {
+    "message": "本机配对状态无效，请重新打开插件设置。"
+  },
+  "desktop_readPairingFailed": {
+    "message": "无法读取本机配对，请检查插件设置。"
+  },
+  "desktop_clearPairingFailed": {
+    "message": "无法清除本机配对，请检查插件设置。"
+  },
+  "desktop_discoveryInvalid": {
+    "message": "发现请求或配对身份无效，请重新配对。"
+  },
+  "desktop_tooManyRequests": {
+    "message": "本机连接请求过多，请关闭其他插件设置页后重试。"
+  },
+  "desktop_identityMismatch": {
+    "message": "桌面 App 身份或协议不匹配，未发送令牌或内容。请打开插件设置重新连接。"
+  },
+  "justdoit_pageChanged": {
+    "message": "所选页面地址已变化，请重新选择后收集。"
+  },
+  "justdoit_readContentFailed": {
+    "message": "无法读取正文，请检查此网站的访问授权。"
+  },
+  "justdoit_manualPortNotAllowed": {
+    "message": "请在插件设置恢复自动本机模式并配对，不能手动猜测本机端口。"
+  },
+  "justdoit_notPaired": {
+    "message": "尚未配对桌面 App，请打开插件设置，点击连接并在 App 中批准配对。"
+  },
+  "justdoit_receiptInvalid": {
+    "message": "桌面端回执无效，请更新 App 后在插件设置重试。"
+  },
+  "justdoit_networkFailed": {
+    "message": "网络请求失败，请确认桌面 App 正在运行；端口变化时请打开插件设置重新连接。"
+  },
+  "justdoit_pairingRevoked": {
+    "message": "配对授权已撤销，请打开插件设置重新配对。"
+  },
+  "justdoit_serverStatus": {
+    "message": "连接服务返回 {status}，请打开插件设置检查地址或桌面 App 版本。",
+    "description": "{status} is an HTTP status code"
+  },
+  "justdoit_receiptMismatch": {
+    "message": "桌面端回执不匹配，未确认写入；请打开插件设置检查 App 版本。"
+  },
+  "justdoit_notConfirmed": {
+    "message": "服务未确认发送成功。"
+  },
+  "justdoit_sendIncomplete": {
+    "message": "发送未完成，请打开插件设置检查连接。"
+  },
+  "justdoit_endpointInvalid": {
+    "message": "连接地址无效；仅支持本机 HTTP 或无密码、无查询参数的 HTTPS 地址。"
+  },
+  "justdoit_settingsSaveFailed": {
+    "message": "保存设置失败。"
+  },
+  "siteAccess_unsupportedPage": {
+    "message": "此页面不支持正文提取，请使用普通 HTTP/HTTPS 网页。"
+  },
+  "siteAccess_denied": {
+    "message": "未授权访问这些网站，未提取正文或发送任务。"
+  },
+  "siteAccess_endpointNotAuthorized": {
+    "message": "请先在插件设置中保存并授权此连接地址。"
+  },
+  "siteAccess_revokePartial": {
+    "message": "部分授权未撤销。"
+  },
+  "tabs_actionIncomplete": {
+    "message": "操作未完成，请重试。"
+  },
+  "tabs_undoInvalid": {
+    "message": "无效的撤销记录。"
+  },
+  "tabs_undoUrlInvalid": {
+    "message": "撤销地址无效。"
+  },
+  "tabs_undoUrlBlocked": {
+    "message": "撤销地址不可打开。"
+  },
+  "tabs_faviconFallback": {
+    "message": "站",
+    "description": "Single character shown as a quick link icon when the title/URL has no letter or digit"
+  },
+  "bg_cannotArchive": {
+    "message": "该页面无法归档。"
+  },
+  "bg_undoSaveFailed": {
+    "message": "撤销记录保存失败。"
+  },
+  "bg_archivedKept": {
+    "message": "已归档，原标签保留。"
+  },
+  "bg_savedAndClosed": {
+    "message": "已保存链接并关闭标签。"
+  },
+  "bg_sentToApp": {
+    "message": "已发送至倒计时321"
+  },
+  "bg_savedAsTask": {
+    "message": "成功保存为任务"
+  },
+  "bg_actionFailedTitle": {
+    "message": "{brand} 操作未完成",
+    "description": "{brand} is the extension name"
+  },
+  "bg_checkSettings": {
+    "message": "请打开插件检查设置后重试。"
+  },
+  "bg_nothingToRestore": {
+    "message": "没有可恢复的记录。"
+  },
+  "bg_restoreFailed": {
+    "message": "恢复标签失败"
+  },
+  "content_extractFailed": {
+    "message": "正文提取失败，未发送任务。"
+  },
+  "settings_title": {
+    "message": "设置"
+  },
+  "settings_navLayout": {
+    "message": "导航布局"
+  },
+  "settings_layoutTop": {
+    "message": "顶部导航"
+  },
+  "settings_layoutSidebar": {
+    "message": "侧边导航"
+  },
+  "settings_layoutClassic": {
+    "message": "经典右侧"
+  },
+  "settings_groupByTitle": {
+    "message": "标签分组方式"
+  },
+  "settings_groupByDesc": {
+    "message": "选择新标签页如何对打开的标签进行分组"
+  },
+  "settings_groupNone": {
+    "message": "不分组"
+  },
+  "settings_groupDomain": {
+    "message": "按域名"
+  },
+  "settings_groupChromeGroup": {
+    "message": "浏览器分组"
+  },
+  "settings_groupWindow": {
+    "message": "按窗口"
+  },
+  "settings_groupTime": {
+    "message": "按时间"
+  },
+  "settings_groupCategory": {
+    "message": "内容分类"
+  },
+  "settings_viewTitle": {
+    "message": "展示视图"
+  },
+  "settings_viewDesc": {
+    "message": "选择标签的展现形式"
+  },
+  "settings_viewGrid": {
+    "message": "网格卡片"
+  },
+  "settings_viewList": {
+    "message": "紧凑列表"
+  },
+  "settings_viewKanban": {
+    "message": "看板"
+  },
+  "settings_defaultSectionTitle": {
+    "message": "默认入口"
+  },
+  "settings_sectionQuicklinks": {
+    "message": "导航"
+  },
+  "settings_sectionBookmarks": {
+    "message": "书签"
+  },
+  "settings_themeTitle": {
+    "message": "外观主题"
+  },
+  "settings_themeDesc": {
+    "message": "切换新标签页的明暗模式"
+  },
+  "settings_themeLight": {
+    "message": "白天模式"
+  },
+  "settings_themeDark": {
+    "message": "夜间模式"
+  },
+  "settings_privacyTitle": {
+    "message": "联网与隐私"
+  },
+  "settings_subtitle": {
+    "message": "更改即时生效，并自动保存"
+  },
+  "settings_close": {
+    "message": "关闭设置"
+  },
+  "settings_navLayoutHint": {
+    "message": "小窗口自动使用顶部导航，不会改变你的选择。"
+  },
+  "settings_layoutTopDesc": {
+    "message": "横向工作台，内容空间更开阔"
+  },
+  "settings_layoutSidebarDesc": {
+    "message": "纵向快捷栏，入口始终在手边"
+  },
+  "settings_layoutClassicDesc": {
+    "message": "居中大时钟，保留旧版宽松排布"
+  },
+  "settings_groupNoneDesc": {
+    "message": "所有标签平铺展示"
+  },
+  "settings_groupDomainDesc": {
+    "message": "相同网站的标签归为一组"
+  },
+  "settings_groupChromeGroupDesc": {
+    "message": "读取浏览器中的标签组"
+  },
+  "settings_groupWindowDesc": {
+    "message": "按浏览器窗口分栏展示"
+  },
+  "settings_groupTimeDesc": {
+    "message": "按最近访问时间分层"
+  },
+  "settings_groupCategoryDesc": {
+    "message": "智能识别：开发/视频/购物等"
+  },
+  "settings_viewGridDesc": {
+    "message": "带图标的小卡片，视觉直观"
+  },
+  "settings_viewListDesc": {
+    "message": "单行紧凑展示，信息密度高"
+  },
+  "settings_viewKanbanDesc": {
+    "message": "每组一列横向排布"
+  },
+  "settings_sectionTabs": {
+    "message": "标签"
+  },
+  "settings_sectionTabsDesc": {
+    "message": "打开新标签页后先查看当前标签"
+  },
+  "settings_sectionQuicklinksDesc": {
+    "message": "把新标签页作为常用导航工作台"
+  },
+  "settings_sectionBookmarksDesc": {
+    "message": "默认进入书签空间，方便沉淀资料"
+  },
+  "settings_defaultSectionDesc": {
+    "message": "设置打开新标签页时默认展示的主区域"
+  },
+  "settings_privacyDesc": {
+    "message": "本地管理无需账号。联网功能由你选择启用。"
+  },
+  "settings_enableQuotes": {
+    "message": "启用每日一言（向一言服务发送网络请求）"
+  },
+  "settings_privacyNote": {
+    "message": "在线壁纸和网站图标会向相应网站联网；收集正文只在点击时执行，发送目标以完整设置页为准。"
+  },
+  "settings_openOptions": {
+    "message": "连接授权与隐私说明"
+  },
+  "settings_exportBackup": {
+    "message": "导出备份"
+  },
+  "settings_importBackup": {
+    "message": "导入备份"
+  },
+  "options_saved": {
+    "message": "✓ 已保存"
+  },
+  "options_navLayoutHint": {
+    "message": "小窗口自动使用顶部导航，不会改变已保存的选择。"
+  },
+  "options_layoutClassic": {
+    "message": "经典右侧 · 居中大时钟"
+  },
+  "options_groupNoneDesc": {
+    "message": "所有标签平铺展示，适合标签少的场景"
+  },
+  "options_groupDomainDesc": {
+    "message": "相同网站的标签归为一组，最常用的分组方式"
+  },
+  "options_groupChromeGroupDesc": {
+    "message": "读取你在浏览器中手动创建的标签组，零额外操作"
+  },
+  "options_groupWindowDesc": {
+    "message": "多窗口用户必备，按浏览器窗口分栏展示"
+  },
+  "options_groupTimeDesc": {
+    "message": "按最近访问时间分层：刚刚 / 今天 / 昨天 / 更早"
+  },
+  "options_groupCategoryDesc": {
+    "message": "智能识别：开发 / 视频 / 购物 / 社交 / 音乐等"
+  },
+  "options_viewGridDesc": {
+    "message": "带图标的小卡片，视觉直观，适合中等数量的标签"
+  },
+  "options_viewListDesc": {
+    "message": "单行紧凑展示，信息密度最高，适合标签数量多的场景"
+  },
+  "options_viewKanbanDesc": {
+    "message": "每组一列横向排布，适合少分组时的全局纵览"
+  },
+  "options_sectionTabs": {
+    "message": "标签页"
+  },
+  "options_sectionTabsDesc": {
+    "message": "默认查看当前打开的标签"
+  },
+  "options_sectionQuicklinksDesc": {
+    "message": "默认进入常用导航页"
+  },
+  "options_sectionBookmarksDesc": {
+    "message": "默认进入书签空间"
+  },
+  "options_defaultSectionDesc": {
+    "message": "选择打开新标签页时默认先进入的主区域"
+  },
+  "options_connTitle": {
+    "message": "倒计时321 连接"
+  },
+  "options_connDesc": {
+    "message": "点击连接，在 App 中批准后自动使用 App 的实际端口。身份与配对信息仅保存在当前浏览器，不进入同步或备份，不会自动发送内容。"
+  },
+  "options_connBrowserHint": {
+    "message": "App 会在系统默认浏览器打开本机握手页。请使用装有此插件的浏览器资料；打开到其他浏览器或资料时，回到这里重试，不需要填写端口。"
+  },
+  "options_stateLoading": {
+    "message": "正在读取设置"
+  },
+  "options_stateChecking": {
+    "message": "正在检查本机桌面 App 连接…"
+  },
+  "options_stateNotRunning": {
+    "message": "App 未响应或端口已变化，请打开 App 重新连接。"
+  },
+  "options_stateUnpaired": {
+    "message": "尚未配对，请点击连接并在 App 中批准。"
+  },
+  "options_stateConnected": {
+    "message": "本机桌面 App 已连接"
+  },
+  "options_stateRevoked": {
+    "message": "配对授权已撤销，请重新连接。"
+  },
+  "options_statePairing": {
+    "message": "正在配对，请在 App 中核对配对码。"
+  },
+  "options_stateError": {
+    "message": "连接未完成，请按下方提示重试。"
+  },
+  "options_pairingCode": {
+    "message": "配对码"
+  },
+  "options_pairingCodeHint": {
+    "message": "三分钟内有效；拒绝或取消不会发送内容。"
+  },
+  "options_openAppReconnect": {
+    "message": "打开 App / 重新连接"
+  },
+  "options_connectDesktop": {
+    "message": "连接桌面 App"
+  },
+  "options_openDesktop": {
+    "message": "打开桌面 App"
+  },
+  "options_cancelPairing": {
+    "message": "取消配对"
+  },
+  "options_checkConnection": {
+    "message": "检查连接"
+  },
+  "options_disconnectRevoke": {
+    "message": "断开（完成撤销）"
+  },
+  "options_disconnect": {
+    "message": "断开配对"
+  },
+  "options_currentEndpoint": {
+    "message": "当前发送地址：{url}。连接桌面 App 完成后将切回本机地址；自定义 HTTPS 可在高级设置中保留或重新选择。"
+  },
+  "options_advancedConnection": {
+    "message": "高级连接设置"
+  },
+  "options_advancedDesc": {
+    "message": "本机地址自动发现并核验，不支持手动猜测端口或旧版无认证发送。下面留空并保存可恢复本机模式。自定义 HTTPS 保留原有接口格式；保存时按此网站请求授权，远程服务将收到你主动发送的标题、网址和正文。"
+  },
+  "options_apiUrlLabel": {
+    "message": "倒计时321连接地址"
+  },
+  "options_apiUrlPlaceholder": {
+    "message": "https://your-service.example（留空使用本机）"
+  },
+  "options_saveAuthorize": {
+    "message": "保存并授权此地址"
+  },
+  "options_privacyDesc": {
+    "message": "在线壁纸和网站图标会向相应网站联网。正文只在点击收集时提取；批量收集仅按所选网页的网站授权。不向开发者发送你的标签、书签或正文。"
+  },
+  "options_quotesTitle": {
+    "message": "每日一言"
+  },
+  "options_quotesDesc": {
+    "message": "默认关闭；开启后新标签页会向一言服务联网获取短句。"
+  },
+  "options_revokeAccess": {
+    "message": "撤销可选网站授权"
+  },
+  "options_privacyPolicy": {
+    "message": "插件隐私说明"
+  },
+  "options_footer": {
+    "message": "设置即时生效，刷新新标签页后可见"
+  },
+  "options_msgSettingsLoadFailed": {
+    "message": "设置读取失败，请重新打开插件设置。"
+  },
+  "options_msgCheckFailed": {
+    "message": "连接检查失败。"
+  },
+  "options_msgDiscoveryFailed": {
+    "message": "本机发现准备失败，请重试。"
+  },
+  "options_msgWaitingHandshake": {
+    "message": "正在等待 App 回传当前端口，最多 20 秒。请在装有此插件的默认浏览器中完成握手。"
+  },
+  "options_msgHandshakeIncomplete": {
+    "message": "握手尚未完成。请确认已安装新版 App，且本机握手页打开在装有此插件的浏览器资料中，再重试。"
+  },
+  "options_msgPairingApprove": {
+    "message": "请在桌面 App 核对配对码并批准。不会自动发送标签或正文。"
+  },
+  "options_msgPairingDone": {
+    "message": "配对完成，发送地址已设为本机。只有点击发送时才会收集并发送所选内容。"
+  },
+  "options_msgPairingFailed": {
+    "message": "配对未完成，请重试。"
+  },
+  "options_msgPairingCancelled": {
+    "message": "已取消配对，未发送任何内容。"
+  },
+  "options_msgDisconnected": {
+    "message": "已断开并清除本机配对。"
+  },
+  "options_msgDisconnectFailed": {
+    "message": "断开未完成，请重试。"
+  },
+  "options_msgInvalidUrl": {
+    "message": "高级地址仅支持自定义 HTTPS；本机端口由 App 自动回传，请留空恢复本机模式。地址不能包含账号密码、查询参数或片段。"
+  },
+  "options_msgUrlSaved": {
+    "message": "连接地址已保存。只有点击发送时，标题、网址及所选正文才会发送到此地址。"
+  },
+  "options_msgLocalRestored": {
+    "message": "已恢复自动本机连接；实际端口来自已配对 App，不需要填写地址。"
+  },
+  "options_msgSaveFailed": {
+    "message": "授权或保存未完成。"
+  },
+  "options_msgWakeOnly": {
+    "message": "仅唤醒 App；请点击连接，并在 App 中批准配对。"
+  },
+  "options_msgRevokeDone": {
+    "message": "已撤销可选网站授权。再次收集或使用自定义连接时需要重新授权。"
+  },
+  "options_msgRevokeFailed": {
+    "message": "撤销未完成，请在浏览器扩展设置中检查。"
+  },
+  "common_delete": {
+    "message": "删除"
+  },
+  "common_export": {
+    "message": "导出"
+  },
+  "common_import": {
+    "message": "导入"
+  },
+  "common_saving": {
+    "message": "保存中..."
+  },
+  "common_processing": {
+    "message": "处理中..."
+  },
+  "popup_untitledPage": {
+    "message": "未命名页面"
+  },
+  "popup_bookmarkBar": {
+    "message": "书签栏",
+    "description": "Fallback name for the root bookmarks bar folder"
+  },
+  "popup_otherBookmarks": {
+    "message": "其他书签",
+    "description": "Fallback name for the root Other bookmarks folder"
+  },
+  "popup_untitledFolder": {
+    "message": "未命名文件夹"
+  },
+  "popup_recSourceHost": {
+    "message": "站点规则",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceExisting": {
+    "message": "已收藏",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceSameSite": {
+    "message": "同站收藏",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceContent": {
+    "message": "内容匹配",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceRecent": {
+    "message": "最近使用",
+    "description": "Why a bookmark folder is recommended"
+  },
+  "popup_recSourceNone": {
+    "message": "待选择",
+    "description": "No bookmark folder recommended yet"
+  },
+  "popup_recentFolder": {
+    "message": "最近文件夹"
+  },
+  "popup_toastArchivedKept": {
+    "message": "已归档，原标签保留"
+  },
+  "popup_errArchive": {
+    "message": "归档失败"
+  },
+  "popup_markdownHeading": {
+    "message": "# {brand} 归档",
+    "description": "Heading of the exported Markdown file"
+  },
+  "popup_toastBookmarkRuleSaved": {
+    "message": "已记住这个站点的收藏规则"
+  },
+  "popup_toastBookmarkRuleCleared": {
+    "message": "已清除这个站点的收藏规则"
+  },
+  "popup_toastQuickLinkRuleSaved": {
+    "message": "已记住这个站点的导航分类规则"
+  },
+  "popup_toastQuickLinkRuleCleared": {
+    "message": "已清除这个站点的导航分类规则"
+  },
+  "popup_toastRuleApplied": {
+    "message": "已把这条规则应用到当前站点"
+  },
+  "popup_toastRuleDeleted": {
+    "message": "规则已删除"
+  },
+  "popup_toastQuickLinkRuleApplied": {
+    "message": "已把这条导航分类规则应用到当前站点"
+  },
+  "popup_toastQuickLinkRuleDeleted": {
+    "message": "导航分类规则已删除"
+  },
+  "popup_toastRulesExported": {
+    "message": "规则已导出"
+  },
+  "popup_errExportRules": {
+    "message": "导出规则失败"
+  },
+  "popup_toastRulesImported": {
+    "message": "已导入 {bookmarkCount} 条书签规则和 {quickLinkCount} 条导航规则"
+  },
+  "popup_errImportRules": {
+    "message": "导入规则失败"
+  },
+  "popup_detailInboxAndQuickLink": {
+    "message": "收件箱 + 导航",
+    "description": "Recent action detail"
+  },
+  "popup_detailInbox": {
+    "message": "收件箱",
+    "description": "Recent action detail"
+  },
+  "popup_toastSentToInboxAndQuickLink": {
+    "message": "已发到收件箱，并加入导航"
+  },
+  "popup_toastSentToInbox": {
+    "message": "已发到收件箱"
+  },
+  "popup_errAction": {
+    "message": "操作失败"
+  },
+  "popup_detailSendToInbox": {
+    "message": "发到收件箱",
+    "description": "Recent action detail"
+  },
+  "popup_toastSentToAppInbox": {
+    "message": "已发送到倒计时321收件箱"
+  },
+  "popup_errSend": {
+    "message": "发送失败"
+  },
+  "popup_toastQuickLinkAdded": {
+    "message": "已添加到导航 · {category}"
+  },
+  "popup_toastQuickLinkCategoryUpdated": {
+    "message": "导航分类已更新 · {category}"
+  },
+  "popup_toastQuickLinkKept": {
+    "message": "导航已保持在 · {category}"
+  },
+  "popup_errAddQuickLink": {
+    "message": "添加导航失败"
+  },
+  "popup_detailBookmark": {
+    "message": "书签",
+    "description": "Recent action detail when no folder path is known"
+  },
+  "popup_toastBookmarkUpdated": {
+    "message": "书签已更新"
+  },
+  "popup_toastBookmarkAdded": {
+    "message": "已加入书签"
+  },
+  "popup_errBookmark": {
+    "message": "收藏失败"
+  },
+  "popup_toastDefaultBookmarkUpdated": {
+    "message": "默认收藏已更新"
+  },
+  "popup_toastSavedToDefaultFolder": {
+    "message": "已收藏到默认文件夹"
+  },
+  "popup_errQuickSave": {
+    "message": "快速收藏失败"
+  },
+  "popup_toastNoDefaultFolder": {
+    "message": "还没有可用的默认收藏文件夹"
+  },
+  "popup_pageCount_one": {
+    "message": "{count} 个页面"
+  },
+  "popup_pageCount_other": {
+    "message": "{count} 个页面"
+  },
+  "popup_detailBatchBookmarkSkipped_one": {
+    "message": "批量收藏，跳过 {count} 个未匹配或重复页面"
+  },
+  "popup_detailBatchBookmarkSkipped_other": {
+    "message": "批量收藏，跳过 {count} 个未匹配或重复页面"
+  },
+  "popup_detailBatchBookmark": {
+    "message": "批量收藏"
+  },
+  "popup_toastBatchBookmarkUpdated": {
+    "message": "已处理 {processed} 个收藏，更新 {updated} 个"
+  },
+  "popup_toastBatchBookmarked_one": {
+    "message": "已收藏 {count} 个页面"
+  },
+  "popup_toastBatchBookmarked_other": {
+    "message": "已收藏 {count} 个页面"
+  },
+  "popup_errBatchBookmark": {
+    "message": "批量收藏失败"
+  },
+  "popup_detailBatchWorkspaceAdded_one": {
+    "message": "批量收进工作台，新增 {count} 个导航"
+  },
+  "popup_detailBatchWorkspaceAdded_other": {
+    "message": "批量收进工作台，新增 {count} 个导航"
+  },
+  "popup_detailBatchInbox": {
+    "message": "批量发到收件箱"
+  },
+  "popup_toastProcessedPages_one": {
+    "message": "已处理 {count} 个页面"
+  },
+  "popup_toastProcessedPages_other": {
+    "message": "已处理 {count} 个页面"
+  },
+  "popup_errBatchWorkspace": {
+    "message": "批量收进工作台失败"
+  },
+  "popup_toastAllAlreadyQuickLinks": {
+    "message": "选中的页面都已经在导航里了"
+  },
+  "popup_toastNothingToAdd": {
+    "message": "没有可添加的页面"
+  },
+  "popup_detailBatchQuickLinkSkipped_one": {
+    "message": "批量加入导航，跳过 {count} 个重复项"
+  },
+  "popup_detailBatchQuickLinkSkipped_other": {
+    "message": "批量加入导航，跳过 {count} 个重复项"
+  },
+  "popup_detailBatchQuickLink": {
+    "message": "批量加入导航"
+  },
+  "popup_toastBatchQuickLinkAdded_one": {
+    "message": "已加入导航 {count} 个页面"
+  },
+  "popup_toastBatchQuickLinkAdded_other": {
+    "message": "已加入导航 {count} 个页面"
+  },
+  "popup_errBatchQuickLink": {
+    "message": "批量加入导航失败"
+  },
+  "popup_detailWindowToWorkspace": {
+    "message": "整窗收进工作台"
+  },
+  "popup_errWindowToWorkspace": {
+    "message": "整窗收进工作台失败"
+  },
+  "popup_toastClosedArchived_one": {
+    "message": "已关闭并归档 {count} 个标签"
+  },
+  "popup_toastClosedArchived_other": {
+    "message": "已关闭并归档 {count} 个标签"
+  },
+  "popup_errPartialArchive": {
+    "message": "已归档 {closed}/{total} 个，其余未完成：{error}"
+  },
+  "popup_switchToLight": {
+    "message": "切换亮色"
+  },
+  "popup_switchToDark": {
+    "message": "切换暗色"
+  },
+  "popup_openNewTab": {
+    "message": "打开新标签页"
+  },
+  "popup_settings": {
+    "message": "设置"
+  },
+  "popup_currentPageBadge": {
+    "message": "当前页"
+  },
+  "popup_chipInQuickLinks": {
+    "message": "已在导航"
+  },
+  "popup_chipBookmarked": {
+    "message": "已收藏"
+  },
+  "popup_chipNotCaptured": {
+    "message": "还没收进你的工作台"
+  },
+  "popup_sendCurrentTitle": {
+    "message": "把当前页发送到「倒计时321」工作台（收件箱），作为待办处理"
+  },
+  "popup_sendCurrent": {
+    "message": "当前页发到工作台"
+  },
+  "popup_captureWindowTitle": {
+    "message": "整窗收进工作台"
+  },
+  "popup_captureWindow": {
+    "message": "整窗 · {count}"
+  },
+  "popup_noCaptureTitle": {
+    "message": "当前页无需收集"
+  },
+  "popup_noCaptureBody": {
+    "message": "新标签页和浏览器设置页不会发送到工作台。你仍可在下方整理其他页面。"
+  },
+  "popup_adjustQuickLinkCategory": {
+    "message": "调整导航分类"
+  },
+  "popup_addToQuickLinks": {
+    "message": "加入导航"
+  },
+  "popup_badgeRuleHit": {
+    "message": "规则命中"
+  },
+  "popup_badgeSuggested": {
+    "message": "推荐"
+  },
+  "popup_bookmarkedChangeFolder": {
+    "message": "已收藏，换个文件夹"
+  },
+  "popup_bookmarkPage": {
+    "message": "收藏书签"
+  },
+  "popup_chooseFolder": {
+    "message": "选择文件夹"
+  },
+  "popup_quickLinkTitle": {
+    "message": "导航标题"
+  },
+  "popup_searchCategories": {
+    "message": "搜索分类"
+  },
+  "popup_searchCategoriesPlaceholder": {
+    "message": "搜索已有导航分类..."
+  },
+  "popup_badgeCurrent": {
+    "message": "当前"
+  },
+  "popup_badgeSite": {
+    "message": "站点"
+  },
+  "popup_noMatchingCategory": {
+    "message": "没有匹配的分类，可在下方新建"
+  },
+  "popup_newCategoryLabel": {
+    "message": "新建分类（留空则用所选）"
+  },
+  "popup_newCategoryPlaceholder": {
+    "message": "新分类名称"
+  },
+  "popup_updateQuickLink": {
+    "message": "更新导航"
+  },
+  "popup_saveQuickLink": {
+    "message": "保存导航"
+  },
+  "popup_titleLabel": {
+    "message": "标题"
+  },
+  "popup_bookmarkTitlePlaceholder": {
+    "message": "收藏标题"
+  },
+  "popup_searchFolders": {
+    "message": "搜索文件夹"
+  },
+  "popup_searchFoldersPlaceholder": {
+    "message": "搜索书签文件夹..."
+  },
+  "popup_badgeRecent": {
+    "message": "最近"
+  },
+  "popup_noMatchingFolder": {
+    "message": "没有匹配的文件夹"
+  },
+  "popup_newSubfolderLabel": {
+    "message": "新建子文件夹（留空则收藏到所选）"
+  },
+  "popup_subfolderPlaceholder": {
+    "message": "子文件夹名称"
+  },
+  "popup_saveBookmark": {
+    "message": "保存书签"
+  },
+  "popup_siteRules": {
+    "message": "站点规则"
+  },
+  "popup_ruleSite": {
+    "message": "站点"
+  },
+  "popup_unrecognized": {
+    "message": "无法识别"
+  },
+  "popup_ruleDefaultFolder": {
+    "message": "默认书签夹"
+  },
+  "popup_notSet": {
+    "message": "未设置"
+  },
+  "popup_ruleQuickLinkCategory": {
+    "message": "导航分类"
+  },
+  "popup_ruleFromSite": {
+    "message": "站点规则",
+    "description": "Suffix after the category: comes from a site rule"
+  },
+  "popup_ruleAutoInferred": {
+    "message": "自动推断",
+    "description": "Suffix after the category: inferred automatically"
+  },
+  "popup_bookmarkLocationSaved": {
+    "message": "已记住收藏位置"
+  },
+  "popup_rememberBookmarkLocation": {
+    "message": "记住当前收藏位置"
+  },
+  "popup_changeDefaultFolder": {
+    "message": "改默认文件夹"
+  },
+  "popup_clearBookmarkRule": {
+    "message": "清除书签规则"
+  },
+  "popup_quickLinkCategorySaved": {
+    "message": "已记住导航分类"
+  },
+  "popup_rememberQuickLinkCategory": {
+    "message": "记住导航分类"
+  },
+  "popup_clearQuickLinkRule": {
+    "message": "清除导航规则"
+  },
+  "popup_ruleLibrary": {
+    "message": "规则库（书签 {bookmarkCount} · 导航 {quickLinkCount}）"
+  },
+  "popup_searchRulesPlaceholder": {
+    "message": "搜索站点 / 文件夹 / 分类"
+  },
+  "popup_ruleTypeBookmark": {
+    "message": "书签"
+  },
+  "popup_ruleTypeQuickLink": {
+    "message": "导航"
+  },
+  "popup_noRules": {
+    "message": "暂无规则"
+  },
+  "popup_tabManager": {
+    "message": "标签管理"
+  },
+  "popup_openCount": {
+    "message": "打开 {count}"
+  },
+  "popup_archivedCount": {
+    "message": "归档 {count}"
+  },
+  "popup_searchOpenTabs": {
+    "message": "搜索打开的标签"
+  },
+  "popup_searchArchive": {
+    "message": "搜索归档记录"
+  },
+  "popup_searchOpenTabsPlaceholder": {
+    "message": "搜索打开的标签..."
+  },
+  "popup_searchArchivePlaceholder": {
+    "message": "搜索归档记录..."
+  },
+  "popup_noMatchingTabs": {
+    "message": "没有找到匹配的标签"
+  },
+  "popup_noTabsInWindow": {
+    "message": "当前窗口没有可整理的网页"
+  },
+  "popup_selectTab": {
+    "message": "选择 {title}"
+  },
+  "popup_switchToTab": {
+    "message": "切换到此标签页"
+  },
+  "popup_archiveKeepTab": {
+    "message": "归档（保留标签）"
+  },
+  "popup_closeTab": {
+    "message": "关闭标签页"
+  },
+  "popup_noMatchingArchive": {
+    "message": "没有找到匹配的归档"
+  },
+  "popup_noArchive": {
+    "message": "暂无归档记录"
+  },
+  "popup_reopenArchivedTitle": {
+    "message": "重新打开此归档"
+  },
+  "popup_reopen": {
+    "message": "重新打开"
+  },
+  "popup_deleteRecord": {
+    "message": "删除记录"
+  },
+  "popup_browserBookmarks": {
+    "message": "原生书签"
+  },
+  "popup_openInNewTab": {
+    "message": "在新标签打开"
+  },
+  "popup_selectedCount": {
+    "message": "已选 {count} 个"
+  },
+  "popup_selectAll": {
+    "message": "全选"
+  },
+  "popup_batchWorkspace": {
+    "message": "工作台"
+  },
+  "popup_batchQuickLink": {
+    "message": "导航"
+  },
+  "popup_batchBookmark": {
+    "message": "书签"
+  },
+  "popup_batchCloseArchive": {
+    "message": "关闭归档"
+  },
+  "popup_closeAfterActionTitle": {
+    "message": "开启后，每次执行操作（发送工作台 / 收藏 / 加入导航）会自动关闭此弹窗；关闭则保持打开以便连续操作"
+  },
+  "popup_closeAfterAction": {
+    "message": "完成后关闭"
+  },
+  "popup_exportMarkdown": {
+    "message": "导出 Markdown"
+  },
+  "popup_exportJson": {
+    "message": "导出 JSON"
+  },
+  "common_confirm": {
+    "message": "确定"
+  },
+  "common_save": {
+    "message": "保存"
+  },
+  "common_edit": {
+    "message": "编辑"
+  },
+  "common_settings": {
+    "message": "设置"
+  },
+  "common_unknownError": {
+    "message": "未知错误"
+  },
+  "common_undo": {
+    "message": "撤销"
+  },
+  "common_untitled": {
+    "message": "未命名"
+  },
+  "newtab_date": {
+    "message": "{weekday}，{month} {day} 日",
+    "description": "Clock date line; weekday and month are localized names"
+  },
+  "newtab_groupAll": {
+    "message": "全部"
+  },
+  "newtab_groupDomain": {
+    "message": "域名"
+  },
+  "newtab_groupChromeGroup": {
+    "message": "浏览器组"
+  },
+  "newtab_groupWindow": {
+    "message": "窗口"
+  },
+  "newtab_groupTime": {
+    "message": "时间"
+  },
+  "newtab_groupCategory": {
+    "message": "分类"
+  },
+  "newtab_viewGrid": {
+    "message": "网格卡片"
+  },
+  "newtab_viewList": {
+    "message": "紧凑列表"
+  },
+  "newtab_viewKanban": {
+    "message": "看板"
+  },
+  "newtab_navTabs": {
+    "message": "标签"
+  },
+  "newtab_navQuicklinks": {
+    "message": "导航"
+  },
+  "newtab_navBookmarks": {
+    "message": "书签"
+  },
+  "newtab_greetingNight": {
+    "message": "夜深了，注意休息"
+  },
+  "newtab_greetingMorning": {
+    "message": "早上好，新的一天开始了"
+  },
+  "newtab_greetingNoon": {
+    "message": "中午好，记得休息一下"
+  },
+  "newtab_greetingAfternoon": {
+    "message": "下午好，继续加油"
+  },
+  "newtab_greetingEvening": {
+    "message": "晚上好，今天辛苦了"
+  },
+  "newtab_settingsNotSaved": {
+    "message": "设置未保存：{error}"
+  },
+  "newtab_archivedTab": {
+    "message": "已归档: {title}"
+  },
+  "newtab_archiveFailed": {
+    "message": "归档失败：{error}"
+  },
+  "newtab_restored": {
+    "message": "已恢复对应页面"
+  },
+  "newtab_restoreFailed": {
+    "message": "恢复失败：{error}"
+  },
+  "newtab_minutesAgo_one": {
+    "message": "{count} 分钟前"
+  },
+  "newtab_minutesAgo_other": {
+    "message": "{count} 分钟前"
+  },
+  "newtab_hoursAgo_one": {
+    "message": "{count} 小时前"
+  },
+  "newtab_hoursAgo_other": {
+    "message": "{count} 小时前"
+  },
+  "newtab_daysAgo_one": {
+    "message": "{count} 天前"
+  },
+  "newtab_daysAgo_other": {
+    "message": "{count} 天前"
+  },
+  "newtab_sentToInbox": {
+    "message": "✅ 已推送到倒计时321收件箱"
+  },
+  "newtab_errorToast": {
+    "message": "❌ {error}"
+  },
+  "newtab_batchSending_one": {
+    "message": "🔄 正在提取正文并推送 {count} 个标签..."
+  },
+  "newtab_batchSending_other": {
+    "message": "🔄 正在提取正文并推送 {count} 个标签..."
+  },
+  "newtab_batchSent_one": {
+    "message": "✅ 已批量推送 {count} 个标签页"
+  },
+  "newtab_batchSent_other": {
+    "message": "✅ 已批量推送 {count} 个标签页"
+  },
+  "newtab_batchArchived_one": {
+    "message": "已批量归档 {count} 个标签页"
+  },
+  "newtab_batchArchived_other": {
+    "message": "已批量归档 {count} 个标签页"
+  },
+  "newtab_batchArchivePartial": {
+    "message": "已归档 {closed}/{total} 个，其余未完成：{error}"
+  },
+  "newtab_exported": {
+    "message": "✅ 数据已成功导出"
+  },
+  "newtab_exportFailed": {
+    "message": "❌ 导出失败: {error}"
+  },
+  "newtab_backupTooLarge": {
+    "message": "备份文件超过 30 MB。"
+  },
+  "newtab_importConfirm": {
+    "message": "导入将替换备份中包含的导航、归档和撤销记录，并恢复设置。备份启用的语录或远程壁纸可能重新联网，但不会自动授予网站权限。请先导出当前备份。是否继续？"
+  },
+  "newtab_imported": {
+    "message": "✅ 数据已成功导入，正在刷新..."
+  },
+  "newtab_importFailed": {
+    "message": "导入未完成：{error}"
+  },
+  "newtab_addedToQuickLinks": {
+    "message": "📌 已添加至常用导航：{title}"
+  },
+  "newtab_bookmarked": {
+    "message": "★ 已收藏至书签"
+  },
+  "newtab_mainNav": {
+    "message": "主导航"
+  },
+  "newtab_brandTagline": {
+    "message": "浏览器里的工作台"
+  },
+  "newtab_skinSettings": {
+    "message": "皮肤设置"
+  },
+  "newtab_switchToDark": {
+    "message": "切换深色"
+  },
+  "newtab_switchToLight": {
+    "message": "切换浅色"
+  },
+  "newtab_engineTitle": {
+    "message": "当前搜索引擎: {name} (点击切换)"
+  },
+  "newtab_engineAria": {
+    "message": "切换搜索引擎，当前为 {name}"
+  },
+  "newtab_searchAria": {
+    "message": "搜索标签、归档与书签，或输入网址"
+  },
+  "newtab_searchPlaceholder": {
+    "message": "搜索你的页面，或输入网址"
+  },
+  "newtab_searchCaption": {
+    "message": "输入即查找本地页面，按 Enter 使用 {engine} 搜索"
+  },
+  "newtab_headingSearch": {
+    "message": "查找页面"
+  },
+  "newtab_headingQuicklinks": {
+    "message": "常用导航"
+  },
+  "newtab_headingBookmarks": {
+    "message": "书签空间"
+  },
+  "newtab_headingTabs": {
+    "message": "标签工作台"
+  },
+  "newtab_subtitleSearch": {
+    "message": "当前标签、历史归档和浏览器书签，集中查找。"
+  },
+  "newtab_subtitleQuicklinks": {
+    "message": "常用的网站，按你的习惯归位。"
+  },
+  "newtab_subtitleBookmarks": {
+    "message": "把值得留下的内容，整理成下一次的起点。"
+  },
+  "newtab_subtitleTabs": {
+    "message": "找回上下文，把有价值的页面变成下一步行动。"
+  },
+  "newtab_openPagesCount_one": {
+    "message": "{count} 个打开的页面"
+  },
+  "newtab_openPagesCount_other": {
+    "message": "{count} 个打开的页面"
+  },
+  "newtab_resultsOpen": {
+    "message": "搜索结果：当前打开"
+  },
+  "newtab_resultsArchived": {
+    "message": "搜索结果：历史归档"
+  },
+  "newtab_resultsBookmarks": {
+    "message": "搜索结果：原生书签"
+  },
+  "newtab_bookmarkSentToInbox": {
+    "message": "✅ 书签已推送到倒计时321收件箱"
+  },
+  "newtab_send": {
+    "message": "↗ 发送"
+  },
+  "newtab_noResults": {
+    "message": "没有找到包含 \"{query}\" 的相关内容。"
+  },
+  "newtab_emptyTitle": {
+    "message": "工作台准备好了"
+  },
+  "newtab_emptyBody": {
+    "message": "打开网页后，就能在这里查找、整理并发送到 App。"
+  },
+  "newtab_currentlyOpen": {
+    "message": "当前打开"
+  },
+  "newtab_pageCount_one": {
+    "message": "· {count} 页"
+  },
+  "newtab_pageCount_other": {
+    "message": "· {count} 页"
+  },
+  "newtab_recentArchived": {
+    "message": "最近归档"
+  },
+  "newtab_restoring": {
+    "message": "恢复中"
+  },
+  "newtab_selectedBefore": {
+    "message": "已选择",
+    "description": "Text before the selected-tab count in the batch bar"
+  },
+  "newtab_selectedAfter_one": {
+    "message": "个标签",
+    "description": "Text after the selected-tab count in the batch bar"
+  },
+  "newtab_selectedAfter_other": {
+    "message": "个标签",
+    "description": "Text after the selected-tab count in the batch bar"
+  },
+  "newtab_batchSend": {
+    "message": "↗ 批量推送"
+  },
+  "newtab_batchArchive": {
+    "message": "✕ 批量归档"
+  },
+  "newtab_addToBookmarks": {
+    "message": "收藏到书签"
+  },
+  "newtab_bookmarkFoldersLoading": {
+    "message": "正在加载或无可用书签文件夹..."
+  },
+  "newtab_addToQuickLinks": {
+    "message": "添加到常用导航"
+  },
+  "newtab_chooseCategory": {
+    "message": "选择分类"
+  },
+  "newtab_newCategoryOption": {
+    "message": "＋ 新建分类..."
+  },
+  "newtab_newCategoryName": {
+    "message": "新分类名称"
+  },
+  "newtab_newCategoryPlaceholder": {
+    "message": "输入新分类名称..."
+  },
+  "newtab_sendToApp": {
+    "message": "推送到倒计时321"
+  },
+  "newtab_closeAndArchive": {
+    "message": "关闭并归档"
+  },
+  "group_unnamed": {
+    "message": "未命名分组"
+  },
+  "group_ungrouped": {
+    "message": "未分组"
+  },
+  "group_window": {
+    "message": "🪟 窗口 {index}"
+  },
+  "group_recent": {
+    "message": "⚡ 刚刚（1小时内）"
+  },
+  "group_today": {
+    "message": "☀️ 今天"
+  },
+  "group_yesterday": {
+    "message": "🌙 昨天"
+  },
+  "group_older": {
+    "message": "📦 更早"
+  },
+  "group_other": {
+    "message": "🔖 其他"
+  },
+  "group_allTabs": {
+    "message": "全部标签"
+  },
+  "bookmarks_bar": {
+    "message": "书签栏"
+  },
+  "bookmarks_other": {
+    "message": "其他书签"
+  },
+  "bookmarks_folder": {
+    "message": "文件夹"
+  },
+  "bookmarks_root": {
+    "message": "根目录"
+  },
+  "bookmarks_moved": {
+    "message": "✅ 移动成功"
+  },
+  "bookmarks_updated": {
+    "message": "✅ 更新成功"
+  },
+  "bookmarks_namePlaceholder": {
+    "message": "名称"
+  },
+  "bookmarks_sentToInbox": {
+    "message": "✅ 书签已推送到 Inbox"
+  },
+  "bookmarks_folderTree": {
+    "message": "文件夹书签树"
+  },
+  "bookmarks_gridView": {
+    "message": "网格视图"
+  },
+  "bookmarks_listView": {
+    "message": "列表视图"
+  },
+  "bookmarks_compactView": {
+    "message": "紧凑视图"
+  },
+  "bookmarks_emptyFolder": {
+    "message": "该文件夹是空的，你可以从其它文件夹拖拽书签到左侧来整理。"
+  },
+  "bookmarks_subfolders": {
+    "message": "子文件夹"
+  },
+  "bookmarks_bookmarks": {
+    "message": "书签"
   }
 }

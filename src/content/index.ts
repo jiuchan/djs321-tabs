@@ -1,5 +1,6 @@
 import { Readability } from '@mozilla/readability'
 import TurndownService from 'turndown'
+import { t } from '../lib/i18n'
 
 const scope = globalThis as typeof globalThis & { __tabButlerExtractorLoaded?: boolean }
 if (!scope.__tabButlerExtractorLoaded) {
@@ -18,7 +19,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       }
     } catch(e) {
       console.error('Extraction failed:', e)
-      sendResponse({ error: '正文提取失败，未发送任务。' })
+      sendResponse({ error: t('content_extractFailed') })
     }
     return false
   }

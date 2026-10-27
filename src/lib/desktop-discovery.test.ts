@@ -54,7 +54,7 @@ test('reconnect validates a pinned key and permits only the announced actual por
   await module.registerDesktopDiscovery(reconnect)
   const impostor = generateKeyPairSync('ec', { namedCurve: 'prime256v1' })
   assert.equal(await module.acceptDesktopDiscovery({ type: 'DESKTOP_DISCOVERY', proof: signedProof(nonce, {}, impostor) }, sender), false)
-  await assert.rejects(module.registerDesktopDiscovery({ ...request, mode: 'connect' }), /身份|配对/)
+  await assert.rejects(module.registerDesktopDiscovery({ ...request, mode: 'connect' }), /identity|pair/i)
 })
 
 test('expiry, cancellation, unknown nonces, client mismatch and arbitrary commands fail closed', async t => {
@@ -95,10 +95,10 @@ test('invalid or exhausted shared generations fail closed without resetting canc
   const fx = fixture(t)
   const module = await discovery()
   fx.local[module.DESKTOP_GENERATION_KEY] = 'invalid'
-  await assert.rejects(module.registerDesktopDiscovery(request), /状态无效/)
+  await assert.rejects(module.registerDesktopDiscovery(request), /state/i)
   assert.equal(fx.local[module.DESKTOP_GENERATION_KEY], 'invalid')
   fx.local[module.DESKTOP_GENERATION_KEY] = Number.MAX_SAFE_INTEGER
-  await assert.rejects(module.invalidateDesktopDiscoveries(), /状态无效/)
+  await assert.rejects(module.invalidateDesktopDiscoveries(), /state/i)
   assert.equal(fx.local[module.DESKTOP_GENERATION_KEY], Number.MAX_SAFE_INTEGER)
 })
 

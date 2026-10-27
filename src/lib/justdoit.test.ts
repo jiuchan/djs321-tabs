@@ -49,7 +49,7 @@ test('article extraction is action-only and verifies the selected URL', async t 
   assert.equal(fx.injections(), 0)
   assert.equal(await extractMarkdownFromTab(1, 'https://example.com/article'), '# Test article')
   fx.setUrl('https://example.com/private')
-  await assert.rejects(() => extractMarkdownFromTab(1, 'https://example.com/article'), /变化/)
+  await assert.rejects(() => extractMarkdownFromTab(1, 'https://example.com/article'), /changed/)
   assert.equal(fx.injections(), 1)
 })
 
@@ -87,7 +87,7 @@ test('local unpaired send fails with settings guidance before any HTTP request',
   let calls = 0
   globalThis.fetch = async () => { calls++; return new Response('{"success":true}') }
   t.after(() => { globalThis.fetch = previousFetch })
-  await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /插件设置.*配对/)
+  await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /extension settings.*pair/i)
   assert.equal(calls, 0)
 })
 
@@ -122,7 +122,7 @@ for (const response of [{ success: true }, { success: 'yes', count: 1 }, { succe
       return new Response(JSON.stringify({ requestId: body.requestId, ...response }))
     })
     t.after(() => { globalThis.fetch = previousFetch })
-    await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /回执|设置/)
+    await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /receipt|settings/)
     assert.equal(calls, 1)
   })
 }
@@ -133,7 +133,7 @@ test('revoked authentication is actionable and never retries unsigned', async t 
   let calls = 0
   localTransport(t, async () => { calls++; return new Response('{}', { status: 401 }) })
   t.after(() => { globalThis.fetch = previousFetch })
-  await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /撤销.*插件设置.*配对/)
+  await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /revoked.*extension settings.*pair/i)
   assert.equal(calls, 1)
 })
 
@@ -158,7 +158,7 @@ test('advanced HTTPS still requires the existing per-endpoint permission', async
   let calls = 0
   globalThis.fetch = async () => { calls++; return new Response('{"success":true}') }
   t.after(() => { globalThis.fetch = previousFetch })
-  await assert.rejects(sendToJustDoIt(validItem), /保存并授权/)
+  await assert.rejects(sendToJustDoIt(validItem), /Save and authorize/)
   assert.equal(calls, 0)
 })
 
@@ -168,7 +168,7 @@ test('alternate loopback addresses cannot fall back to the legacy unsigned proto
   let calls = 0
   globalThis.fetch = async () => { calls++; return new Response('{"success":true}') }
   t.after(() => { globalThis.fetch = previousFetch })
-  await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /自动本机/)
+  await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /automatic local mode/)
   assert.equal(calls, 0)
 })
 
@@ -179,7 +179,7 @@ for (const base of ['http://localhost:37374', 'https://localhost:37373', 'http:/
     let calls = 0
     globalThis.fetch = async () => { calls++; return new Response('{"success":true}') }
     t.after(() => { globalThis.fetch = previousFetch })
-    await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /自动本机/)
+    await assert.rejects(sendToJustDoIt({ title: 'Test', url: 'https://example.com' }), /automatic local mode/)
     assert.equal(calls, 0)
   })
 }
@@ -203,7 +203,7 @@ test('malformed local JSON receipt fails once with actionable guidance', async t
   let calls = 0
   localTransport(t, async () => { calls++; return new Response('invalid json') })
   t.after(() => { globalThis.fetch = previousFetch })
-  await assert.rejects(sendToJustDoIt(validItem), /回执.*插件设置/)
+  await assert.rejects(sendToJustDoIt(validItem), /receipt.*extension settings/)
   assert.equal(calls, 1)
 })
 for (const [name, items] of [
@@ -218,7 +218,7 @@ for (const [name, items] of [
     let calls = 0
     globalThis.fetch = async () => { calls++; return new Response('{"success":true}') }
     t.after(() => { globalThis.fetch = previousFetch })
-    await assert.rejects(sendToJustDoIt([...items]), /上限|1.*100/)
+    await assert.rejects(sendToJustDoIt([...items]), /limit|1 to 100/)
     assert.equal(calls, 0)
   })
 }
@@ -229,7 +229,7 @@ test('wrong local identity fails once before any content or token, with no autom
   const calls: { url: string; init?: RequestInit }[] = []
   globalThis.fetch = async (input, init) => { calls.push({ url: String(input), init }); return json({ success: true }) }
   t.after(() => { globalThis.fetch = previousFetch })
-  await assert.rejects(sendToJustDoIt(validItem), /身份/)
+  await assert.rejects(sendToJustDoIt(validItem), /identity/)
   assert.equal(calls.length, 1)
   assert.equal(calls[0].init?.body, undefined)
   assert.equal(new Headers(calls[0].init?.headers).has('Authorization'), false)
