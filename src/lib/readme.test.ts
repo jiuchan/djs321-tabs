@@ -41,13 +41,31 @@ test('README local links and images resolve inside the public repository', () =>
   }
 })
 
-test('product screenshots are committed JPEGs with recorded synthetic-data provenance', () => {
+test('product screenshots use a readable landscape desktop viewport with synthetic-data provenance', () => {
   for (const name of ['workspace-en.jpg', 'workspace-zh-CN.jpg', 'tabs-en.jpg']) {
     const path = `docs/images/${name}`
     assert.ok(existsSync(new URL(path, root)), path)
     const bytes = readFileSync(new URL(path, root))
     assert.equal(bytes.subarray(0, 3).toString('hex'), 'ffd8ff', path)
     assert.equal(bytes.subarray(-2).toString('hex'), 'ffd9', path)
+    let width = 0
+    let height = 0
+    // JPEG frame headers carry the capture dimensions without an image-library dependency.
+    for (let offset = 2; offset + 9 < bytes.length;) {
+      assert.equal(bytes[offset], 0xff, `${path}: JPEG segment`)
+      const marker = bytes[offset + 1]
+      if ([0xc0, 0xc1, 0xc2].includes(marker)) {
+        height = bytes.readUInt16BE(offset + 5)
+        width = bytes.readUInt16BE(offset + 7)
+        break
+      }
+      if (marker === 0xda) break
+      const size = bytes.readUInt16BE(offset + 2)
+      assert.ok(size >= 2, `${path}: valid JPEG segment length`)
+      offset += 2 + size
+    }
+    assert.ok(width >= 1280 && height >= 720, `${path}: readable desktop resolution`)
+    assert.ok(width / height >= 1.5 && width / height <= 1.9, `${path}: desktop landscape, not a portrait page`)
     assert.ok(bytes.length > 10_000 && bytes.length < 2 * 1024 * 1024, `${path}: reasonable README image weight`)
   }
   assert.match(read('docs/images/README.md'), /synthetic/i)

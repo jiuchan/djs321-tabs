@@ -6,9 +6,14 @@ local documentation fixture on 2026-10-28. Component source: commit
 
 | File | Content | Dimensions |
 | --- | --- | --- |
-| `workspace-en.jpg` | English quick links, dark theme | 874 x 1055 |
-| `workspace-zh-CN.jpg` | Simplified Chinese quick links, dark theme | 874 x 1059 |
-| `tabs-en.jpg` | English tabs grouped by domain, light theme | 874 x 896 |
+| `workspace-en.jpg` | English quick links, dark theme | 1322 x 826 |
+| `workspace-zh-CN.jpg` | Simplified Chinese quick links, dark theme | 1322 x 826 |
+| `tabs-en.jpg` | English tabs grouped by domain, light theme | 1322 x 826 |
+
+The screenshots use a 1600 x 1000 desktop viewport (16:10), captured at the browser tool's
+1322 x 826 output resolution. They are viewport captures, not tall full-page screenshots or
+stretched portrait images. The quick-links examples contain nine links in one workspace category
+so the complete group is visible; the tabs example retains three domain groups.
 
 All titles, links, categories, tabs, bookmarks and archives are **synthetic**. Links use the
 reserved example.com, example.org and example.net domains. No personal browser profile, open

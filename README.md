@@ -19,7 +19,7 @@ Core features work without an account or the DJS 321 App.
 
 ![DJS321 Tabs dark workspace with search and categorized quick links](docs/images/workspace-en.jpg)
 
-*Version 1.1.0 interface with synthetic demo data. [Screenshot details](docs/images/README.md).*
+*Version 1.1.0 desktop layout (16:10), with synthetic demo data. [Screenshot details](docs/images/README.md).*
 
 > **Manual-install preview:** not yet listed or reviewed in the Chrome Web Store or Edge Add-ons.
 > There are **no automatic updates**. Desktop Chrome and Microsoft Edge only; not Safari or iOS.
@@ -42,7 +42,7 @@ own HTTPS endpoint is optional; local tab management does not depend on either.
 
 ![Light theme showing nine sample tabs grouped by domain](docs/images/tabs-en.jpg)
 
-*Real production components rendered with sample pages, not personal browsing data.*
+*Desktop landscape capture of real production components, with sample pages instead of personal browsing data.*
 
 ## Install
 
