@@ -1,6 +1,6 @@
 {
   "name": "djs321-tabs",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "DJS321 Tabs — local-first browser tab manager with an optional DJS 321 link",
   "private": true,
   "license": "Apache-2.0",

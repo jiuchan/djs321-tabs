@@ -957,7 +957,8 @@ html, body, #root { width: 100%; height: 100%;
     -webkit-backdrop-filter: none;
     margin-block-start: 36px;
   }
-  .layout-classic .nt-workspace-heading { margin-block-end: 20px; }
+  .layout-classic .nt-workspace-heading { margin-block-end: 20px; padding-block-start: 24px; padding-inline: 24px; }
+  .layout-classic .nt-scroll-body > .nt-section { padding-inline: 24px; }
   .layout-classic .nt-workspace-heading h1 { font-size: 17px; letter-spacing: 0; }
   .layout-classic .nt-workspace-heading p { font-size: 12px; }
 }

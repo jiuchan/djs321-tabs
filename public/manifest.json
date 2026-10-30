@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extName__",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "__MSG_extDescription__",
   "default_locale": "en",
   "icons": {
@@ -42,20 +42,31 @@
     "http://localhost/*"
   ],
   "externally_connectable": {
-    "matches": ["http://localhost/bridge/connect"]
+    "matches": [
+      "http://localhost/bridge/connect"
+    ]
   },
-  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
   "commands": {
     "archive-tab": {
-      "suggested_key": { "default": "Alt+Shift+W" },
+      "suggested_key": {
+        "default": "Alt+Shift+W"
+      },
       "description": "__MSG_cmdArchiveTab__"
     },
     "close-and-archive": {
-      "suggested_key": { "default": "Alt+Shift+X" },
+      "suggested_key": {
+        "default": "Alt+Shift+X"
+      },
       "description": "__MSG_cmdCloseAndArchive__"
     },
     "send-to-justdoit": {
-      "suggested_key": { "default": "Alt+Shift+J" },
+      "suggested_key": {
+        "default": "Alt+Shift+J"
+      },
       "description": "__MSG_cmdSendToApp__"
     }
   }
